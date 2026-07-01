@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://weieryangart.com/</loc><lastmod>2026-06-29</lastmod><priority>1.0</priority></url>
+  <url><loc>https://weieryangart.com/</loc><lastmod>2026-07-01</lastmod><priority>1.0</priority></url>
   <url><loc>https://weieryangart.com/commission/</loc><lastmod>2026-06-29</lastmod><priority>0.85</priority></url>
   <url><loc>https://weieryangart.com/faq/</loc><lastmod>2026-06-29</lastmod><priority>0.84</priority></url>
-  <url><loc>https://weieryangart.com/insights/</loc><lastmod>2026-06-29</lastmod><priority>0.83</priority></url>
+  <url><loc>https://weieryangart.com/insights/</loc><lastmod>2026-07-01</lastmod><priority>0.86</priority></url>
+  <url><loc>https://weieryangart.com/insights/how-to-commission-custom-outdoor-sculpture/</loc><lastmod>2026-07-01</lastmod><priority>0.78</priority></url>
+  <url><loc>https://weieryangart.com/insights/316l-stainless-steel-vs-bronze-vs-stone/</loc><lastmod>2026-07-01</lastmod><priority>0.78</priority></url>
+  <url><loc>https://weieryangart.com/insights/landscape-sculpture-quote-brief/</loc><lastmod>2026-07-01</lastmod><priority>0.78</priority></url>
   <url><loc>https://weieryangart.com/materials/</loc><lastmod>2026-06-29</lastmod><priority>0.82</priority></url>
   <url><loc>https://weieryangart.com/projects/</loc><lastmod>2026-06-29</lastmod><priority>0.8</priority></url>
   <url><loc>https://weieryangart.com/garden-sculpture/</loc><lastmod>2026-06-29</lastmod><priority>0.72</priority></url>
@@ -15,5 +18,5 @@
   <url><loc>https://weieryangart.com/stone-sculpture/</loc><lastmod>2026-06-29</lastmod><priority>0.72</priority></url>
   <url><loc>https://weieryangart.com/custom-sculpture/</loc><lastmod>2026-06-29</lastmod><priority>0.72</priority></url>
   <url><loc>https://weieryangart.com/process/</loc><lastmod>2026-06-29</lastmod><priority>0.72</priority></url>
-  <url><loc>https://weieryangart.com/llms.txt</loc><lastmod>2026-06-29</lastmod><priority>0.4</priority></url>
+  <url><loc>https://weieryangart.com/llms.txt</loc><lastmod>2026-07-01</lastmod><priority>0.4</priority></url>
 </urlset>
