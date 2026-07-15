@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script>document.documentElement.classList.add("js");window.__weieryangBootTimer=window.setTimeout(function(){document.documentElement.classList.add("app-ready")},3200)</script>
+    <script>document.documentElement.classList.add("js","app-ready")</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="description" content="WEIERYANG creates custom garden sculpture, public landscape art, resort water features, and site-specific work in stone, bronze, and stainless steel." />
     <meta name="theme-color" content="#0b0b09" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="preload" as="image" href="./seo-media/hero-plaza-night-v4.webp" fetchpriority="high" /><link rel="preload" as="image" href="./seo-media/hero-plaza-blue-hour-v4.webp" /><link rel="preload" as="image" href="./seo-media/hero-plaza-master-v4.webp" />
+    <link rel="preload" as="image" href="./seo-media/hero-plaza-night-v3.webp" fetchpriority="high" />
     <link rel="canonical" href="https://weieryangart.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WEIERYANG" />
@@ -25,47 +25,12 @@
     <meta name="twitter:image" content="https://weieryangart.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="WEIERYANG brushed stainless steel flying-bird sculpture study with disciplined parallel wing slats in a modern reflecting plaza" />
     <style>
-      #app-boot {
+      html.js .seo-fallback {
         display: none;
       }
 
-      html.js #app-boot {
-        position: fixed;
-        z-index: 9999;
-        inset: 0;
-        display: block;
-        overflow: hidden;
-        background: #07101a;
+      html.js #root {
         opacity: 1;
-        pointer-events: none;
-        transition: opacity 520ms cubic-bezier(0.16, 1, 0.3, 1), visibility 520ms linear;
-      }
-
-      html.js #app-boot img {
-        position: absolute;
-        inset: 78px 0 0;
-        width: 100%;
-        height: calc(100% - 78px);
-        object-fit: cover;
-        object-position: center;
-      }
-
-      html.js:not(.app-ready) #root {
-        opacity: 0;
-      }
-
-      html.js:not(.app-ready) .seo-fallback {
-        display: none;
-      }
-
-      html.js.app-ready #root {
-        opacity: 1;
-        transition: opacity 420ms ease;
-      }
-
-      html.js.app-ready #app-boot {
-        visibility: hidden;
-        opacity: 0;
       }
 
       .seo-fallback {
@@ -136,13 +101,6 @@
       }
 
       @media (max-width: 760px) {
-        html.js #app-boot img {
-          inset-block-start: 72px;
-          height: calc(100% - 72px);
-          object-fit: contain;
-          object-position: center top;
-        }
-
         .seo-evidence-grid {
           grid-template-columns: 1fr;
         }
@@ -184,13 +142,13 @@
               "@id": "https://weieryangart.com/#organization"
             },
             "image": [
-              "https://weieryangart.com/seo-media/hero-plaza-master-v4.webp",
+              "https://weieryangart.com/seo-media/hero-plaza-night-v3.webp",
               "https://weieryangart.com/seo-media/concept-sketch.webp",
               "https://weieryangart.com/seo-media/material-samples-dark.webp",
               "https://weieryangart.com/seo-media/structural-engineering.webp"
             ],
             "primaryImageOfPage": {
-              "@id": "https://weieryangart.com/seo-media/hero-plaza-master-v4.webp#image"
+              "@id": "https://weieryangart.com/seo-media/hero-plaza-night-v3.webp#image"
             },
             "inLanguage": "en"
           },
@@ -207,11 +165,11 @@
           },
           {
             "@type": "ImageObject",
-            "@id": "https://weieryangart.com/seo-media/hero-plaza-master-v4.webp#image",
-            "url": "https://weieryangart.com/seo-media/hero-plaza-master-v4.webp",
-            "contentUrl": "https://weieryangart.com/seo-media/hero-plaza-master-v4.webp",
-            "width": 1920,
-            "height": 1080,
+            "@id": "https://weieryangart.com/seo-media/hero-plaza-night-v3.webp#image",
+            "url": "https://weieryangart.com/seo-media/hero-plaza-night-v3.webp",
+            "contentUrl": "https://weieryangart.com/seo-media/hero-plaza-night-v3.webp",
+            "width": 1672,
+            "height": 941,
             "name": "WEIERYANG brushed stainless steel flying-bird sculpture study with disciplined parallel wing slats in a modern reflecting plaza",
             "caption": "Concept-stage plaza study based on verified construction geometry; shown for form, site integration, finish, reflection, and structural review.",
             "representativeOfPage": true
@@ -291,11 +249,10 @@
       }
     </script>
     <title>WEIERYANG | Custom Garden &amp; Public Sculpture Studio</title>
-    <script type="module" crossorigin src="./assets/main-CzlWUJhS.js"></script>
+    <script type="module" crossorigin src="./assets/main-4zBVAOQ3.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/main-BpNfpIkn.css">
   </head>
   <body style="margin:0;background:#0b0b09;color:#f0eee8">
-    <div id="app-boot" aria-hidden="true"><img src="./seo-media/hero-plaza-night-v4.webp" alt="" width="1920" height="1080" decoding="async" fetchpriority="high" /></div>
     <div id="root">
       <main class="seo-fallback" data-seo-fallback="true">
       <nav aria-label="Breadcrumb"><a href="/">Home</a></nav>
@@ -305,7 +262,7 @@
         <h2>Material and process evidence</h2>
         <div class="seo-evidence-grid">
           <figure>
-            <img src="./seo-media/hero-plaza-master-v4.webp" alt="WEIERYANG brushed stainless steel flying-bird sculpture study with disciplined parallel wing slats in a modern reflecting plaza" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high" />
+            <img src="./seo-media/hero-plaza-night-v3.webp" alt="WEIERYANG brushed stainless steel flying-bird sculpture study with disciplined parallel wing slats in a modern reflecting plaza" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high" />
             <figcaption>Concept-stage plaza study based on verified construction geometry; shown for form, site integration, finish, reflection, and structural review.</figcaption>
           </figure><figure>
             <img src="./seo-media/concept-sketch.webp" alt="Full concept sketch for a site-specific garden sculpture with scale and landscape context" width="1448" height="1086" loading="lazy" decoding="async" />
