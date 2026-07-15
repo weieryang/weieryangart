@@ -1,11 +1,11 @@
 :root {
-  --paper: oklch(0.91 0.022 102);
-  --paper-soft: oklch(0.96 0.013 96);
-  --ink: oklch(0.17 0.028 150);
-  --ink-strong: oklch(0.11 0.018 140);
-  --muted: oklch(0.41 0.035 128);
-  --line: oklch(0.69 0.03 105);
-  --bronze: oklch(0.48 0.12 42);
+  --paper: #0b0b09;
+  --paper-soft: #141411;
+  --ink: #d5d1c8;
+  --ink-strong: #f1eee6;
+  --muted: #a6a198;
+  --line: #34332d;
+  --bronze: #c46241;
   color: var(--ink);
   background: var(--paper);
   font-family: "Manrope", Arial, sans-serif;
@@ -17,67 +17,219 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(90deg, oklch(0.57 0.03 105 / 0.18) 1px, transparent 1px) center / 24vw 100%,
+    linear-gradient(90deg, rgb(255 255 255 / 2.5%) 1px, transparent 1px) center / 25vw 100%,
+    radial-gradient(circle at 84% 4%, rgb(128 61 38 / 14%), transparent 32%),
     var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  text-underline-offset: 3px;
+body a {
+  color: inherit;
+  text-underline-offset: 4px;
 }
 
-img {
+body img {
   display: block;
   max-width: 100%;
 }
 
-.wy-figure,
-.wy-proof-strip figure {
-  margin: 24px 0 0;
-  border: 1px solid var(--line);
-  background: #fbf8ec;
+body .wy-top {
+  border-color: var(--line);
+  background: rgb(11 11 9 / 92%);
+  backdrop-filter: blur(16px);
 }
 
-.wy-figure img {
+body .wy-brand {
+  color: var(--ink-strong);
+  letter-spacing: 0.2em;
+}
+
+body .wy-nav a {
+  color: #c7c2b9;
+}
+
+body .wy-nav a:hover {
+  background: #1c1b17;
+  color: #fffaf0;
+}
+
+body .wy-hero,
+body article,
+body .wy-card,
+body .wy-plan,
+body .wy-figure,
+body .wy-proof-strip figure {
+  border-color: var(--line);
+  background: rgb(17 17 15 / 78%);
+  box-shadow: none;
+}
+
+body .wy-hero {
+  padding: clamp(34px, 6vw, 78px);
+  background:
+    linear-gradient(120deg, rgb(18 18 16 / 95%), rgb(10 10 9 / 74%)),
+    radial-gradient(circle at 100% 0%, rgb(153 73 44 / 20%), transparent 38%);
+}
+
+body .wy-kicker,
+body .wy-card span,
+body .wy-read {
+  color: #d47655;
+}
+
+body h1,
+body .wy-hero h1,
+body h2,
+body h3,
+body .wy-card h2,
+body .wy-plan h2 {
+  color: var(--ink-strong);
+}
+
+body h1,
+body .wy-hero h1 {
+  max-width: 12ch;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+body p,
+body li,
+body .wy-hero p,
+body .wy-card p,
+body .wy-plan p,
+body .wy-plan li,
+body .wy-date {
+  color: var(--muted);
+}
+
+body .wy-card {
+  min-height: 330px;
+  padding: 30px;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+body .wy-card:hover {
+  border-color: #5c5149;
+  background: #191713;
+  transform: translateY(-3px);
+}
+
+body .wy-plan {
+  padding: 36px;
+}
+
+body .wy-cta,
+body .wy-note {
+  border-color: #49382f;
+  background: #1a120f;
+  color: #eee8de;
+}
+
+body .wy-cta a,
+body .wy-note a {
+  color: #ef9b7c;
+}
+
+body .wy-figure,
+body .wy-proof-strip figure {
+  margin: 24px 0 0;
+}
+
+body .wy-figure img {
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 10;
   object-fit: cover;
+  filter: brightness(0.78) saturate(0.72);
 }
 
-.wy-figure figcaption,
-.wy-proof-strip figcaption {
-  padding: 12px 14px;
+body .wy-figure figcaption,
+body .wy-proof-strip figcaption {
+  padding: 13px 15px;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 720;
   line-height: 1.55;
 }
 
-.wy-proof-strip {
+body .wy-proof-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 1px;
   margin-top: 20px;
+  background: var(--line);
+  border: 1px solid var(--line);
 }
 
-.wy-proof-strip figure {
+body .wy-proof-strip figure {
   margin-top: 0;
+  border: 0;
 }
 
-.wy-proof-strip img {
+body .wy-proof-strip img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  filter: brightness(0.76) saturate(0.7);
+}
+
+body article {
+  padding: clamp(26px, 4vw, 54px);
+}
+
+body table {
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+body th,
+body td {
+  border-color: var(--line);
+}
+
+body th {
+  color: var(--ink-strong);
+  background: #1a1915;
+}
+
+body .wy-check li {
+  border-color: var(--line);
+  background: #151512;
 }
 
 @media (max-width: 820px) {
-  .wy-proof-strip {
+  body .wy-proof-strip {
     grid-template-columns: 1fr;
+  }
+
+  body .wy-top-inner {
+    gap: 12px;
+  }
+
+  body .wy-nav {
+    gap: 2px;
+  }
+
+  body .wy-nav a {
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+
+  body .wy-card,
+  body .wy-plan,
+  body article {
+    padding: 24px;
   }
 }
