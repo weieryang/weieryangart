@@ -77,8 +77,13 @@
   </url>
   <url>
     <loc>https://weieryangart.com/insights/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-15</lastmod>
     <priority>0.86</priority>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/insights/304-vs-316l-stainless-steel-outdoor-sculpture/</loc>
+    <lastmod>2026-09-15</lastmod>
+    <priority>0.89</priority>
   </url>
   <url>
     <loc>https://weieryangart.com/insights/coastal-stainless-steel-sculpture-maintenance-checklist/</loc>
@@ -127,7 +132,7 @@
   </url>
   <url>
     <loc>https://weieryangart.com/insights/middle-east-stainless-steel-landmark-sculpture/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.88</priority>
   </url>
   <url>
@@ -149,10 +154,5 @@
     <loc>https://weieryangart.com/insights/landscape-sculpture-quote-brief/</loc>
     <lastmod>2026-07-01</lastmod>
     <priority>0.78</priority>
-  </url>
-  <url>
-    <loc>https://weieryangart.com/insights/304-vs-316l-stainless-steel-outdoor-sculpture/</loc>
-    <lastmod>2026-09-15</lastmod>
-    <priority>0.89</priority>
   </url>
 </urlset>

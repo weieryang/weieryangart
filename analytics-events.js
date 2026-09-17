@@ -1,4 +1,4 @@
-const attributionKey = "weieryang-attribution-v1";
+const attributionKey = "weieryang-attribution-v2";
 
 try {
   if (!window.sessionStorage.getItem(attributionKey)) {
@@ -10,15 +10,19 @@ try {
       utmSource: url.searchParams.get("utm_source") || "",
       utmMedium: url.searchParams.get("utm_medium") || "",
       utmCampaign: url.searchParams.get("utm_campaign") || "",
+      utmId: url.searchParams.get("utm_id") || "",
+      utmContent: url.searchParams.get("utm_content") || "",
+      utmTerm: url.searchParams.get("utm_term") || "",
+      fbclid: url.searchParams.get("fbclid") || "",
     }));
   }
 } catch {
   // The form can still be submitted when session storage is unavailable.
 }
 
-if (window.location.pathname === "/commission/") {
+if (/^\/commission\/?(?:index\.html)?$/.test(window.location.pathname)) {
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: "commission_view" });
+  window.dataLayer.push({ event: "commission_view", form_name: "private_commission_brief" });
 }
 
 document.addEventListener("click", (event) => {
