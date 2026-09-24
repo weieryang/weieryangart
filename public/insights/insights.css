@@ -269,6 +269,7 @@ body .wy-brief-grid article{background:#131310;padding:22px}
 .wy-brief-grid p{margin-top:10px;color:#aaa59b;font-size:13px;line-height:1.6}
 body .wy-figure{margin:38px 0 0;padding:0;border:1px solid var(--line);background:#0d0d0b}
 .wy-figure img{width:100%;height:auto;max-height:570px;object-fit:cover;filter:none}
+.wy-figure--contain img{object-fit:contain;background:#090908}
 .wy-evidence-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:38px}
 body .wy-evidence-pair .wy-figure{margin:0}
 .wy-evidence-pair img{height:360px;object-fit:cover}
