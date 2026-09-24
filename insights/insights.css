@@ -280,6 +280,15 @@ body .wy-evidence-pair .wy-figure{margin:0}
 .wy-checklist li{position:relative;margin:0;border:1px solid var(--line);background:#151512;padding:16px 16px 16px 44px;font-size:14px;line-height:1.55}
 .wy-checklist li::before{content:"";position:absolute;left:17px;top:20px;width:10px;height:10px;border:1px solid #d77352;background:#1c1512}
 .wy-warning{margin:36px 0 0;border:1px solid #5d473b;background:#18110e;padding:22px;color:#c9c1b8;font-size:14px;line-height:1.7}
+.wy-answer{margin:34px 0 0;border:1px solid #594238;border-left:4px solid #d47655;background:#17110e;padding:26px}
+.wy-answer h2{margin:0;font-size:clamp(24px,3vw,34px)}
+.wy-answer > p{margin-top:14px;color:#c9c2b8}
+.wy-answer .wy-checklist{margin-top:20px}
+.wy-jump{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:30px 0 0;border:1px solid var(--line);background:var(--line)}
+.wy-jump strong,.wy-jump a{background:#12120f;padding:13px 16px;font-size:13px;line-height:1.45}
+.wy-jump strong{grid-column:1/-1;color:#f0ece3;letter-spacing:.08em;text-transform:uppercase}
+.wy-jump a{color:#c8c2b8;text-decoration:none}
+.wy-jump a:hover{background:#1b1814;color:#ef9b7c}
 body .wy-note{margin-top:42px;border:1px solid #51372e;background:#17100d;padding:28px}
 .wy-note h2{margin:0;font-size:30px}
 .wy-note p{color:#c6beb5}
@@ -312,6 +321,8 @@ body .wy-note{margin-top:42px;border:1px solid #51372e;background:#17100d;paddin
   .wy-scope-table,.wy-scope-table tbody,.wy-scope-table tr,.wy-scope-table th,.wy-scope-table td{display:block}
   .wy-scope-table th{border-bottom:0}
   .wy-scope-table td + td{border-top:0}
+  .wy-jump{grid-template-columns:1fr}
+  .wy-jump strong{grid-column:auto}
   .wy-hero-image img{min-height:280px;object-fit:contain}
   .wy-footer-inner{padding:34px 0}
 }
