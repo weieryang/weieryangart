@@ -1,0 +1,20 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "weieryang-inquiries",
+  "main": "./inquiries.mjs",
+  "compatibility_date": "2026-09-14",
+  "workers_dev": true,
+  "ratelimits": [
+    {
+      "name": "INQUIRY_RATE",
+      "namespace_id": "24681",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "tangkelian@weieryang.com"
+    }
+  ]
+}
