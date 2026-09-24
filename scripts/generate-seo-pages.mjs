@@ -99,6 +99,34 @@ const evidenceImages = {
     alt: "Atelier engineering evidence for sculpture material review and custom production planning",
     caption: "Atelier evidence supports serious review before price and production.",
   },
+  hotelLobbyWhaleInstallation: {
+    file: "hotel-lobby-stainless-steel-whale-installation.webp",
+    width: 1600,
+    height: 900,
+    alt: "Two views of a mirror stainless steel whale sculpture with suspended spheres in a glazed commercial lobby",
+    caption: "Commercial-interior reference for sculpture footprint, suspended elements, water-feature edges, daylight, and reflection review.",
+  },
+  commercialAtriumMirrorSculpture: {
+    file: "commercial-atrium-mirror-stainless-steel-sculpture.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Large mirror stainless steel sculpture in a tall commercial interior showing scale and ceiling clearance",
+    caption: "Commercial-interior reference for scale, ceiling clearance, occupied envelope, and reflected surroundings.",
+  },
+  mirrorFinishDetail: {
+    file: "mirror-stainless-steel-sculpture-finish-detail.webp",
+    width: 1067,
+    height: 1600,
+    alt: "Mirror polished stainless steel sculpture with bronze toned inset lines during workshop finish review",
+    caption: "Workshop finish reference for polish, seam alignment, inset colour, reflection, and protection review.",
+  },
+  largeWorkshopFabrication: {
+    file: "large-sculpture-workshop-fabrication.webp",
+    width: 1080,
+    height: 1440,
+    alt: "Large sculptural form under fabrication with scaffold access and temporary workshop support",
+    caption: "Workshop fabrication reference showing production scale, temporary support, access, and surface work.",
+  },
 };
 
 const routeImageKeys = {
@@ -121,7 +149,7 @@ const routeImageKeys = {
 const preservedRoutes = [
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: today, priority: "0.9", imageKeys: ["birdSculpture", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
   { url: `${site}/insights/`, lastmod: "2026-09-24", priority: "0.86", imageKeys: ["studioDesk", "materialSamples", "structuralStudy"] },
-  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-24", priority: "0.89", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly"] },
+  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-24", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-09-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },

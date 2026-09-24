@@ -41,7 +41,14 @@ The folder contains 150 files: 104 JPG, 34 HEIC and 12 PNG. The following classi
 
 ### Publication status
 
-Until provenance is documented, these files are reference-only and must not be copied into production pages. To approve an image for the site, record:
+The user approved use of the newly supplied material on the site on September 24, 2026. Four optimized derivatives are now approved for the hotel lobby guide while project names, locations and client attribution remain unstated:
+
+- `IMG_5186.JPG` + `IMG_5190.JPG` → `hotel-lobby-stainless-steel-whale-installation.webp`
+- `IMG_5241.JPG` → `commercial-atrium-mirror-stainless-steel-sculpture.webp`
+- `IMG_5385.JPG` → `mirror-stainless-steel-sculpture-finish-detail.webp`
+- `IMG_5187.JPG` → `large-sculpture-workshop-fabrication.webp`
+
+For any additional image, record:
 
 1. Photographer or copyright owner.
 2. Permission to publish commercially.
