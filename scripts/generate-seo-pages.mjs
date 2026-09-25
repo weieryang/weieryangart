@@ -127,6 +127,34 @@ const evidenceImages = {
     alt: "Large sculptural form under fabrication with scaffold access and temporary workshop support",
     caption: "Workshop fabrication reference showing production scale, temporary support, access, and surface work.",
   },
+  hotelLobbyMirrorFinish: {
+    file: "hotel-lobby-mirror-stainless-steel-finish.webp",
+    width: 1600,
+    height: 900,
+    alt: "Two close views of a large mirror-polished stainless steel sculpture in a tall commercial interior",
+    caption: "Commercial-interior reference for mirror finish, reflected architecture, viewing angles, and lighting review.",
+  },
+  mirrorReflectionLighting: {
+    file: "mirror-stainless-steel-reflection-lighting.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Front view of mirror polished stainless steel sculpture reflecting ceiling lights and interior architecture",
+    caption: "Front finish view for reflection continuity, highlight concentration, and local distortion review.",
+  },
+  mirrorPanelInlayWorkshop: {
+    file: "mirror-stainless-steel-panel-inlay-workshop.webp",
+    width: 1067,
+    height: 1600,
+    alt: "Workshop view of mirror polished stainless steel sculpture with bronze toned panel inlays",
+    caption: "Workshop reference for panel polish, seam alignment, inset boundaries, and protection review.",
+  },
+  mirrorRearFinishInspection: {
+    file: "mirror-stainless-steel-rear-finish-inspection.webp",
+    width: 1067,
+    height: 1600,
+    alt: "Rear workshop view of mirror polished stainless steel sculpture with bronze toned inset lines",
+    caption: "Rear finish reference for less prominent faces, inlay continuity, and base-transition inspection.",
+  },
 };
 
 const routeImageKeys = {
@@ -148,8 +176,9 @@ const routeImageKeys = {
 
 const preservedRoutes = [
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: today, priority: "0.9", imageKeys: ["birdSculpture", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-09-24", priority: "0.86", imageKeys: ["studioDesk", "materialSamples", "structuralStudy"] },
-  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-24", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
+  { url: `${site}/insights/`, lastmod: "2026-09-25", priority: "0.86", imageKeys: ["hotelLobbyMirrorFinish", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
+  { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
+  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-09-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
@@ -574,7 +603,7 @@ function fallback(page) {
     ? '<p><a href="/insights/304-vs-316l-stainless-steel-outdoor-sculpture/">Compare 304 vs 316L stainless steel for outdoor sculpture</a></p>'
     : "";
   const hotelRenovationGuide = ["", "resort-sculpture"].includes(page.slug)
-    ? '<p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p>'
+    ? '<p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
     : "";
   const evidence = `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>

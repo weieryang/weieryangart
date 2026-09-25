@@ -1,6 +1,6 @@
 # Hotel SEO/GEO content plan
 
-Updated: 2026-09-24
+Updated: 2026-09-25
 
 ## Positioning boundary
 
@@ -18,7 +18,7 @@ Do not reposition the studio as a general hotel renovation contractor, interior-
 | Custom hotel sculpture supplier | Future service page | Hold until service scope and proof are confirmed | Supplier scope, samples, QC, packing and installation responsibilities |
 | Hotel atrium hanging sculpture | Future technical guide | Hold until overhead-installation evidence is available | Structure, access, maintenance and local consultant review |
 | Hotel art installation during renovation | Future supporting guide | Planned | Live-hotel phasing, protection, route survey and handover records |
-| Stainless steel lobby sculpture finish | Future material guide | Planned | Physical finish samples and approved cleaning method |
+| Stainless steel lobby sculpture finish | `/insights/hotel-lobby-mirror-stainless-steel-sculpture/` | Published in source | New commercial-interior reflection views and workshop finish evidence with explicit attribution boundaries |
 
 The first three pages form the initial hotel cluster. They have different jobs and should not be merged into near-duplicate articles.
 
@@ -47,6 +47,10 @@ The user approved use of the newly supplied material on the site on September 24
 - `IMG_5241.JPG` → `commercial-atrium-mirror-stainless-steel-sculpture.webp`
 - `IMG_5385.JPG` → `mirror-stainless-steel-sculpture-finish-detail.webp`
 - `IMG_5187.JPG` → `large-sculpture-workshop-fabrication.webp`
+- `IMG_5242.JPG` + `IMG_5243.JPG` → `hotel-lobby-mirror-stainless-steel-finish.webp`
+- `IMG_5244.JPG` → `mirror-stainless-steel-reflection-lighting.webp`
+- `IMG_5384.JPG` → `mirror-stainless-steel-panel-inlay-workshop.webp`
+- `IMG_5388.JPG` → `mirror-stainless-steel-rear-finish-inspection.webp`
 
 For any additional image, record:
 
