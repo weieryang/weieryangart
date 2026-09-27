@@ -190,7 +190,7 @@ const routeImageKeys = {
   commission: ["materialSamples", "structuralStudy", "fabricationWorkshop"],
   "garden-sculpture": ["conceptSketch", "materialSamples", "installedProject"],
   "public-art": ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
-  "resort-sculpture": ["studioDesk", "designDevelopment", "materialSamples"],
+  "resort-sculpture": ["resortEntranceCanopyReference", "resortCanopyHumanScale", "hotelArrivalSiteContext", "materialSamples"],
   "water-feature-sculpture": ["materialSamples", "structuralStudy", "materialSwatchStrip"],
   "bronze-sculpture": ["materialSamples", "materialSwatchStrip", "sourceEngineeringAtelier"],
   "stainless-steel-sculpture": ["middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples"],
@@ -296,17 +296,27 @@ const pages = [
   {
     slug: "resort-sculpture",
     file: "resort-sculpture/index.html",
-    title: "Resort Sculpture | WEIERYANG Sculpture Studio",
-    description: "Resort sculpture for hotel arrivals, water gardens, villa landscapes, and hospitality destination sites.",
+    title: "Custom Resort & Hotel Sculpture | WEIERYANG",
+    description: "Custom resort and hotel sculpture for arrival courts, porte-cocheres, water gardens and destination landscapes, with fabrication and overseas delivery support.",
     type: "Service",
-    h1: "Resort sculpture for arrival courts, water gardens, and destination landscapes",
-    intro: "Hospitality sculpture must carry memory without becoming a prop. WEIERYANG develops resort sculpture around guest approach, night lighting, water exposure, maintenance, export packing, and installation windows for hotels, villas, clubs, and premium outdoor rooms.",
+    h1: "Custom resort and hotel sculpture for arrival courts and destination landscapes",
+    intro: "WEIERYANG develops custom resort and hotel sculpture for entrance courts, porte-cocheres, water gardens, lobby-adjacent landscapes, villas, and clubs. The scope can include site and scale review, material development, structural coordination, sculpture fabrication, export packing, and overseas installation guidance.",
+    lastmod: "2026-09-27",
+    usePrimarySocialImage: true,
+    keywords: ["custom resort sculpture", "custom hotel sculpture", "hotel entrance sculpture", "resort entrance sculpture", "hospitality sculpture supplier", "hotel landscape sculpture", "outdoor sculpture for hotels", "custom sculpture fabrication"],
+    serviceTypes: ["Custom resort sculpture", "Custom hotel sculpture", "Hotel entrance sculpture", "Hospitality landscape sculpture"],
+    audience: "Hotel owners, resort developers, architects, landscape designers and hospitality procurement teams",
     sections: [
-      ["Hospitality locations", ["Arrival courts and porte-cocheres", "Water gardens and reflecting pools", "Villa landscapes and terraces"]],
-      ["Material routes", ["Bronze warmth under hospitality lighting", "Brushed stainless steel for refined reflection", "Stone bases for permanence and grounding"]],
-      ["Delivery proof", ["Mockup and surface sample discussion", "Segmentation and trial assembly", "Packing route and installation guidance"]],
+      ["Hotel and resort locations", ["Hotel entrance sculpture and arrival-court landmarks", "Porte-cochere and lobby-adjacent landscape art", "Water gardens, pool edges and destination landscape sculpture"]],
+      ["Design and material decisions", ["Approach distance, facade mass and guest circulation", "Mirror or brushed stainless steel, bronze, stone and hybrid routes", "Lighting, water exposure, touch, cleaning and maintenance access"]],
+      ["Fabrication and delivery scope", ["Design development, approved samples and structural coordination", "Workshop fabrication, trial assembly, finish review and export packing", "Overseas installation guidance coordinated with the local project team", "For quotation: site plans, approach photos, target scale, destination and installation date"]],
     ],
-    faq: sharedFaq,
+    faq: [
+      ["What is included in a custom resort or hotel sculpture scope?", "Depending on the commission, the scope can include site and scale review, concept development, material and finish samples, structural coordination, sculpture fabrication, trial assembly, export packing and overseas installation guidance. Final responsibilities are agreed with the local project team."],
+      ["What should a hotel developer send before requesting a sculpture quote?", "Send a site plan, photographs from vehicle and pedestrian approaches, target dimensions, material direction, destination country, opening or installation date, foundation information and access constraints."],
+      ["Which materials work for hotel entrance and resort landscape sculpture?", "Common routes include brushed or mirror stainless steel, bronze, stone and hybrid systems. The correct choice depends on climate, salt or water exposure, touch, lighting, cleaning, maintenance and the intended visual weight."],
+      ["Can WEIERYANG support overseas resort sculpture installation?", "The delivery route can include segmentation, trial assembly, export packing, lifting information and installation guidance for the local contractor. Site engineering and statutory approval remain coordinated with qualified local professionals."],
+    ],
   },
   {
     slug: "water-feature-sculpture",
@@ -550,6 +560,11 @@ function pageSchema(page) {
       image: images.map((image) => imageUrl(image)),
       primaryImageOfPage: { "@id": `${imageUrl(images[0])}#image` },
       inLanguage: "en",
+      ...(page.lastmod ? { dateModified: page.lastmod } : {}),
+      ...(page.keywords?.length ? { keywords: page.keywords } : {}),
+      ...(page.audience
+        ? { audience: { "@type": "Audience", audienceType: page.audience } }
+        : {}),
     },
     breadcrumb(page),
     ...imageObjects,
@@ -587,8 +602,12 @@ function pageSchema(page) {
       name: page.h1,
       provider: { "@id": `${site}/#organization` },
       areaServed: "Worldwide",
-      serviceType: page.h1,
+      serviceType: page.serviceTypes || page.h1,
       description: page.description,
+      ...(page.keywords?.length ? { category: page.keywords } : {}),
+      ...(page.audience
+        ? { audience: { "@type": "Audience", audienceType: page.audience } }
+        : {}),
     });
   }
 
@@ -633,6 +652,9 @@ function fallback(page) {
   const hotelRenovationGuide = ["", "resort-sculpture"].includes(page.slug)
     ? '<p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
     : "";
+  const resortPlanningGuides = page.slug === "resort-sculpture"
+    ? '<p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
+    : "";
   const evidence = `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>
         <div class="seo-evidence-grid">
@@ -666,6 +688,7 @@ function fallback(page) {
       ${sections}
       ${projectGuide}
       ${stainlessGradeGuide}
+      ${resortPlanningGuides}
       ${hotelRenovationGuide}
       ${faq}
       <section>
@@ -764,9 +787,10 @@ function fallbackCss() {
 function head(page) {
   const canonical = urlFor(page);
   const primaryImage = imagesFor(page)[0];
-  const socialImage = page.slug === "projects" ? imageUrl(primaryImage) : ogImage;
-  const socialImageWidth = page.slug === "projects" ? primaryImage.width : 1200;
-  const socialImageHeight = page.slug === "projects" ? primaryImage.height : 630;
+  const usePrimarySocialImage = page.slug === "projects" || page.usePrimarySocialImage;
+  const socialImage = usePrimarySocialImage ? imageUrl(primaryImage) : ogImage;
+  const socialImageWidth = usePrimarySocialImage ? primaryImage.width : 1200;
+  const socialImageHeight = usePrimarySocialImage ? primaryImage.height : 630;
   const heroPreload = page.slug
     ? ""
     : '<link rel="preload" as="image" href="/seo-media/hero-plaza-night-v3.webp" fetchpriority="high" />';

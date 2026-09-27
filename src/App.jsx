@@ -93,6 +93,16 @@ const routeImages = {
   faq: studioDesk,
 };
 
+const routeHeroMedia = {
+  "resort-sculpture": {
+    src: "/seo-media/resort-entrance-canopy-sculpture-reference.webp",
+    width: 1600,
+    height: 900,
+    alt: "Two supplied landscape canopy sculpture references showing planting, building and construction context",
+    caption: "Supplied landscape references for scale and site review; they are not presented as completed WEIERYANG resort commissions.",
+  },
+};
+
 function currentPath() {
   if (typeof window === "undefined") return "";
   return window.location.pathname.replace(/\/index\.html$/, "").replace(/^\/+|\/+$/g, "");
@@ -710,7 +720,8 @@ function HomePage({ text }) {
 function SecondaryPage({ route, text, language }) {
   const seo = language === "en" ? routeSeoContent[route] : null;
   const title = seo?.title || text.routeNames[route] || text.routeNames.projects;
-  const image = routeImages[route] || studioDesk;
+  const media = routeHeroMedia[route];
+  const image = media?.src || routeImages[route] || studioDesk;
   const groups = seo?.groups || text.secondary.checks.map(([itemTitle, body]) => [itemTitle, [body]]);
   return (
     <>
@@ -723,8 +734,8 @@ function SecondaryPage({ route, text, language }) {
           <a className="hero-cta" href={`/commission/?route=${encodeURIComponent(route)}`}>{text.secondary.brief}<ArrowRight size={21} /></a>
         </div>
         <figure>
-          <img src={image} alt={route === "projects" ? "Verified construction-phase photograph of a flying-bird stainless steel landmark being lifted at a Middle East public site" : `${text.routeNames[route] || "Sculpture"} material, concept or engineering study`} width={route === "projects" ? "2000" : "1536"} height={route === "projects" ? "1398" : "1024"} fetchPriority="high" decoding="async" />
-          <figcaption>{route === "projects" ? text.cases.verified : text.secondary.imageLabel}</figcaption>
+          <img src={image} alt={media?.alt || (route === "projects" ? "Verified construction-phase photograph of a flying-bird stainless steel landmark being lifted at a Middle East public site" : `${text.routeNames[route] || "Sculpture"} material, concept or engineering study`)} width={media?.width || (route === "projects" ? "2000" : "1536")} height={media?.height || (route === "projects" ? "1398" : "1024")} fetchPriority="high" decoding="async" />
+          <figcaption>{media?.caption || (route === "projects" ? text.cases.verified : text.secondary.imageLabel)}</figcaption>
         </figure>
       </section>
       <section className="seo-route-content section-shell">

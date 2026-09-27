@@ -12,6 +12,7 @@ Do not reposition the studio as a general hotel renovation contractor, interior-
 
 | Intent | Target page | Status | Evidence needed |
 | --- | --- | --- | --- |
+| Custom resort and hotel landscape sculpture | `/resort-sculpture/` | Service page deepened September 27 | Service scope, site and scale decisions, delivery responsibilities and linked evidence |
 | Hotel lobby sculpture planning | `/insights/hotel-lobby-sculpture-renovation-guide/` | Published in source | Material, engineering and construction evidence with explicit boundaries |
 | Hotel arrival sculpture brief | `/insights/hotel-arrival-sculpture-site-brief/` | Updated September 27 with new site-context evidence | Exterior site, circulation, lighting, water and installation inputs |
 | Resort entrance sculpture scale | `/insights/resort-entrance-sculpture-scale-guide/` | Updated September 27 with new scale evidence | Arrival sequence, facade relationship, human scale and construction access |
