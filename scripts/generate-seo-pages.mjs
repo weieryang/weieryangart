@@ -155,6 +155,34 @@ const evidenceImages = {
     alt: "Rear workshop view of mirror polished stainless steel sculpture with bronze toned inset lines",
     caption: "Rear finish reference for less prominent faces, inlay continuity, and base-transition inspection.",
   },
+  hotelArrivalSiteContext: {
+    file: "hotel-arrival-sculpture-site-context.webp",
+    width: 1600,
+    height: 900,
+    alt: "Two supplied commercial landscape references showing sculpture against building and plaza scale",
+    caption: "Commercial-landscape references for facade, paving, approach distance, and arrival-context review; project identity and supplier relationship are not asserted.",
+  },
+  hotelArrivalPedestrianFlow: {
+    file: "hotel-arrival-sculpture-pedestrian-flow.webp",
+    width: 1064,
+    height: 1600,
+    alt: "Commercial plaza sculpture viewed within active pedestrian circulation and seating zones",
+    caption: "Commercial-plaza reference for pedestrian routes, pause zones, sightlines, and touch-distance review.",
+  },
+  resortEntranceCanopyReference: {
+    file: "resort-entrance-canopy-sculpture-reference.webp",
+    width: 1600,
+    height: 900,
+    alt: "Two supplied landscape canopy sculpture references showing scale planting and construction context",
+    caption: "Landscape references for canopy diameter, clear height, planting, paving, and project-programme review; project identity and supplier relationship are not asserted.",
+  },
+  resortCanopyHumanScale: {
+    file: "resort-sculpture-canopy-human-scale.webp",
+    width: 959,
+    height: 1279,
+    alt: "Reflective canopy sculpture in a construction setting with workers and access scaffold for scale reference",
+    caption: "Construction-setting reference for overall height, occupied envelope, underside, and installation-access review.",
+  },
 };
 
 const routeImageKeys = {
@@ -176,7 +204,7 @@ const routeImageKeys = {
 
 const preservedRoutes = [
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: today, priority: "0.9", imageKeys: ["birdSculpture", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-09-25", priority: "0.86", imageKeys: ["hotelLobbyMirrorFinish", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
+  { url: `${site}/insights/`, lastmod: "2026-09-27", priority: "0.86", imageKeys: ["hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-09-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
@@ -184,12 +212,12 @@ const preservedRoutes = [
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
   { url: `${site}/insights/large-outdoor-sculpture-foundation-anchor-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "studioDesk", "materialSamples"] },
   { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
-  { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-24", priority: "0.87", imageKeys: ["conceptSketch", "studioDesk", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
+  { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
   { url: `${site}/insights/water-feature-sculpture-material-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["birdSculpture", "materialSamples", "materialSwatchStrip", "structuralStudy", "studioDesk"] },
   { url: `${site}/insights/overseas-sculpture-installation-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["largeStructuralAssembly", "studioDesk", "materialSamples", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
-  { url: `${site}/insights/hotel-arrival-sculpture-site-brief/`, lastmod: "2026-09-24", priority: "0.86", imageKeys: ["birdSculpture", "middleEastLandmarkInstallation", "materialSamples", "stainlessWingSlatInstallation", "studioDesk"] },
+  { url: `${site}/insights/hotel-arrival-sculpture-site-brief/`, lastmod: "2026-09-27", priority: "0.86", imageKeys: ["hotelArrivalSiteContext", "hotelArrivalPedestrianFlow", "middleEastLandmarkInstallation", "materialSamples", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/middle-east-stainless-steel-landmark-sculpture/`, lastmod: today, priority: "0.88", imageKeys: ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "birdSculpture"] },
   { url: `${site}/insights/material-led-sculpture-review-2026/`, lastmod: today, priority: "0.8", imageKeys: ["designDevelopment", "materialSamples", "fabricationWorkshop"] },
   { url: `${site}/insights/how-to-commission-custom-outdoor-sculpture/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["conceptSketch", "materialSamples"] },

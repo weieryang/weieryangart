@@ -1,6 +1,6 @@
 # Hotel SEO/GEO content plan
 
-Updated: 2026-09-25
+Updated: 2026-09-27
 
 ## Positioning boundary
 
@@ -13,8 +13,8 @@ Do not reposition the studio as a general hotel renovation contractor, interior-
 | Intent | Target page | Status | Evidence needed |
 | --- | --- | --- | --- |
 | Hotel lobby sculpture planning | `/insights/hotel-lobby-sculpture-renovation-guide/` | Published in source | Material, engineering and construction evidence with explicit boundaries |
-| Hotel arrival sculpture brief | `/insights/hotel-arrival-sculpture-site-brief/` | Existing, updated | Exterior site, lighting, water and installation inputs |
-| Resort entrance sculpture scale | `/insights/resort-entrance-sculpture-scale-guide/` | Existing, updated | Arrival sequence, facade relationship and scale study |
+| Hotel arrival sculpture brief | `/insights/hotel-arrival-sculpture-site-brief/` | Updated September 27 with new site-context evidence | Exterior site, circulation, lighting, water and installation inputs |
+| Resort entrance sculpture scale | `/insights/resort-entrance-sculpture-scale-guide/` | Updated September 27 with new scale evidence | Arrival sequence, facade relationship, human scale and construction access |
 | Custom hotel sculpture supplier | Future service page | Hold until service scope and proof are confirmed | Supplier scope, samples, QC, packing and installation responsibilities |
 | Hotel atrium hanging sculpture | Future technical guide | Hold until overhead-installation evidence is available | Structure, access, maintenance and local consultant review |
 | Hotel art installation during renovation | Future supporting guide | Planned | Live-hotel phasing, protection, route survey and handover records |
@@ -51,6 +51,12 @@ The user approved use of the newly supplied material on the site on September 24
 - `IMG_5244.JPG` → `mirror-stainless-steel-reflection-lighting.webp`
 - `IMG_5384.JPG` → `mirror-stainless-steel-panel-inlay-workshop.webp`
 - `IMG_5388.JPG` → `mirror-stainless-steel-rear-finish-inspection.webp`
+- `IMG_5306.JPG` + `IMG_5172.JPG` → `hotel-arrival-sculpture-site-context.webp`
+- `IMG_5308.JPG` → `hotel-arrival-sculpture-pedestrian-flow.webp`
+- `IMG_5178.JPG` + `IMG_5177.JPG` → `resort-entrance-canopy-sculpture-reference.webp`
+- `IMG_5176.JPG` → `resort-sculpture-canopy-human-scale.webp`
+
+The September 27 update strengthens existing hotel-cluster pages instead of creating another overlapping article. The four new derivatives are described as supplied visual references. Their project identity, designer, fabricator, location and relationship to WEIERYANG are not asserted.
 
 For any additional image, record:
 
