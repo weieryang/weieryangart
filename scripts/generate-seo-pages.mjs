@@ -183,6 +183,34 @@ const evidenceImages = {
     alt: "Reflective canopy sculpture in a construction setting with workers and access scaffold for scale reference",
     caption: "Construction-setting reference for overall height, occupied envelope, underside, and installation-access review.",
   },
+  hotelEngineeringOverview: {
+    file: "hotel-engineering-case-overview.webp",
+    width: 1600,
+    height: 900,
+    alt: "Three supplied views of a large mirror stainless steel sculpture inside a commercial atrium",
+    caption: "Commercial-atrium reference for hotel-scale sightlines, mirror finish, building interfaces, and installation review; project attribution is not asserted.",
+  },
+  hotelEngineeringAtriumScale: {
+    file: "hotel-engineering-case-atrium-scale.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Full-height view of a large mirror stainless steel sculpture against skylight walls and lobby floor",
+    caption: "Full-height commercial-atrium reference for mass, vertical clearance, guest approach, and floor-interface review.",
+  },
+  hotelEngineeringReflection: {
+    file: "hotel-engineering-case-reflection-detail.webp",
+    width: 900,
+    height: 1200,
+    alt: "Front close view of mirror stainless steel sculpture reflecting atrium walls ceiling lines and visitors",
+    caption: "Reflection reference showing ceiling, wall, and visitor images moving across compound mirror-polished geometry.",
+  },
+  hotelEngineeringCloseView: {
+    file: "hotel-engineering-case-close-view.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Close upward view of large mirror stainless steel atrium sculpture showing panels highlights and skylight relationship",
+    caption: "Close-view reference for panel boundaries, highlight control, guest proximity, and finish inspection.",
+  },
 };
 
 const routeImageKeys = {
@@ -196,17 +224,18 @@ const routeImageKeys = {
   "stainless-steel-sculpture": ["middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples"],
   "stone-sculpture": ["conceptSketch", "materialSwatchStrip", "materialSamples"],
   "custom-sculpture": ["studioDesk", "conceptSketch", "fabricationWorkshop"],
-  projects: ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
+  projects: ["middleEastLandmarkInstallation", "hotelEngineeringOverview", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
   process: ["designDevelopment", "structuralStudy", "fabricationWorkshop"],
   materials: ["materialSamples", "materialSwatchStrip", "studioDesk"],
   faq: ["studioDesk", "materialSamples", "structuralStudy"],
 };
 
 const preservedRoutes = [
-  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: today, priority: "0.9", imageKeys: ["birdSculpture", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-09-27", priority: "0.86", imageKeys: ["hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
-  { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
-  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-25", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
+  { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
+  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
+  { url: `${site}/insights/`, lastmod: "2026-09-30", priority: "0.87", imageKeys: ["hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
+  { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
+  { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-09-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
@@ -241,6 +270,7 @@ const pages = [
     type: "WebSite",
     h1: "Custom sculpture for gardens, resorts, water features, and public landscapes",
     intro: "WEIERYANG is a custom sculpture studio for overseas architects, landscape designers, hospitality developers, and public art teams. The studio focuses on site-specific sculpture where material route, scale, structure, packing, and installation support matter as much as the first visual idea.",
+    lastmod: "2026-09-30",
     sections: [
       ["Sculpture routes", ["Garden sculpture for private landscapes and parks", "Public art for civic plazas and cultural districts", "Resort and water feature sculpture for hospitality projects"]],
       ["Material proof", ["Bronze for warmth, patina, and touch", "316L stainless steel for public and coastal exposure", "Stone and hybrid routes for grounded outdoor work"]],
@@ -301,7 +331,7 @@ const pages = [
     type: "Service",
     h1: "Custom resort and hotel sculpture for arrival courts and destination landscapes",
     intro: "WEIERYANG develops custom resort and hotel sculpture for entrance courts, porte-cocheres, water gardens, lobby-adjacent landscapes, villas, and clubs. The scope can include site and scale review, material development, structural coordination, sculpture fabrication, export packing, and overseas installation guidance.",
-    lastmod: "2026-09-27",
+    lastmod: "2026-09-30",
     usePrimarySocialImage: true,
     keywords: ["custom resort sculpture", "custom hotel sculpture", "hotel entrance sculpture", "resort entrance sculpture", "hospitality sculpture supplier", "hotel landscape sculpture", "outdoor sculpture for hotels", "custom sculpture fabrication"],
     serviceTypes: ["Custom resort sculpture", "Custom hotel sculpture", "Hotel entrance sculpture", "Hospitality landscape sculpture"],
@@ -396,16 +426,17 @@ const pages = [
   {
     slug: "projects",
     file: "projects/index.html",
-    title: "Sculpture Projects | WEIERYANG Sculpture Studio",
-    description: "Verified construction-phase images of a large stainless steel flying-bird sculpture at a Middle East public site, showing structure, wing alignment and lifting.",
+    title: "Sculpture Engineering Case Studies | WEIERYANG",
+    description: "Hotel lobby sculpture engineering and landmark construction case studies covering scale, finish, structure, installation and evidence boundaries.",
     type: "CollectionPage",
-    h1: "Flying-bird landmark sculpture",
-    intro: "Three verified construction-phase records show the structural core, repeated stainless steel wing members and crane-assisted installation at a Middle East public site. They are not completed-project photographs; client details, city and exact dimensions are not published.",
-    lastmod: "2026-09-15",
+    h1: "Sculpture engineering cases for hotel interiors and landmark sites",
+    intro: "Review two evidence-led project routes: a hotel-lobby engineering case based on supplied commercial-atrium references, and a verified construction record for a large stainless steel flying-bird landmark at a Middle East public site. Each route states what the images prove and what remains undisclosed.",
+    lastmod: "2026-09-30",
+    keywords: ["sculpture engineering case study", "hotel lobby sculpture project", "hotel sculpture engineering", "large sculpture construction", "stainless steel sculpture installation"],
     sections: [
-      ["Visible site work", ["Crane-assisted lifting and positioning", "Temporary access around the structural core", "Coordination at public-plaza scale"]],
-      ["Fabrication evidence", ["Segmented wing structure", "Repeated stainless steel members", "Alignment during site assembly"]],
-      ["Evidence boundary", ["Three verified construction photographs", "Construction phase, not completion", "Client, city and exact dimensions are not published"]],
+      ["Hotel interior case", ["Atrium scale and guest sightlines", "Mirror stainless steel finish and lighting", "Base, access, installation and handover interfaces"]],
+      ["Landmark construction", ["Segmented wing structure", "Repeated stainless steel members", "Crane-assisted lifting and site alignment"]],
+      ["Evidence boundary", ["Commercial-atrium reference is not claimed as a WEIERYANG commission", "Landmark images are verified construction-phase records", "Undisclosed client, city and dimensions are not inferred"]],
     ],
     faq: sharedFaq,
   },
@@ -577,6 +608,10 @@ function pageSchema(page) {
       description: "A large flying-bird landmark documented during structural assembly and crane-assisted installation at a Middle East public site.",
     };
     graph[2].mainEntity = { "@id": `${urlFor(page)}#construction-record` };
+    graph[2].hasPart = [
+      { "@id": `${site}/projects/hotel-lobby-sculpture-engineering-case/#article` },
+      { "@id": `${urlFor(page)}#construction-record` },
+    ];
     graph.push({
       "@type": "Report",
       "@id": `${urlFor(page)}#construction-record`,
@@ -644,16 +679,16 @@ function pageSchema(page) {
 function fallback(page) {
   const images = imagesFor(page);
   const projectGuide = page.slug === "projects"
-    ? '<p><a href="/insights/middle-east-stainless-steel-landmark-sculpture/">Read the Middle East landmark construction guide</a></p>'
+    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/middle-east-stainless-steel-landmark-sculpture/">Read the Middle East landmark construction guide</a></p>'
     : "";
   const stainlessGradeGuide = ["stainless-steel-sculpture", "materials", "water-feature-sculpture"].includes(page.slug)
     ? '<p><a href="/insights/304-vs-316l-stainless-steel-outdoor-sculpture/">Compare 304 vs 316L stainless steel for outdoor sculpture</a></p>'
     : "";
   const hotelRenovationGuide = ["", "resort-sculpture"].includes(page.slug)
-    ? '<p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
+    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
     : "";
   const resortPlanningGuides = page.slug === "resort-sculpture"
-    ? '<p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
+    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
     : "";
   const evidence = `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>

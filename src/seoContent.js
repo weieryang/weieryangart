@@ -47,7 +47,7 @@ export const routeSeoContent = {
       ["Design and material decisions", ["Approach distance, facade mass and guest circulation", "Mirror or brushed stainless steel, bronze, stone and hybrid routes", "Lighting, water exposure, touch, cleaning and maintenance access"]],
       ["Fabrication and delivery scope", ["Design development, approved samples and structural coordination", "Workshop fabrication, trial assembly, finish review and export packing", "Overseas installation guidance coordinated with the local project team", "For quotation: site plans, approach photos, target scale, destination and installation date"]],
     ],
-    related: [["Hotel arrival site brief", "/insights/hotel-arrival-sculpture-site-brief/"], ["Resort entrance scale guide", "/insights/resort-entrance-sculpture-scale-guide/"], ["Mirror stainless steel finish guide", "/insights/hotel-lobby-mirror-stainless-steel-sculpture/"], ["Commission brief", "/commission/"]],
+    related: [["Hotel lobby engineering case", "/projects/hotel-lobby-sculpture-engineering-case/"], ["Hotel arrival site brief", "/insights/hotel-arrival-sculpture-site-brief/"], ["Resort entrance scale guide", "/insights/resort-entrance-sculpture-scale-guide/"], ["Mirror stainless steel finish guide", "/insights/hotel-lobby-mirror-stainless-steel-sculpture/"], ["Commission brief", "/commission/"]],
     faq: [
       ["What is included in a custom resort or hotel sculpture scope?", "Depending on the commission, the scope can include site and scale review, concept development, material and finish samples, structural coordination, sculpture fabrication, trial assembly, export packing and overseas installation guidance. Final responsibilities are agreed with the local project team."],
       ["What should a hotel developer send before requesting a sculpture quote?", "Send a site plan, photographs from vehicle and pedestrian approaches, target dimensions, material direction, destination country, opening or installation date, foundation information and access constraints."],
@@ -116,15 +116,15 @@ export const routeSeoContent = {
     faq: sharedFaq,
   },
   projects: {
-    eyebrow: "Project evidence",
-    title: "Flying-bird landmark sculpture",
-    intro: "Three verified construction-phase photographs document a large stainless steel flying-bird landmark at a Middle East public site. They show structural assembly, repeated wing members and crane-assisted installation. They are not photographs of a completed project.",
+    eyebrow: "Engineering case studies",
+    title: "Sculpture engineering cases for hotel interiors and landmark sites",
+    intro: "Review two evidence-led project routes: a hotel-lobby engineering case based on supplied commercial-atrium references, and a verified construction record for a large stainless steel flying-bird landmark at a Middle East public site. Each route states what the images prove and what remains undisclosed.",
     groups: [
-      ["Visible site work", ["Crane-assisted lifting and positioning", "Temporary access around the structural core", "Coordination at public-plaza scale"]],
-      ["Fabrication evidence", ["Segmented wing structure", "Repeated stainless steel members", "Alignment during site assembly"]],
-      ["Evidence boundary", ["Three verified construction photographs", "Construction phase, not completion", "Client, city and exact dimensions are not published"]],
+      ["Hotel interior case", ["Atrium scale and guest sightlines", "Mirror stainless steel finish and lighting", "Base, access, installation and handover interfaces"]],
+      ["Landmark construction", ["Segmented wing structure", "Repeated stainless steel members", "Crane-assisted lifting and site alignment"]],
+      ["Evidence boundary", ["Commercial-atrium reference is not claimed as a WEIERYANG commission", "Landmark images are verified construction-phase records", "Undisclosed client, city and dimensions are not inferred"]],
     ],
-    related: [["Read the construction guide", "/insights/middle-east-stainless-steel-landmark-sculpture/"], ["Public art", "/public-art/"], ["Private brief", "/commission/"]],
+    related: [["Hotel lobby engineering case", "/projects/hotel-lobby-sculpture-engineering-case/"], ["Read the landmark construction guide", "/insights/middle-east-stainless-steel-landmark-sculpture/"], ["Private brief", "/commission/"]],
     faq: sharedFaq,
   },
   process: {

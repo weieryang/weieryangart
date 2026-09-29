@@ -754,6 +754,19 @@ function SecondaryPage({ route, text, language }) {
         </div>
       </section>
       {route === "projects" ? (
+        <section className="project-case-feature section-shell" aria-labelledby="hotel-case-title">
+          <figure>
+            <img src="/seo-media/hotel-engineering-case-overview.webp" alt="Three supplied views of a large mirror stainless steel sculpture inside a commercial atrium" width="1600" height="900" loading="lazy" decoding="async" />
+          </figure>
+          <div>
+            <p className="hero-eyebrow">New hospitality case review</p>
+            <h2 id="hotel-case-title">Hotel lobby sculpture: atrium scale, mirror finish and installation</h2>
+            <p>A practical engineering review for hotel owners, designers and contractors covering guest sightlines, building interfaces, access, finish approval and handover. The supplied commercial-atrium photographs are clearly separated from WEIERYANG portfolio claims.</p>
+            <a className="text-link" href="/projects/hotel-lobby-sculpture-engineering-case/">Read the hotel engineering case<ArrowRight size={18} /></a>
+          </div>
+        </section>
+      ) : null}
+      {route === "projects" ? (
         <section className="project-evidence section-shell" aria-labelledby="project-evidence-title">
           <header>
             <p className="hero-eyebrow">{text.cases.verified} / {text.cases.phase}</p>
