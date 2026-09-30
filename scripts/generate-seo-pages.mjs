@@ -1,9 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { hospitalityService, hospitalitySections, hospitalityEntry } from "../src/hospitalityContent.js";
+import { routeSeoContent } from "../src/seoContent.js";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
-const today = "2026-09-19";
+const today = "2026-09-30";
 const ogImage = `${site}/og-image.jpg`;
 const imageBase = `${site}/seo-media`;
 
@@ -301,11 +303,11 @@ const pages = [
   {
     slug: "",
     file: "index.html",
-    title: "WEIERYANG | Custom Garden & Public Sculpture Studio",
-    description: "WEIERYANG creates custom garden sculpture, public landscape art, resort water features, and site-specific work in stone, bronze, and stainless steel.",
+    title: "Custom Hotel & Resort Sculpture | WEIERYANG Studio",
+    description: "Custom sculpture for U.S. hotels and resorts: lobby, atrium and entrance pieces with design, fabrication, export packing and installation guidance.",
     type: "WebSite",
-    h1: "Custom sculpture for gardens, resorts, water features, and public landscapes",
-    intro: "WEIERYANG is a custom sculpture studio for overseas architects, landscape designers, hospitality developers, and public art teams. The studio focuses on site-specific sculpture where material route, scale, structure, packing, and installation support matter as much as the first visual idea.",
+    h1: "SCULPTURE, ENGINEERED FOR PLACE.",
+    intro: "Custom sculpture for hotels and resorts. Sculpture design, fabrication and delivery planning for U.S. hotel teams and international projects.",
     lastmod: "2026-09-30",
     sections: [
       ["Sculpture routes", ["Garden sculpture for private landscapes and parks", "Public art for civic plazas and cultural districts", "Resort and water feature sculpture for hospitality projects"]],
@@ -317,11 +319,12 @@ const pages = [
   {
     slug: "commission",
     file: "commission/index.html",
-    title: "Commission Brief | WEIERYANG Sculpture Studio",
-    description: "Send a private WEIERYANG sculpture commission brief with site, material, scale, country, and installation facts for technical review.",
+    title: "Request a Hotel Sculpture Project Review | WEIERYANG",
+    description: "Send your hotel sculpture brief, site drawings, dimensions and installation schedule. Project review for U.S. hotel teams and international buyers.",
     type: "ContactPage",
     h1: "Private sculpture commission brief",
-    intro: "The commission page is for clients with a real site, material question, scale requirement, or delivery constraint. A useful first reply depends on drawings, dimensions, exposure, destination country, and schedule rather than one inspiration image alone.",
+    intro: "For hotel owners, designers, art consultants and project buyers in the United States and worldwide. Send site drawings, dimensions in feet/inches or metric, destination city and state, finish direction and opening or renovation schedule. Submitted details and files are emailed to the studio for review.",
+    lastmod: "2026-09-30",
     sections: [
       ["What to prepare", ["Site photos or drawings", "Target height and viewing distance", "Preferred material route", "Destination country and deadline"]],
       ["What WEIERYANG reviews", ["Site condition and approach sequence", "Material exposure and finish samples", "Structure, segmentation, packing, and installation logic"]],
@@ -362,8 +365,8 @@ const pages = [
   {
     slug: "resort-sculpture",
     file: "resort-sculpture/index.html",
-    title: "Custom Resort & Hotel Sculpture | WEIERYANG",
-    description: "Custom resort and hotel sculpture for arrival courts, porte-cocheres, water gardens and destination landscapes, with fabrication and overseas delivery support.",
+    title: "Custom Sculpture for U.S. Hotels & Resorts | WEIERYANG",
+    description: "Custom hotel lobby, atrium and resort sculpture for U.S. project teams. Review design, samples, fabrication, export packing and local installation scope.",
     type: "Service",
     h1: "Custom resort and hotel sculpture for arrival courts and destination landscapes",
     intro: "WEIERYANG develops custom resort and hotel sculpture for entrance courts, porte-cocheres, water gardens, lobby-adjacent landscapes, villas, and clubs. The scope can include site and scale review, material development, structural coordination, sculpture fabrication, export packing, and overseas installation guidance.",
@@ -462,8 +465,8 @@ const pages = [
   {
     slug: "projects",
     file: "projects/index.html",
-    title: "Sculpture Engineering Case Studies | WEIERYANG",
-    description: "Hotel lobby sculpture engineering and landmark construction case studies covering scale, finish, structure, installation and evidence boundaries.",
+    title: "Sculpture Construction & Reference Studies | WEIERYANG",
+    description: "Verified landmark construction records and separately labeled commercial-interior references for hotel sculpture planning. Review the evidence behind each image.",
     type: "CollectionPage",
     h1: "Sculpture engineering cases for hotel interiors and landmark sites",
     intro: "Review two evidence-led project routes: a hotel-lobby engineering case based on supplied commercial-atrium references, and a verified construction record for a large stainless steel flying-bird landmark at a Middle East public site. Each route states what the images prove and what remains undisclosed.",
@@ -527,6 +530,18 @@ const pages = [
   },
 ];
 
+// One content source for the hospitality page, visible FAQ and JSON-LD.
+const hotelPage = pages.find(page => page.slug === "resort-sculpture");
+Object.assign(hotelPage, {
+  h1: hospitalityService.title, intro: hospitalityService.intro,
+  sections: hospitalityService.groups, faq: hospitalityService.faq,
+  audience: "U.S. hotel owners, resort developers, interior designers, art consultants and hospitality procurement teams",
+});
+const projectPage = pages.find(page => page.slug === "projects");
+Object.assign(projectPage, { h1: routeSeoContent.projects.title, intro: routeSeoContent.projects.intro });
+// These pages do not display a FAQ in the React UI.
+for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
+
 function esc(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -588,7 +603,7 @@ function pageSchema(page) {
       name: "WEIERYANG",
       url: `${site}/`,
       logo: `${site}/weieryang-logo.webp`,
-      description: "Custom sculpture studio for gardens, parks, resorts, water features, and permanent public landscapes.",
+      description: "Custom sculpture studio for hotel, resort and public-space projects, with design, fabrication, export packing and overseas installation guidance.",
       email: "tangkelian@weieryang.com",
       telephone: "+86 133 1717 8019",
       areaServed: "Worldwide",
@@ -616,7 +631,7 @@ function pageSchema(page) {
       inLanguage: "en",
     },
     {
-      "@type": page.type,
+      "@type": page.type === "Service" ? "WebPage" : page.type,
       "@id": `${urlFor(page)}#page`,
       name: page.title,
       headline: page.h1,
@@ -667,6 +682,7 @@ function pageSchema(page) {
   }
 
   if (page.type === "Service") {
+    graph[2].mainEntity = { "@id": `${urlFor(page)}#service` };
     graph.push({
       "@type": "Service",
       "@id": `${urlFor(page)}#service`,
@@ -761,6 +777,8 @@ function fallback(page) {
       ${stainlessGradeGuide}
       ${resortPlanningGuides}
       ${hotelRenovationGuide}
+      ${page.slug === "" ? `<section><h2>${esc(hospitalityEntry.en.title)}</h2><p>${esc(hospitalityEntry.en.body)}</p><a href="/resort-sculpture/">Explore hotel sculpture</a></section>` : ""}
+      ${page.slug === "resort-sculpture" ? hospitalitySections.map(section => `<section id="${section.id}"><h2>${esc(section.title)}</h2><p>${esc(section.body)}</p><ul>${section.items.map(item => `<li>${esc(item)}</li>`).join("")}</ul></section>`).join("") + `<nav aria-label="Hotel project resources">${hospitalityService.related.map(([label, href]) => `<p><a href="${esc(href)}">${esc(label)}</a></p>`).join("")}</nav>` : ""}
       ${faq}
       <section>
         <h2>Start a private sculpture brief</h2>
@@ -912,7 +930,7 @@ for (const page of pages) {
     <script type="module" src="${script}"></script>
   </body>
 </html>
-`,
+`.replace(/[\t ]+$/gm, ""),
   );
 }
 
@@ -923,6 +941,7 @@ const sitemapEntries = [
     priority: priorityFor(page),
   })),
   ...preservedRoutes,
+  { url: `${site}/privacy/`, lastmod: "2026-09-30", priority: "0.2" },
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

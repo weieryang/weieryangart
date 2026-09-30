@@ -18,6 +18,8 @@ Current chosen production direction: use homepage template B, the stone garden c
 
 Deployment domain: `weieryangart.com`.
 
+Latest publishing checkpoint (2026-09-30): U.S. hotel optimization is published in production commit `eeba446e74c65592f6fdb55bb9be84039c35a27a` (previous `e94914b7cec8bd2b0554e13092f16914ef8fa7fa`). Current source checkout is `D:\雕塑独立站素材\weieryangart`, with source backed up separately on `codex/hotel-seo-geo`; `main` remains the static deployment payload. The current build also runs `scripts/enhance-static-pages.mjs` to generate responsive WebP sizes and shared static-page navigation/footer. Run `node scripts/verify-us-hospitality.mjs` after building. See the latest HANDOFF supplement for test and verification limits.
+
 Durable page-language feedback: for this high-end independent site, the inquiry form must not dominate the first screen. Lead with studio judgment, site/material proof, and commission qualification language; keep forms compact and positioned as a serious project entry path rather than the page's main visual subject.
 
 Durable inquiry-path feedback: the long project brief form belongs on a second-level commission page (`/commission/`). The homepage should qualify serious clients with site/material/process proof and then route interested buyers to the private brief page.
@@ -53,6 +55,8 @@ Durable image-led SEO publishing rule (2026-07-15): priority SEO articles should
 Current redesign objective (2026-07-10): the user wants a complete visual and code redesign, not an incremental restyle. Primary outcomes are more high-quality inquiries, a stronger high-end sculpture brand, and clearer proof of work and professional capability.
 
 Current target audience (2026-07-10): prioritize hotel and real-estate developers in the Middle East while supporting multiple project types, including hospitality arrival pieces, exterior landscape sculpture, development landmarks, and custom art installations.
+
+Current target audience update (2026-09-30, supersedes the regional priority above): prioritize U.S. hotel and resort owners, developers, interior designers, art consultants and procurement teams. Keep the international sculpture studio and engineering-delivery positioning. Use the existing `/resort-sculpture/` route as the hospitality service hub, not duplicate city/service pages. Accept feet/inches alongside metric project dimensions. Do not claim a U.S. office, domestic fabrication, U.S. client commissions, local installation crews, duty-paid delivery, fixed prices or lead times without verified evidence. Preserve existing Middle East construction records with their true location and status. Commercial reference images are not portfolio commissions.
 
 Current content constraint (2026-07-10): real project, workshop, material, drawing, certificate, and testimonial assets exist but are not available on this computer. During redesign, reserve clearly replaceable evidence slots or use AI-generated material/atmosphere placeholders; never present generated placeholders as completed client projects or endorsements.
 

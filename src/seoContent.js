@@ -1,3 +1,5 @@
+import { hospitalityService } from "./hospitalityContent.js";
+
 const sharedFaq = [
   [
     "What should I send before requesting a quote?",
@@ -38,23 +40,7 @@ export const routeSeoContent = {
     related: [["Stainless steel sculpture", "/stainless-steel-sculpture/"], ["Custom sculpture", "/custom-sculpture/"], ["Project evidence", "/projects/"]],
     faq: sharedFaq,
   },
-  "resort-sculpture": {
-    eyebrow: "Hotel and resort sculpture",
-    title: "Custom resort and hotel sculpture for arrival courts and destination landscapes",
-    intro: "WEIERYANG develops custom resort and hotel sculpture for entrance courts, porte-cocheres, water gardens, lobby-adjacent landscapes, villas and clubs. The scope can include site and scale review, material development, structural coordination, sculpture fabrication, export packing and overseas installation guidance.",
-    groups: [
-      ["Hotel and resort locations", ["Hotel entrance sculpture and arrival-court landmarks", "Porte-cochere and lobby-adjacent landscape art", "Water gardens, pool edges and destination landscape sculpture"]],
-      ["Design and material decisions", ["Approach distance, facade mass and guest circulation", "Mirror or brushed stainless steel, bronze, stone and hybrid routes", "Lighting, water exposure, touch, cleaning and maintenance access"]],
-      ["Fabrication and delivery scope", ["Design development, approved samples and structural coordination", "Workshop fabrication, trial assembly, finish review and export packing", "Overseas installation guidance coordinated with the local project team", "For quotation: site plans, approach photos, target scale, destination and installation date"]],
-    ],
-    related: [["Large hotel atrium planning guide", "/insights/large-hotel-atrium-sculpture-planning-guide/"], ["Hotel lobby engineering case", "/projects/hotel-lobby-sculpture-engineering-case/"], ["Hotel arrival site brief", "/insights/hotel-arrival-sculpture-site-brief/"], ["Resort entrance scale guide", "/insights/resort-entrance-sculpture-scale-guide/"], ["Mirror stainless steel finish guide", "/insights/hotel-lobby-mirror-stainless-steel-sculpture/"], ["Commission brief", "/commission/"]],
-    faq: [
-      ["What is included in a custom resort or hotel sculpture scope?", "Depending on the commission, the scope can include site and scale review, concept development, material and finish samples, structural coordination, sculpture fabrication, trial assembly, export packing and overseas installation guidance. Final responsibilities are agreed with the local project team."],
-      ["What should a hotel developer send before requesting a sculpture quote?", "Send a site plan, photographs from vehicle and pedestrian approaches, target dimensions, material direction, destination country, opening or installation date, foundation information and access constraints."],
-      ["Which materials work for hotel entrance and resort landscape sculpture?", "Common routes include brushed or mirror stainless steel, bronze, stone and hybrid systems. The correct choice depends on climate, salt or water exposure, touch, lighting, cleaning, maintenance and the intended visual weight."],
-      ["Can WEIERYANG support overseas resort sculpture installation?", "The delivery route can include segmentation, trial assembly, export packing, lifting information and installation guidance for the local contractor. Site engineering and statutory approval remain coordinated with qualified local professionals."],
-    ],
-  },
+  "resort-sculpture": hospitalityService,
   "water-feature-sculpture": {
     eyebrow: "Water feature sculpture",
     title: "Water feature sculpture resolved around reflection, splash and maintenance",
@@ -116,9 +102,9 @@ export const routeSeoContent = {
     faq: sharedFaq,
   },
   projects: {
-    eyebrow: "Engineering case studies",
-    title: "Sculpture engineering cases for hotel interiors and landmark sites",
-    intro: "Review two evidence-led project routes: a hotel-lobby engineering case based on supplied commercial-atrium references, and a verified construction record for a large stainless steel flying-bird landmark at a Middle East public site. Each route states what the images prove and what remains undisclosed.",
+    eyebrow: "Construction records and design references",
+    title: "Verified sculpture construction and clearly labeled reference studies",
+    intro: "Review the verified flying-bird landmark construction record from a Middle East public site, alongside a separate commercial-atrium design reference for hotel project teams. The reference study is not a WEIERYANG hotel commission, and neither route is presented as a U.S. hotel installation.",
     groups: [
       ["Hotel interior case", ["Atrium scale and guest sightlines", "Mirror stainless steel finish and lighting", "Base, access, installation and handover interfaces"]],
       ["Landmark construction", ["Segmented wing structure", "Repeated stainless steel members", "Crane-assisted lifting and site alignment"]],

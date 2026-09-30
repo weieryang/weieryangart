@@ -22,7 +22,6 @@ import logoPrimaryAsset from "./assets/weieryang-w-logo.webp";
 import studioDeskAsset from "./assets/studio-material-desk.webp";
 import heroPlazaDayAsset from "./assets/hero-plaza-day-v3.webp";
 import heroPlazaDuskAsset from "./assets/hero-plaza-dusk-v3.webp";
-import heroPlazaNightAsset from "./assets/hero-plaza-night-v3.webp";
 import conceptSketchAsset from "./assets/concept-sketch.webp";
 import materialSamplesAsset from "./assets/material-samples-dark.webp";
 import structuralStudyAsset from "./assets/structural-engineering.webp";
@@ -34,6 +33,7 @@ import wingSlatInstallationAsset from "./assets/cases/wing-slat-installation.web
 import { businessContact, copy, emailBriefActions, emailBriefCopy, languageOptions, routeKeys } from "./content.js";
 import { createInquiryEmail } from "./inquiryEmail.js";
 import { routeSeoContent } from "./seoContent.js";
+import { hospitalityEntry, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -49,7 +49,8 @@ const logoPrimary = assetUrl(logoPrimaryAsset);
 const studioDesk = assetUrl(studioDeskAsset);
 const heroPlazaDay = assetUrl(heroPlazaDayAsset);
 const heroPlazaDusk = assetUrl(heroPlazaDuskAsset);
-const heroPlazaNight = assetUrl(heroPlazaNightAsset);
+// Same approved v3 file as the HTML preload; do not download a second hashed URL.
+const heroPlazaNight = "/seo-media/hero-plaza-night-v3.webp";
 const conceptSketch = assetUrl(conceptSketchAsset);
 const materialSamples = assetUrl(materialSamplesAsset);
 const structuralStudy = assetUrl(structuralStudyAsset);
@@ -102,6 +103,12 @@ const routeHeroMedia = {
     caption: "Supplied landscape references for scale and site review; they are not presented as completed WEIERYANG resort commissions.",
   },
 };
+
+function responsiveMedia(src, width) {
+  if (!src.startsWith("/seo-media/") || !src.endsWith(".webp")) return {};
+  const candidates = [640, 960].filter(size => size < width).map(size => `${src.replace(/\.webp$/, `-${size}w.webp`)} ${size}w`);
+  return { srcSet: [...candidates, `${src} ${width}w`].join(", "), sizes: "(max-width: 820px) calc(100vw - 36px), 60vw" };
+}
 
 function currentPath() {
   if (typeof window === "undefined") return "";
@@ -167,7 +174,7 @@ function SiteHeader({ language, setLanguage, text }) {
   const closeMenu = () => setMenuOpen(false);
   const nav = [
     { label: text.nav.projects, id: "projects" },
-    { label: text.nav.capabilities, id: "capabilities" },
+    { label: text.hero.routes[0], href: "/resort-sculpture/" },
     { label: text.nav.materials, id: "materials" },
     { label: text.nav.process, id: "process" },
     { label: text.nav.studio, id: "studio" },
@@ -196,7 +203,7 @@ function SiteHeader({ language, setLanguage, text }) {
       <nav className="desktop-nav" aria-label="Primary navigation">
         {nav.map((item) => item.href
           ? <a key={item.href} href={item.href}>{item.label}</a>
-          : <button key={item.id} type="button" onClick={() => homeAnchor(item.id)}>{item.label}</button>)}
+          : <a key={item.id} href={`/#${item.id}`}>{item.label}</a>)}
       </nav>
       <div className="header-actions">
         <LanguageSelect language={language} setLanguage={setLanguage} compact />
@@ -228,7 +235,7 @@ function SiteHeader({ language, setLanguage, text }) {
         <nav aria-label="Mobile navigation">
           {nav.map((item) => item.href
             ? <a key={item.href} href={item.href} onClick={closeMenu}>{item.label}<ArrowUpRight size={18} /></a>
-            : <button key={item.id} type="button" onClick={() => { closeMenu(); homeAnchor(item.id); }}>{item.label}<ArrowUpRight size={18} /></button>)}
+            : <a key={item.id} href={`/#${item.id}`} onClick={closeMenu}>{item.label}<ArrowUpRight size={18} /></a>)}
         </nav>
         <div className="mobile-menu-actions">
           <LanguageSelect language={language} setLanguage={setLanguage} />
@@ -703,11 +710,28 @@ function InsightsPreview({ text }) {
   );
 }
 
-function HomePage({ text }) {
+function HospitalityEntry({ language }) {
+  const entry = hospitalityEntry[language] || hospitalityEntry.en;
+  return <section className="hospitality-entry section-shell" aria-labelledby="hospitality-entry-title">
+    <div><p className="hero-eyebrow">{entry.eyebrow}</p><h2 id="hospitality-entry-title">{entry.title}</h2></div>
+    <div><p>{entry.body}</p><nav aria-label={entry.eyebrow}><a className="text-link" href="/resort-sculpture/">{entry.action}<ArrowRight size={18} /></a><a className="text-link" href="/commission/?route=resort-sculpture">{entry.brief}<ArrowUpRight size={18} /></a></nav></div>
+  </section>;
+}
+
+function HospitalityDetails() {
+  return <section className="hospitality-details section-shell" aria-label="U.S. hotel procurement and delivery">
+    <nav className="hospitality-jump" aria-label="Hotel project review sections">{hospitalitySections.map(section => <a href={`#${section.id}`} key={section.id}>{section.title}</a>)}</nav>
+    {hospitalitySections.map(section => <article id={section.id} key={section.id}><h2>{section.title}</h2><p>{section.body}</p><ul>{section.items.map(item => <li key={item}>{item}</li>)}</ul></article>)}
+    <p><a className="text-link" href="/custom-outdoor-sculpture-supplier/#us-procurement">Review the U.S. procurement checklist<ArrowRight size={18} /></a></p>
+  </section>;
+}
+
+function HomePage({ text, language }) {
   return (
     <>
       <Hero text={text} />
       <AssuranceStrip items={text.assurance} />
+      <HospitalityEntry language={language} />
       <ProjectRoutes text={text} />
       <CaseStudies text={text} />
       <StudioMethod text={text} />
@@ -734,7 +758,7 @@ function SecondaryPage({ route, text, language }) {
           <a className="hero-cta" href={`/commission/?route=${encodeURIComponent(route)}`}>{text.secondary.brief}<ArrowRight size={21} /></a>
         </div>
         <figure>
-          <img src={image} alt={media?.alt || (route === "projects" ? "Verified construction-phase photograph of a flying-bird stainless steel landmark being lifted at a Middle East public site" : `${text.routeNames[route] || "Sculpture"} material, concept or engineering study`)} width={media?.width || (route === "projects" ? "2000" : "1536")} height={media?.height || (route === "projects" ? "1398" : "1024")} fetchPriority="high" decoding="async" />
+          <img src={image} {...responsiveMedia(image, media?.width || 1536)} alt={media?.alt || (route === "projects" ? "Verified construction-phase photograph of a flying-bird stainless steel landmark being lifted at a Middle East public site" : `${text.routeNames[route] || "Sculpture"} material, concept or engineering study`)} width={media?.width || (route === "projects" ? "2000" : "1536")} height={media?.height || (route === "projects" ? "1398" : "1024")} fetchPriority="high" decoding="async" />
           <figcaption>{media?.caption || (route === "projects" ? text.cases.verified : text.secondary.imageLabel)}</figcaption>
         </figure>
       </section>
@@ -753,16 +777,17 @@ function SecondaryPage({ route, text, language }) {
           ))}
         </div>
       </section>
+      {route === "resort-sculpture" && language === "en" ? <HospitalityDetails /> : null}
       {route === "projects" ? (
         <section className="project-case-feature section-shell" aria-labelledby="hotel-case-title">
           <figure>
-            <img src="/seo-media/hotel-engineering-case-overview.webp" alt="Three supplied views of a large mirror stainless steel sculpture inside a commercial atrium" width="1600" height="900" loading="lazy" decoding="async" />
+            <img src="/seo-media/hotel-engineering-case-overview.webp" {...responsiveMedia("/seo-media/hotel-engineering-case-overview.webp", 1600)} alt="Three supplied views of a large mirror stainless steel sculpture inside a commercial atrium" width="1600" height="900" loading="lazy" decoding="async" />
           </figure>
           <div>
-            <p className="hero-eyebrow">New hospitality case review</p>
+            <p className="hero-eyebrow">Commercial-interior reference study — not a portfolio commission</p>
             <h2 id="hotel-case-title">Hotel lobby sculpture: atrium scale, mirror finish and installation</h2>
             <p>A practical engineering review for hotel owners, designers and contractors covering guest sightlines, building interfaces, access, finish approval and handover. The supplied commercial-atrium photographs are clearly separated from WEIERYANG portfolio claims.</p>
-            <a className="text-link" href="/projects/hotel-lobby-sculpture-engineering-case/">Read the hotel engineering case<ArrowRight size={18} /></a>
+            <a className="text-link" href="/projects/hotel-lobby-sculpture-engineering-case/">Read the reference study<ArrowRight size={18} /></a>
           </div>
         </section>
       ) : null}
@@ -966,7 +991,7 @@ function CommissionForm({ text, language }) {
         language,
       });
       setStatus({ type: "success", message: "", reference: result.reference || "" });
-      try { window.localStorage.removeItem(draftStorageKey); } catch { /* The submitted record is already stored by the server. */ }
+      try { window.localStorage.removeItem(draftStorageKey); } catch { /* Email delivery succeeded; local draft removal is best-effort. */ }
     } catch {
       setStatus({ type: "error", message: text.commission.errorBody, reference: "" });
       setTurnstileToken("");
@@ -996,6 +1021,7 @@ function CommissionForm({ text, language }) {
       <span>{label}{required ? " *" : ""}</span>
       <select name={name} value={form[name]} required={required} onChange={(event) => setValue(name, event.target.value)}>
         <option value="">{selectPrompts[language] || selectPrompts.en}</option>
+        {form[name] && !items.includes(form[name]) ? <option value={form[name]}>{form[name]}</option> : null}
         {items.map((item) => <option key={item} value={item}>{item}</option>)}
       </select>
     </label>
@@ -1029,6 +1055,7 @@ function CommissionForm({ text, language }) {
         <label className="honeypot" aria-hidden="true"><span>Website</span><input name="website" tabIndex="-1" autoComplete="off" value={form.website} onChange={(event) => setValue("website", event.target.value)} /></label>
       </div>
       {hasInquiryEndpoint ? <div className="commission-turnstile" ref={turnstileContainer} /> : null}
+      <p className="commission-privacy">{(privacyCopy[language] || privacyCopy.en).note} <a href="/privacy/" target="_blank" rel="noreferrer" hrefLang="en">{(privacyCopy[language] || privacyCopy.en).link} (EN)</a></p>
       <button className="form-submit" type="submit" disabled={status.type === "loading"}>
         {status.type === "loading" ? <SpinnerGap className="spin" size={21} /> : <ArrowRight size={21} />}
         {status.type === "loading" ? text.commission.submitting : hasInquiryEndpoint ? text.commission.submit : emailText.submit}
@@ -1062,7 +1089,7 @@ function CommissionPage({ text, language }) {
         <CommissionForm text={text} language={language} />
         <aside className="brief-aside">
           <figure><img src={conceptSketch} alt="Complete sculpture concept drawing with scale and landscape context" width="1448" height="1086" loading="lazy" decoding="async" /></figure>
-          <div><p>{text.evidence.cards[0][1]}</p><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></div>
+          <div><p>{text.commission.formBody}</p><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></div>
         </aside>
       </section>
     </>
@@ -1085,7 +1112,7 @@ function SiteFooter({ text }) {
         <div><h3>{text.footer.studio}</h3><a href="/custom-outdoor-sculpture-supplier/">Supplier route</a><a href="/process/">{text.nav.process}</a><a href="/projects/">{text.nav.projects}</a><a href="/faq/">{text.routeNames.faq}</a><a href="/insights/">Insights</a></div>
         <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
       </div>
-      <div className="footer-base"><span>© {new Date().getFullYear()} {text.footer.rights}</span><span>{businessContact.email}</span></div>
+      <div className="footer-base"><span>© {new Date().getFullYear()} {text.footer.rights}</span><a href="/privacy/" hrefLang="en">Privacy &amp; project information (EN)</a><span>{businessContact.email}</span></div>
     </footer>
   );
 }
@@ -1121,7 +1148,7 @@ export function App({ initialRoute }) {
     ? <CommissionPage text={text} language={language} />
     : routeKeys.includes(route)
       ? <SecondaryPage route={route} text={text} language={language} />
-      : <HomePage text={text} />;
+      : <HomePage text={text} language={language} />;
 
   return (
     <main className="site-shell" id="top">

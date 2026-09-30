@@ -4,6 +4,8 @@ Updated: 2026-09-30
 
 ## Positioning boundary
 
+The September 30 user update prioritizes U.S. hotel and resort buyers, including owners, developers, interior designers, art consultants and procurement teams. The existing `/resort-sculpture/` is the hospitality service hub; `/custom-outdoor-sculpture-supplier/#us-procurement` owns supplier-comparison and delivery-scope intent. Do not generate duplicate city landing pages. Preserve existing international evidence with accurate geographic and project attribution.
+
 WEIERYANG should target hotel renovation and hospitality design through the part of the project it can credibly deliver: custom sculpture, dimensional art, material development, structural coordination, fabrication, export packing and installation guidance.
 
 Do not reposition the studio as a general hotel renovation contractor, interior-design practice or art consultant unless those services are formally added and evidenced.

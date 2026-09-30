@@ -2,6 +2,24 @@
 
 更新日期：2026-09-20（北京时间）
 
+## 最新补充：2026-09-30 美国酒店客户优化
+
+以下记录优先于后文的 9 月 20 日历史快照。
+
+- 当前源码目录：`D:\雕塑独立站素材\weieryangart`；源码备份分支 `codex/hotel-seo-geo`，正式静态产物仍发布到 `main`，不要混用两条分支。
+- 本轮正式发布提交：`eeba446e74c65592f6fdb55bb9be84039c35a27a`，前一版本 `e94914b7cec8bd2b0554e13092f16914ef8fa7fa`。沿用 GitHub Pages 流程，仅更新 104 个文件，不删除原有资源或工作流。
+- 用户已将主要获客地区调整为美国，优先面向酒店/度假村业主、开发商、室内设计师、艺术顾问和采购团队。保留国际项目证据的真实地域，不杜撰美国办公室、当地制作、客户案例或安装团队。
+- 首页与导航增加酒店服务入口；保留批准的 v3 三态 Hero，夜景图片与 HTML 预加载使用同一 URL，避免重复下载同一文件。
+- `/resort-sculpture/` 是唯一酒店服务主入口，新增美国项目团队、样板与审批、运输收货、当地安装责任、材料和证据说明。`src/hospitalityContent.js` 为酒店可见内容、静态内容和 FAQ 结构化数据的共同来源。
+- `/custom-outdoor-sculpture-supplier/#us-procurement` 增加供应商比较矩阵；大堂、中庭指南和 Insights 索引接入酒店服务/采购路径。没有新增重复的城市着陆页或泛酒店文章。
+- 询盘增加酒店大堂/中庭、度假村入口/景观选项；英语表单接受英制和公制，电话示例改为 +1，地点提示包含城市/州/国家。旧草稿与切换语言后已选值继续显示，表单必填项和 Worker 接口保持不变。
+- 参考页标题和项目页说明进一步区分商业中庭参考与已验证的中东飞鸟施工记录；不把参考图标成 WEIERYANG 酒店作品。
+- 新增 `/privacy/`，描述当前浏览器草稿、邮件附件、统计与供应商处理流程，并在询盘和页脚提供入口。它是技术流程说明，不是隐私合规认证；正式广告投放前仍需站主/合规人员确认运营主体、邮箱留存周期、数据权利和同意流程。
+- 构建中的 `scripts/enhance-static-pages.mjs` 统一 23 个静态页面的导航/页脚，为 32 张原图生成 62 张 640/960 像素 WebP 衍生图，并为 96 个 HTML 图片添加响应式属性。原图不删除；参考图完整显示，保留原有悬浮和减少动态效果支持。
+- QA：`node scripts/verify-us-hospitality.mjs` 验证 37 条 Sitemap 路由、37 个 JSON-LD 块、143 个 WebP 图片引用、静态链接、4 个实际 React 路由渲染，以及酒店 FAQ 与 Schema 的一致性。`node --test worker/inquiries.test.mjs src/inquiryEmail.test.js src/analyticsEvents.test.js` 共 15 项通过。这些不是实际浏览器或真实收件箱测试。
+- 本轮浏览器连接因服务组件缺失未恢复，移动端视觉/交互和 Core Web Vitals 待实测；没有发送真实测试询盘，没有改动 Worker、GTM 配置或安装广告像素。GA4 收件与 Search Console 的美国查询/收录数据尚未验证。
+- 发布前使用 `scripts/deploy-dist-git-data.ps1 -DryRun`。源码备份可用 `scripts/backup-source-git-data.ps1`，必须提供本地变更基准及预期远端源码提交，且禁止指向 `main`。
+
 ## 1. 项目与仓库
 
 - 正式网站：https://weieryangart.com/

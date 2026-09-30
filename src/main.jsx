@@ -7,7 +7,7 @@ import "@fontsource-variable/noto-sans-arabic";
 import { App } from "./App.jsx";
 import "./styles.css";
 
-document.documentElement.dataset.release = "2026-07-14-r2";
+document.documentElement.dataset.release = "2026-09-30-us-hospitality";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
