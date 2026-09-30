@@ -269,7 +269,7 @@ body .wy-brief-grid article{background:#131310;padding:22px}
 .wy-brief-grid p{margin-top:10px;color:#aaa59b;font-size:13px;line-height:1.6}
 body .wy-figure{margin:38px 0 0;padding:0;border:1px solid var(--line);background:#0d0d0b}
 .wy-figure img{width:100%;height:auto;max-height:570px;object-fit:cover;filter:none}
-.wy-figure--contain img{object-fit:contain;background:#090908}
+body .wy-figure.wy-figure--contain img{object-fit:contain;background:#090908;height:auto;max-height:none;aspect-ratio:auto}
 .wy-hero-image,.wy-figure{position:relative;isolation:isolate;overflow:hidden;transform:translateZ(0);transition:transform .34s cubic-bezier(.2,.7,.2,1),border-color .34s ease,box-shadow .34s ease}
 .wy-hero-image img,.wy-figure img{transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .4s ease}
 @media(hover:hover) and (pointer:fine){
@@ -315,6 +315,10 @@ body .wy-note{margin-top:42px;border:1px solid #51372e;background:#17100d;paddin
 .wy-footer p,.wy-footer a{color:#918c83;font-size:13px;line-height:1.7}
 .wy-footer a{display:block;margin-top:7px;text-decoration:none}
 .wy-footer a:hover{color:#e9a088}
+.wy-language-label{padding:10px 8px;color:#aaa59c;font-size:11px}
+.wy-nav{flex-wrap:wrap}
+.wy-body,.wy-section{overflow-wrap:anywhere}
+.wy-body [id],.wy-section[id]{scroll-margin-top:160px}
 
 @media(max-width:820px){
   .wy-top-inner{align-items:flex-start;flex-direction:column;padding:13px 0}
