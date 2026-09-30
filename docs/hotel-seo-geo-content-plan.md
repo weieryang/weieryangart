@@ -100,6 +100,10 @@ For any additional image, record:
 
 ## Measurement plan
 
+Homepage update, 2026-09-30: the hotel engineering studies use complete-image framing. `IMG_5190.JPG` becomes `hotel-lobby-whale-spatial-reference.webp` (1080 × 1440), and the newly selected `IMG_5175.JPG` becomes `hotel-arrival-metal-tree-reference.webp` (1200 × 1600). Both are supplied commercial-space references, not verified hotel commissions or evidence of WEIERYANG authorship. The existing `commercial-atrium-mirror-stainless-steel-sculpture.webp` is the third study. All carry a visible reference label and a shared explanation of their limits; hotel use is a proposed application. The separate flying-bird construction record retains its verified Middle East public-site context. Do not change these into completed-hotel portfolio claims without further evidence.
+
+The homepage gallery's six-language copy and image metadata live in `src/hotelCases.js`; the English fallback and image sitemap use the same source. Hero artwork remains the approved original v3 day/dusk/night trio; this release changes only loading, compositing and activity lifecycle, not geometry or generated imagery.
+
 After publication, compare the hotel cluster in Search Console by query, country and landing page. Review:
 
 - impressions and clicks for hotel lobby sculpture, hotel sculpture, hospitality art installation and related long-tail queries;

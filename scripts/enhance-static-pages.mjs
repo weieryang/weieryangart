@@ -44,11 +44,15 @@ for (const file of await htmlFiles(root)) {
     pages++;
   }
   // Only first-party WebP images, preserving every original and its framing.
-  for (const match of [...html.matchAll(/<img\b[^>]*\bsrc="(\/seo-media\/[a-z0-9-]+\.webp)"[^>]*>/gi)]) {
+  for (const match of [...html.matchAll(/<img\b[^>]*\bsrc="((?:(?:\.\.?\/)+|\/)seo-media\/[a-z0-9-]+\.webp)"[^>]*>/gi)]) {
     if (/\bsrcset=/.test(match[0])) continue;
     // The geometry-locked hero keeps its approved loading/transition behavior.
     if (match[1].includes("hero-plaza-")) continue;
-    const attributes = await responsiveAttributes(match[1]);
+    // Vite's relative base rewrites root images to ./seo-media/ and nested
+    // pages to ../seo-media/. Resolve them before generating the same variants.
+    const pageUrl = `https://weieryangart.com/${path.relative(root, file).replaceAll(path.sep, "/")}`;
+    const src = new URL(match[1], pageUrl).pathname;
+    const attributes = await responsiveAttributes(src);
     html = html.replace(match[0], match[0].replace(/\s*\/?>$/, ` ${attributes} />`));
     images++;
   }

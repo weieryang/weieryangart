@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { hospitalityService, hospitalitySections, hospitalityEntry } from "../src/hospitalityContent.js";
 import { routeSeoContent } from "../src/seoContent.js";
+import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
@@ -10,6 +11,8 @@ const ogImage = `${site}/og-image.jpg`;
 const imageBase = `${site}/seo-media`;
 
 const evidenceImages = {
+  homeLobbyReference: { ...hotelCaseImages[0], caption: hotelCases.en.note },
+  homeArrivalReference: { ...hotelCaseImages[2], caption: hotelCases.en.note },
   middleEastLandmarkInstallation: {
     file: "middle-east-stainless-steel-landmark-installation.webp",
     width: 2000,
@@ -251,7 +254,7 @@ const evidenceImages = {
 };
 
 const routeImageKeys = {
-  "": ["birdSculpture", "conceptSketch", "materialSamples", "structuralStudy"],
+  "": ["homeLobbyReference", "commercialAtriumMirrorSculpture", "homeArrivalReference", "middleEastLandmarkInstallation"],
   commission: ["materialSamples", "structuralStudy", "fabricationWorkshop"],
   "garden-sculpture": ["conceptSketch", "materialSamples", "installedProject"],
   "public-art": ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
@@ -742,7 +745,14 @@ function fallback(page) {
   const resortPlanningGuides = page.slug === "resort-sculpture"
     ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
     : "";
-  const evidence = `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
+  const evidence = page.slug === "" ? `
+      <section id="cases"><h2>${esc(hotelCases.en.title)}</h2><p>${esc(hotelCases.en.body)}</p><p>${esc(hotelCases.en.note)}</p>
+        ${hotelCases.en.cards.map((card, index) => {
+          const image = hotelCaseImages[index];
+          return `<article><h3>${esc(card.title)}</h3><p>${esc(card.body)}</p><figure><img src="/seo-media/${esc(image.file)}" alt="${esc(image.alt)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async" /><figcaption>${esc(hotelCases.en.badge)}</figcaption></figure><ul>${card.checks.map(check => `<li>${esc(check)}</li>`).join("")}</ul><a href="${image.href}">${esc(hotelCases.en.action)}</a></article>`;
+        }).join("")}
+        <aside><h3>${esc(hotelCases.en.proofTitle)}</h3><p>${esc(hotelCases.en.proofBody)}</p><a href="/projects/#project-evidence-title">${esc(hotelCases.en.proofAction)}</a></aside>
+      </section>` : `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>
         <div class="seo-evidence-grid">
           ${images.map((image, index) => `<figure>

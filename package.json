@@ -8,7 +8,7 @@
     "build": "node scripts/generate-seo-pages.mjs && vite build --config vite.static.config.mjs && node scripts/enhance-static-pages.mjs && node scripts/inject-analytics.mjs",
     "indexnow": "node scripts/submit-indexnow.mjs",
     "preview": "vite preview --config vite.static.config.mjs --host 127.0.0.1",
-    "test": "node --test worker/inquiries.test.mjs src/inquiryEmail.test.js src/analyticsEvents.test.js",
+    "test": "node --test worker/inquiries.test.mjs src/inquiryEmail.test.js src/analyticsEvents.test.js src/heroPlayer.test.js",
     "test:site": "node scripts/verify-us-hospitality.mjs",
     "dev:sites": "vinext dev",
     "build:sites": "vinext build"

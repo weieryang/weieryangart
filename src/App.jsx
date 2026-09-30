@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useHeroPlayer } from "./useHeroPlayer.js";
+import { HotelEngineeringCases } from "./HotelEngineeringCases.jsx";
+import { heroStatus } from "./hotelCases.js";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -35,7 +35,6 @@ import { createInquiryEmail } from "./inquiryEmail.js";
 import { routeSeoContent } from "./seoContent.js";
 import { hospitalityEntry, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
 
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 function assetUrl(asset) {
   if (typeof asset === "string") return asset;
@@ -51,6 +50,7 @@ const heroPlazaDay = assetUrl(heroPlazaDayAsset);
 const heroPlazaDusk = assetUrl(heroPlazaDuskAsset);
 // Same approved v3 file as the HTML preload; do not download a second hashed URL.
 const heroPlazaNight = "/seo-media/hero-plaza-night-v3.webp";
+const heroSources = { day: heroPlazaDay, dusk: heroPlazaDusk, night: heroPlazaNight };
 const conceptSketch = assetUrl(conceptSketchAsset);
 const materialSamples = assetUrl(materialSamplesAsset);
 const structuralStudy = assetUrl(structuralStudyAsset);
@@ -248,7 +248,7 @@ function SiteHeader({ language, setLanguage, text }) {
   );
 }
 
-function HeroAtmosphere({ heroTime }) {
+function HeroAtmosphere({ heroTime, active }) {
   const rainCanvasRef = useRef(null);
   const [lightningActive, setLightningActive] = useState(false);
   const stormActive = heroTime === "night";
@@ -259,7 +259,7 @@ function HeroAtmosphere({ heroTime }) {
 
     const context = canvas.getContext("2d", { alpha: true });
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!context || reducedMotion || !stormActive) {
+    if (!context || !active || reducedMotion || !stormActive) {
       context?.clearRect(0, 0, canvas.width, canvas.height);
       return undefined;
     }
@@ -327,12 +327,12 @@ function HeroAtmosphere({ heroTime }) {
       window.removeEventListener("resize", resize);
       context.clearRect(0, 0, canvas.width, canvas.height);
     };
-  }, [stormActive]);
+  }, [stormActive, active]);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const compactViewport = window.matchMedia("(max-width: 767px)").matches;
-    if (!stormActive || reducedMotion || compactViewport) {
+    if (!active || !stormActive || reducedMotion || compactViewport) {
       setLightningActive(false);
       return undefined;
     }
@@ -360,7 +360,7 @@ function HeroAtmosphere({ heroTime }) {
       window.clearTimeout(releaseTimer);
       setLightningActive(false);
     };
-  }, [stormActive]);
+  }, [stormActive, active]);
 
   return (
     <div className={`hero-atmosphere${lightningActive ? " has-lightning" : ""}`} aria-hidden="true">
@@ -380,44 +380,25 @@ function HeroAtmosphere({ heroTime }) {
   );
 }
 
-function Hero({ text }) {
-  const [heroTime, setHeroTime] = useState("night");
-  const [heroPhase, setHeroPhase] = useState("night");
-  const [heroTransitioning, setHeroTransitioning] = useState(false);
-  const transitionTimers = useRef([]);
-
-  useEffect(() => () => {
-    transitionTimers.current.forEach((timer) => window.clearTimeout(timer));
-  }, []);
-
-  const toggleHeroTime = () => {
-    if (heroTransitioning) return;
-    const nextTime = heroTime === "night" ? "day" : "night";
-    transitionTimers.current.forEach((timer) => window.clearTimeout(timer));
-    setHeroTransitioning(true);
-    setHeroPhase("dusk");
-    transitionTimers.current = [
-      window.setTimeout(() => {
-        setHeroTime(nextTime);
-        setHeroPhase(nextTime);
-      }, 760),
-      window.setTimeout(() => setHeroTransitioning(false), 1560),
-    ];
-  };
+function Hero({ text, language }) {
+  const { current: heroTime, phase: heroPhase, busy: heroTransitioning, error, ambient, sectionRef, frames, toggle: toggleHeroTime } = useHeroPlayer(heroSources);
+  const status = heroStatus[language] || heroStatus.en;
 
   return (
     <section
       className={`atelier-hero is-${heroTime} phase-${heroPhase}${heroTransitioning ? " is-time-transitioning" : ""}`}
       aria-labelledby="hero-title"
+      ref={sectionRef}
+      data-ambient={ambient}
       data-time={heroTime}
       data-phase={heroPhase}
     >
       <div className="hero-plaza-media" aria-hidden="true">
-        <img className="hero-plaza-frame hero-plaza-day" src={heroPlazaDay} alt="" width="1672" height="941" loading="eager" decoding="async" />
-        <img className="hero-plaza-frame hero-plaza-blue-hour" src={heroPlazaDusk} alt="" width="1672" height="941" loading="eager" decoding="async" />
-        <img className="hero-plaza-frame hero-plaza-night" src={heroPlazaNight} alt="" width="1672" height="941" fetchPriority="high" loading="eager" decoding="async" />
+        <img className="hero-plaza-frame hero-plaza-day" ref={node => { frames.current.day = node; }} alt="" width="1672" height="941" fetchPriority="low" loading="eager" decoding="async" />
+        <img className="hero-plaza-frame hero-plaza-blue-hour" ref={node => { frames.current.dusk = node; }} alt="" width="1672" height="941" fetchPriority="low" loading="eager" decoding="async" />
+        <img className="hero-plaza-frame hero-plaza-night" ref={node => { frames.current.night = node; }} src={heroPlazaNight} alt="" width="1672" height="941" fetchPriority="high" loading="eager" decoding="async" />
       </div>
-      <HeroAtmosphere heroTime={heroPhase} />
+      <HeroAtmosphere heroTime={heroPhase} active={ambient} />
       <div className="hero-scrim" aria-hidden="true" />
       <div className="hero-bottom-blur" aria-hidden="true" />
       <aside className="hero-rail" aria-hidden="true">
@@ -439,6 +420,7 @@ function Hero({ text }) {
             type="button"
             onClick={toggleHeroTime}
             disabled={heroTransitioning}
+            aria-busy={heroTransitioning}
             aria-pressed={heroTime === "day"}
             aria-label={heroTime === "night" ? text.hero.viewDay : text.hero.viewNight}
           >
@@ -447,16 +429,17 @@ function Hero({ text }) {
               <Sun size={17} weight="fill" />
             </span>
             <span className="hero-time-copy" aria-live="polite">
-              {heroTime === "night" ? text.hero.viewDay : text.hero.viewNight}
+              {heroTransitioning ? status[0] : heroTime === "night" ? text.hero.viewDay : text.hero.viewNight}
             </span>
           </button>
         </div>
       </div>
+      {error ? <p className="hero-load-error" role="status">{status[1]}</p> : null}
       <nav className="hero-route-dock" aria-label="Project routes">
         {text.hero.routes.map((route, index) => (
-          <button key={route} type="button" onClick={() => homeAnchor("projects")}>
+          <a key={route} href={["/resort-sculpture/", "/garden-sculpture/", "/public-art/", "/commission/"][index]}>
             <span>0{index + 1}</span>{route}
-          </button>
+          </a>
         ))}
       </nav>
     </section>
@@ -493,89 +476,6 @@ function ProjectRoutes({ text }) {
             </a>
           </article>
         ))}
-      </div>
-    </section>
-  );
-}
-
-function CaseStudies({ text }) {
-  const sectionRef = useRef(null);
-
-  useGSAP(() => {
-    const root = sectionRef.current;
-    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    gsap.utils.toArray(".case-study", root).forEach((card) => {
-      const image = card.querySelector("img");
-      const copyBlock = card.querySelector(".case-study-copy");
-      gsap.fromTo(image, { scale: 1.025 }, {
-        scale: 1,
-        ease: "none",
-        scrollTrigger: { trigger: card, start: "top 88%", end: "bottom 24%", scrub: 0.7 },
-      });
-      gsap.fromTo(copyBlock, { y: 28, opacity: 0.62 }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: { trigger: card, start: "top 76%", toggleActions: "play none none reverse" },
-      });
-    });
-  }, { scope: sectionRef, dependencies: [text], revertOnUpdate: true });
-
-  return (
-    <section className="case-studies" id="cases" ref={sectionRef} aria-labelledby="case-studies-title">
-      <div className="case-studies-intro section-shell">
-        <p className="hero-eyebrow">{text.cases.eyebrow}</p>
-        <div>
-          <h2 id="case-studies-title">{text.cases.title}</h2>
-          <p>{text.cases.body}</p>
-        </div>
-      </div>
-      <div className="case-study-stack section-shell">
-        <article className="case-study case-study-primary">
-          <div className="case-study-topline">
-            <span>01</span>
-            <span>{text.cases.verified}</span>
-            <span>{text.cases.phase}</span>
-          </div>
-          <figure className="case-study-hero-figure">
-            <img src={middleEastInstallation} alt="Large stainless-steel wing sculpture being installed at an overseas public site" width="2000" height="1398" loading="lazy" decoding="async" />
-          </figure>
-          <div className="case-study-copy">
-            <p className="case-study-kicker">{text.cases.items[0].meta}</p>
-            <h3>{text.cases.items[0].title}</h3>
-            <p>{text.cases.items[0].body}</p>
-            <div className="case-study-proof">
-              <span>{text.cases.proof}</span>
-              <p>{text.cases.items[0].note}</p>
-            </div>
-          </div>
-          <figure className="case-study-detail-figure">
-            <img src={wingSlatInstallation} alt="Close view of stainless-steel wing slats during crane-assisted installation" width="2000" height="1164" loading="lazy" decoding="async" />
-            <figcaption>{text.cases.detail}</figcaption>
-          </figure>
-        </article>
-        <article className="case-study case-study-secondary">
-          <div className="case-study-topline">
-            <span>02</span>
-            <span>{text.cases.verified}</span>
-            <span>{text.cases.phase}</span>
-          </div>
-          <figure className="case-study-hero-figure">
-            <img src={structuralAssembly} alt="Large-span metal sculpture structure under workshop and crane assembly" width="2000" height="1500" loading="lazy" decoding="async" />
-          </figure>
-          <div className="case-study-copy">
-            <p className="case-study-kicker">{text.cases.items[1].meta}</p>
-            <h3>{text.cases.items[1].title}</h3>
-            <p>{text.cases.items[1].body}</p>
-            <div className="case-study-proof">
-              <span>{text.cases.proof}</span>
-              <p>{text.cases.items[1].note}</p>
-            </div>
-            <a className="text-link" href="/commission/">{text.cases.brief}<ArrowRight size={18} /></a>
-          </div>
-        </article>
       </div>
     </section>
   );
@@ -729,11 +629,11 @@ function HospitalityDetails() {
 function HomePage({ text, language }) {
   return (
     <>
-      <Hero text={text} />
+      <Hero text={text} language={language} />
       <AssuranceStrip items={text.assurance} />
       <HospitalityEntry language={language} />
+      <HotelEngineeringCases language={language} />
       <ProjectRoutes text={text} />
-      <CaseStudies text={text} />
       <StudioMethod text={text} />
       <InsightsPreview text={text} />
       <QualificationBand text={text} />
