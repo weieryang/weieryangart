@@ -211,6 +211,41 @@ const evidenceImages = {
     alt: "Close upward view of large mirror stainless steel atrium sculpture showing panels highlights and skylight relationship",
     caption: "Close-view reference for panel boundaries, highlight control, guest proximity, and finish inspection.",
   },
+  hotelAtriumPlanningOverview: {
+    file: "hotel-atrium-sculpture-planning-overview.webp",
+    width: 1600,
+    height: 900,
+    alt: "Three commercial atrium sculpture references showing artwork across several viewing levels",
+    caption: "Commercial-atrium references for multi-level scale, lower-level approach, upper-level views, and building-interface review; project attribution is not asserted.",
+  },
+  hotelAtriumMultilevelReference: {
+    file: "hotel-atrium-sculpture-multilevel-reference.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Colourful large sculpture extending across several levels of a commercial atrium",
+    caption: "Commercial-atrium reference for cross-level composition, guest circulation, balustrade relationships, and occupied-envelope review.",
+  },
+  hotelAtriumUpperLevelView: {
+    file: "hotel-atrium-sculpture-upper-level-view.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Commercial atrium sculpture seen beside an upper terrace and roof opening",
+    caption: "Upper-level reference for silhouette, roof opening, terrace approach, and balustrade coordination.",
+  },
+  hotelAtriumBaseClearance: {
+    file: "hotel-atrium-sculpture-base-clearance.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Oversized sculptural form beside planting and lower-level guest circulation",
+    caption: "Lower-level reference for base treatment, projections, planting, guest proximity, and cleaning access.",
+  },
+  hotelAtriumCrossLevelSightline: {
+    file: "hotel-atrium-sculpture-cross-level-sightline.webp",
+    width: 1200,
+    height: 1600,
+    alt: "Tall commercial atrium artwork viewed across an upper terrace and lower floor",
+    caption: "Cross-level reference for section-based sightline, terrace access, and installation-route review.",
+  },
 };
 
 const routeImageKeys = {
@@ -231,9 +266,10 @@ const routeImageKeys = {
 };
 
 const preservedRoutes = [
+  { url: `${site}/insights/large-hotel-atrium-sculpture-planning-guide/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelAtriumPlanningOverview", "hotelAtriumMultilevelReference", "hotelAtriumUpperLevelView", "hotelAtriumBaseClearance", "hotelAtriumCrossLevelSightline"] },
   { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-09-30", priority: "0.87", imageKeys: ["hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
+  { url: `${site}/insights/`, lastmod: "2026-09-30", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-09-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
@@ -679,16 +715,16 @@ function pageSchema(page) {
 function fallback(page) {
   const images = imagesFor(page);
   const projectGuide = page.slug === "projects"
-    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/middle-east-stainless-steel-landmark-sculpture/">Read the Middle East landmark construction guide</a></p>'
+    ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/middle-east-stainless-steel-landmark-sculpture/">Read the Middle East landmark construction guide</a></p>'
     : "";
   const stainlessGradeGuide = ["stainless-steel-sculpture", "materials", "water-feature-sculpture"].includes(page.slug)
     ? '<p><a href="/insights/304-vs-316l-stainless-steel-outdoor-sculpture/">Compare 304 vs 316L stainless steel for outdoor sculpture</a></p>'
     : "";
   const hotelRenovationGuide = ["", "resort-sculpture"].includes(page.slug)
-    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
+    ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-lobby-sculpture-renovation-guide/">Read the hotel lobby sculpture renovation coordination guide</a></p><p><a href="/insights/hotel-lobby-mirror-stainless-steel-sculpture/">Specify mirror stainless steel finish for hotel lobby sculpture</a></p>'
     : "";
   const resortPlanningGuides = page.slug === "resort-sculpture"
-    ? '<p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
+    ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
     : "";
   const evidence = `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>

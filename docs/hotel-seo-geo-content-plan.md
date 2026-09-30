@@ -12,12 +12,13 @@ Do not reposition the studio as a general hotel renovation contractor, interior-
 
 | Intent | Target page | Status | Evidence needed |
 | --- | --- | --- | --- |
+| Large hotel atrium sculpture planning | `/insights/large-hotel-atrium-sculpture-planning-guide/` | Published September 30 with new multi-level commercial-atrium references | Views from each occupied level, artwork envelope, support options, building interfaces, installation and maintenance |
 | Hotel lobby sculpture engineering case | `/projects/hotel-lobby-sculpture-engineering-case/` | Published September 30 as an attributed-boundary case review | Atrium scale, sightlines, mirror finish, building interfaces, installation and handover |
 | Custom resort and hotel landscape sculpture | `/resort-sculpture/` | Service page deepened September 27 | Service scope, site and scale decisions, delivery responsibilities and linked evidence |
 | Hotel lobby sculpture planning | `/insights/hotel-lobby-sculpture-renovation-guide/` | Published in source | Material, engineering and construction evidence with explicit boundaries |
 | Hotel arrival sculpture brief | `/insights/hotel-arrival-sculpture-site-brief/` | Updated September 27 with new site-context evidence | Exterior site, circulation, lighting, water and installation inputs |
 | Resort entrance sculpture scale | `/insights/resort-entrance-sculpture-scale-guide/` | Updated September 27 with new scale evidence | Arrival sequence, facade relationship, human scale and construction access |
-| Custom hotel sculpture supplier | Future service page | Hold until service scope and proof are confirmed | Supplier scope, samples, QC, packing and installation responsibilities |
+| Custom hotel sculpture supplier | `/custom-outdoor-sculpture-supplier/` | Published September 30 with hotel procurement scope | Supplier scope, samples, QC, packing and installation responsibilities |
 | Hotel atrium hanging sculpture | Future technical guide | Hold until overhead-installation evidence is available | Structure, access, maintenance and local consultant review |
 | Hotel art installation during renovation | Future supporting guide | Planned | Live-hotel phasing, protection, route survey and handover records |
 | Stainless steel lobby sculpture finish | `/insights/hotel-lobby-mirror-stainless-steel-sculpture/` | Published in source | New commercial-interior reflection views and workshop finish evidence with explicit attribution boundaries |
@@ -61,10 +62,17 @@ The user approved use of the newly supplied material on the site on September 24
 - `IMG_5241.JPG` → `hotel-engineering-case-atrium-scale.webp`
 - `IMG_5244.JPG` → `hotel-engineering-case-reflection-detail.webp`
 - `IMG_5245.JPG` → `hotel-engineering-case-close-view.webp`
+- `IMG_5312.JPG` + `IMG_5316.JPG` + `IMG_5320.JPG` → `hotel-atrium-sculpture-planning-overview.webp`
+- `IMG_5312.JPG` → `hotel-atrium-sculpture-multilevel-reference.webp`
+- `IMG_5315.JPG` → `hotel-atrium-sculpture-upper-level-view.webp`
+- `IMG_5316.JPG` → `hotel-atrium-sculpture-base-clearance.webp`
+- `IMG_5320.JPG` → `hotel-atrium-sculpture-cross-level-sightline.webp`
 
 The September 27 update strengthens existing hotel-cluster pages instead of creating another overlapping article. The four new derivatives are described as supplied visual references. Their project identity, designer, fabricator, location and relationship to WEIERYANG are not asserted.
 
 The September 30 case review uses one coherent commercial-atrium image sequence. It is positioned as an engineering case review for hotel project teams, not as a claimed WEIERYANG client commission. The page focuses on decisions that can be observed or requested: scale, sightlines, finish, building interfaces, access, installation and handover.
+
+The September 30 multi-level atrium guide uses a separate set of commercial-space references (`IMG_5312`, `IMG_5315`, `IMG_5316` and `IMG_5320`). It explains cross-level views, the occupied envelope, structural and life-safety coordination, installation access, finish and maintenance without claiming the images as a hotel or WEIERYANG commission.
 
 For any additional image, record:
 
