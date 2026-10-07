@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const dist = path.resolve("dist");
@@ -10,7 +10,7 @@ const headSnippet = `${marker}
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','${containerId}');</script>
-    <script src="/analytics-events.js" defer></script>`;
+    <script type="module" src="/analytics-events.js"></script>`;
 const bodySnippet = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${containerId}"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`;
 
@@ -26,10 +26,17 @@ async function htmlFiles(directory) {
 
 const files = await htmlFiles(dist);
 if (files.length === 0) throw new Error("No HTML pages found in dist");
+// React imports this same source; standalone pages use its exact copied module.
+await copyFile(new URL("../src/attribution.js", import.meta.url), path.join(dist, "attribution.js"));
 
 for (const file of files) {
   const html = await readFile(file, "utf8");
-  if (html.includes(marker)) continue;
+  if (html.includes(marker)) {
+    const updated = html.replace(/<script\b[^>]*\bsrc=["']\/analytics-events\.js["'][^>]*>\s*<\/script>/gi,
+      '<script type="module" src="/analytics-events.js"></script>');
+    if (updated !== html) await writeFile(file, updated);
+    continue;
+  }
   if (html.includes("googletagmanager.com/gtm.js") || html.includes("googletagmanager.com/ns.html")) {
     throw new Error(`Existing GTM installation needs review: ${file}`);
   }

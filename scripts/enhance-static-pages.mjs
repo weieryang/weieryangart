@@ -3,13 +3,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = path.resolve("dist");
-const header = `<header class="wy-top"><div class="wy-top-inner"><a class="wy-brand" href="/" aria-label="WEIERYANG home">WEIERYANG</a><nav class="wy-nav" aria-label="Main navigation"><a href="/resort-sculpture/">Hotel sculpture</a><a href="/projects/">Projects &amp; studies</a><a href="/materials/">Materials</a><a href="/process/">Process</a><a href="/insights/">Insights</a><a href="mailto:tangkelian@weieryang.com">Contact Us</a><a href="/commission/?route=resort-sculpture">Project brief</a><span class="wy-language-label" lang="en" title="This guide is in English. Other interface languages are available on the studio homepage.">EN</span></nav></div></header>`;
-const footer = `<footer class="wy-footer"><div class="wy-footer-inner">
-<div><h2>WEIERYANG</h2><p>Custom sculpture for hotels, resorts and public spaces. Design, fabrication, export packing and overseas installation guidance.</p><p>U.S. project inquiries welcome. Delivery and local installation responsibilities are agreed for each commission.</p></div>
-<div><h2>Sculpture routes</h2><a href="/resort-sculpture/">Hotel &amp; resort sculpture</a><a href="/custom-sculpture/">Custom sculpture</a><a href="/garden-sculpture/">Garden sculpture</a><a href="/public-art/">Public art</a><a href="/water-feature-sculpture/">Water feature sculpture</a></div>
-<div><h2>Materials &amp; evidence</h2><a href="/stainless-steel-sculpture/">Stainless steel</a><a href="/bronze-sculpture/">Bronze</a><a href="/stone-sculpture/">Stone</a><a href="/projects/">Projects &amp; reference studies</a><a href="/process/">Process</a><a href="/insights/">Buyer guides</a></div>
-<div><h2>Project entry</h2><a href="/custom-outdoor-sculpture-supplier/#us-procurement">U.S. procurement checklist</a><a href="/commission/">Request a project review</a><a href="mailto:tangkelian@weieryang.com">Contact Us — email</a><a href="https://wa.me/8613317178019" rel="noreferrer" target="_blank">WhatsApp (optional)</a><a href="/privacy/">Privacy &amp; project information</a><p>weieryangart.com</p></div>
-</div></footer>`;
+import { staticHeader as header, staticFooter as footer } from "./static-frame.mjs";
 
 async function htmlFiles(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });

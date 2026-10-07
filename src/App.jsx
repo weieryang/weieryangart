@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useHeroPlayer } from "./useHeroPlayer.js";
 import { HotelEngineeringCases } from "./HotelEngineeringCases.jsx";
+import { SculptureCollection, SculptureCollectionPreview, SculptureDetail } from "./SculptureCatalog.jsx";
+import { catalogUi } from "./sculptureCatalogCopy.js";
 import { heroStatus } from "./hotelCases.js";
 import {
   ArrowRight,
@@ -32,8 +34,14 @@ import structuralAssemblyAsset from "./assets/cases/structural-assembly.webp";
 import wingSlatInstallationAsset from "./assets/cases/wing-slat-installation.webp";
 import { businessContact, copy, emailBriefActions, emailBriefCopy, languageOptions, routeKeys } from "./content.js";
 import { createInquiryEmail } from "./inquiryEmail.js";
+import { fieldLimits, restoreInquiryDraft, validateInquiryField, validateInquiry, sendInquiry } from "./inquiryForm.js";
+import { inquiryFormCopy } from "./inquiryFormCopy.js";
+import { readAttribution, inquirySource, safeInterestRoute, analyticsAttribution, analyticsProjectType } from "./attribution.js";
 import { routeSeoContent } from "./seoContent.js";
-import { hospitalityEntry, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
+import { hospitalityEntry, hospitalityPlanning, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
+import { commissionEvidenceImage, commissionProof } from "./commissionProof.js";
+import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
+import { productInquiryCopy } from "./productInquiryCopy.js";
 
 
 function assetUrl(asset) {
@@ -62,7 +70,6 @@ const wingSlatInstallation = assetUrl(wingSlatInstallationAsset);
 
 const languageSessionKey = "weieryang-session-language-v3";
 const draftStorageKey = "weieryang-private-brief-v2";
-const attributionSessionKey = "weieryang-attribution-v2";
 const fileLimit = 5;
 const fileSizeLimit = 10 * 1024 * 1024;
 const totalFileSizeLimit = 15 * 1024 * 1024;
@@ -128,11 +135,9 @@ function initialLanguage() {
 
 function inquiryAttribution() {
   if (typeof window === "undefined") return {};
-  try {
-    return { landingPath: window.location.pathname, ...JSON.parse(window.sessionStorage.getItem(attributionSessionKey) || "{}") };
-  } catch {
-    return { landingPath: window.location.pathname };
-  }
+  let storage;
+  try { storage = window.sessionStorage; } catch { /* Storage is optional. */ }
+  return readAttribution(window.location.href, document.referrer, storage);
 }
 
 function navigate(path) {
@@ -171,9 +176,12 @@ function LanguageSelect({ language, setLanguage, compact = false }) {
 
 function SiteHeader({ language, setLanguage, text }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const menuButtonRef = useRef(null);
   const closeMenu = () => setMenuOpen(false);
   const nav = [
     { label: text.nav.projects, id: "projects" },
+    { label: (catalogUi[language] || catalogUi.en).nav, href: "/sculptures/" },
     { label: text.hero.routes[0], href: "/resort-sculpture/" },
     { label: text.nav.materials, id: "materials" },
     { label: text.nav.process, id: "process" },
@@ -184,13 +192,47 @@ function SiteHeader({ language, setLanguage, text }) {
   useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
     if (!menuOpen) return () => document.body.classList.remove("menu-open");
+    const menu = menuRef.current;
+    const header = menu.closest("header");
+    const background = [...header.children, ...header.parentElement.children]
+      .filter(element => element !== menu && element !== header);
+    const previousInert = background.map(element => element.inert);
+    background.forEach(element => { element.inert = true; });
+    const focusable = () => [...menu.querySelectorAll('a[href], button, select')].filter(element => !element.disabled);
+    const focusMenu = () => {
+      if (menu.contains(document.activeElement)) return;
+      menu.getBoundingClientRect();
+      menu.querySelector(".mobile-menu-top > button")?.focus();
+    };
+    const focusFrame = window.requestAnimationFrame(focusMenu);
+    // Some engines defer visibility until the entrance transition has begun.
+    const onEntrance = event => { if (event.target === menu) focusMenu(); };
+    menu.addEventListener("transitionend", onEntrance);
     const onKeyDown = (event) => {
       if (event.key === "Escape") closeMenu();
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      const first = elements[0], last = elements.at(-1);
+      if (!menu.contains(document.activeElement)) {
+        event.preventDefault(); (event.shiftKey ? last : first)?.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first?.focus();
+      }
     };
+    const desktop = window.matchMedia("(min-width: 1081px)");
+    const onResize = () => { if (desktop.matches) closeMenu(); };
     window.addEventListener("keydown", onKeyDown);
+    desktop.addEventListener("change", onResize);
     return () => {
+      background.forEach((element, index) => { element.inert = previousInert[index]; });
+      window.cancelAnimationFrame(focusFrame);
+      menu.removeEventListener("transitionend", onEntrance);
       document.body.classList.remove("menu-open");
       window.removeEventListener("keydown", onKeyDown);
+      desktop.removeEventListener("change", onResize);
+      menuButtonRef.current?.focus();
     };
   }, [menuOpen]);
 
@@ -218,11 +260,11 @@ function SiteHeader({ language, setLanguage, text }) {
           {text.nav.brief}
         </a>
       </div>
-      <button className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-expanded={menuOpen} aria-controls="mobile-menu">
+      <button ref={menuButtonRef} className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-expanded={menuOpen} aria-controls="mobile-menu">
         <List size={25} aria-hidden="true" />
         <span>{text.nav.menu}</span>
       </button>
-      <div className={`mobile-menu${menuOpen ? " is-open" : ""}`} id="mobile-menu" aria-hidden={!menuOpen}>
+      <div ref={menuRef} className={`mobile-menu${menuOpen ? " is-open" : ""}`} id="mobile-menu" role="dialog" aria-label={text.nav.menu} aria-modal={menuOpen ? true : undefined} aria-hidden={!menuOpen} inert={!menuOpen}>
         <div className="mobile-menu-top">
           <a className="brand-lockup" href="/" onClick={closeMenu}>
             <img src={logoPrimary} alt="" width="56" height="59" />
@@ -626,6 +668,34 @@ function HospitalityDetails() {
   </section>;
 }
 
+function HospitalityPlanning() {
+  const planning = hospitalityPlanning;
+  return <section className="hospitality-planning section-shell" aria-labelledby={planning.id}>
+    <header><p className="hero-eyebrow">Plan around the site</p><h2 id={planning.id}>{planning.title}</h2><p>{planning.answer}</p></header>
+    <table className="hospitality-matrix">
+      <caption className="sr-only">Hotel sculpture site and coordination comparison</caption>
+      <thead><tr>{planning.columns.map(column => <th key={column} scope="col">{column}</th>)}</tr></thead>
+      <tbody>{planning.rows.map(row => <tr key={row.setting}>
+        <th scope="row">{row.setting}</th>
+        <td data-label={planning.columns[1]}>{row.review}</td>
+        <td data-label={planning.columns[2]}>{row.team}</td>
+        <td data-label={planning.columns[3]}><a href={row.guide[1]}>{row.guide[0]}<ArrowUpRight size={16} aria-hidden="true" /></a></td>
+      </tr>)}</tbody>
+    </table>
+    <div className="hospitality-resources"><h3>{planning.resourcesTitle}</h3><nav aria-label="Hotel sculpture planning resources">{planning.resources.map(([label, description, href]) => <a key={href} href={href}><strong>{label}<ArrowUpRight size={18} aria-hidden="true" /></strong><span>{description}</span></a>)}</nav></div>
+  </section>;
+}
+
+function CommissionEvidence({ language }) {
+  const proof = commissionProof[language] || commissionProof.en;
+  const image = commissionEvidenceImage;
+  const src = `/seo-media/${image.file}`;
+  return <aside className="commission-evidence" aria-labelledby="commission-evidence-title">
+    <a href="/projects/#project-evidence-title" aria-label={proof.action} tabIndex={-1}><img src={src} {...responsiveMedia(src, image.width)} sizes="(max-width: 600px) calc(100vw - 72px), 180px" width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" /></a>
+    <div><p className="hero-eyebrow">{proof.eyebrow}</p><h3 id="commission-evidence-title">{proof.title}</h3><p>{proof.body}</p><a className="text-link" href="/projects/#project-evidence-title">{proof.action}<ArrowUpRight size={16} aria-hidden="true" /></a></div>
+  </aside>;
+}
+
 function HomePage({ text, language }) {
   return (
     <>
@@ -633,6 +703,7 @@ function HomePage({ text, language }) {
       <AssuranceStrip items={text.assurance} />
       <HospitalityEntry language={language} />
       <HotelEngineeringCases language={language} />
+      <SculptureCollectionPreview language={language} />
       <ProjectRoutes text={text} />
       <StudioMethod text={text} />
       <InsightsPreview text={text} />
@@ -662,6 +733,7 @@ function SecondaryPage({ route, text, language }) {
           <figcaption>{media?.caption || (route === "projects" ? text.cases.verified : text.secondary.imageLabel)}</figcaption>
         </figure>
       </section>
+      {route === "resort-sculpture" && language === "en" ? <HospitalityPlanning /> : null}
       <section className="seo-route-content section-shell">
         <header>
           <p className="hero-eyebrow">{route === "projects" ? "Verified project record" : "Decision guide"}</p>
@@ -735,20 +807,32 @@ function SecondaryPage({ route, text, language }) {
   );
 }
 
-function readDraft() {
-  const empty = { name: "", company: "", email: "", phone: "", projectType: "", location: "", material: "", scale: "", timeline: "", installation: "", message: "", website: "" };
-  if (typeof window === "undefined") return empty;
+function readDraft(storageKey = draftStorageKey, product = null, projectTypes = []) {
+  const empty = product ? productInquiryForm(null, product, projectTypes) : restoreInquiryDraft(null);
+  if (typeof window === "undefined" || !storageKey) return empty;
   try {
-    return { ...empty, ...JSON.parse(window.localStorage.getItem(draftStorageKey) || "{}") };
+    const saved = JSON.parse(window.localStorage.getItem(storageKey) || "{}");
+    return product ? productInquiryForm(saved, product, projectTypes) : restoreInquiryDraft(saved);
   } catch {
     return empty;
   }
 }
 
-function CommissionForm({ text, language }) {
-  const [form, setForm] = useState(readDraft);
+function CommissionForm({ text, language, mode = "full", product }) {
+  const isProduct = mode === "product";
+  const context = isProduct ? productInquiryContext(product) : null;
+  const storageKey = isProduct ? productInquiryDraftKey(context) : draftStorageKey;
+  const eventContext = inquiryEventContext(mode, context);
+  const shortText = productInquiryCopy[language] || productInquiryCopy.en;
+  const projectTypes = text.commission.options.projectTypes;
+  const proof = commissionProof[language] || commissionProof.en;
+  const [form, setForm] = useState(() => readDraft(storageKey, context, projectTypes));
   const [files, setFiles] = useState([]);
   const [fileError, setFileError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  const formRef = useRef(null);
+  const invalidFieldToFocus = useRef("");
+  const submitting = useRef(false);
   const [turnstileToken, setTurnstileToken] = useState("");
   const turnstileContainer = useRef(null);
   const turnstileWidgetId = useRef(null);
@@ -757,17 +841,32 @@ function CommissionForm({ text, language }) {
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
   const emailText = { ...(emailBriefCopy[language] || emailBriefCopy.en), ...(emailBriefActions[language] || emailBriefActions.en) };
-  const hasInquiryEndpoint = Boolean(inquiryEndpoint);
-  const emailBrief = useMemo(() => createInquiryEmail(form, text.commission.fields, businessContact.email), [form, text]);
+  const feedback = inquiryFormCopy[language] || inquiryFormCopy.en;
+  const hasInquiryEndpoint = Boolean(inquiryEndpoint) && (!isProduct || Boolean(context));
+  // Rebuild the category from the registry on every render/submit so neither a
+  // stale language nor a modified draft can override this product's category.
+  const submissionForm = isProduct && context ? productInquiryForm(form, context, projectTypes, { submitting: true }) : form;
+  const emailProduct = context || (!isProduct && typeof window !== "undefined" ? productInquiryContext(new URL(window.location.href).searchParams.get("route")) : null);
+  const emailBrief = useMemo(() => createInquiryEmail(submissionForm, text.commission.fields, businessContact.email, { product: emailProduct, language }), [submissionForm, text, emailProduct, language]);
+
+  useEffect(() => {
+    if (!invalidFieldToFocus.current) return;
+    // Wait for inline messages to render before focusing, so scroll anchoring
+    // cannot move the first invalid field behind the sticky header.
+    const field = formRef.current?.elements.namedItem(invalidFieldToFocus.current);
+    invalidFieldToFocus.current = "";
+    field?.focus();
+    field?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [fieldErrors]);
 
   const trackFormStart = () => {
-    if (formStartTracked.current) return;
+    if (formStartTracked.current || !eventContext) return;
     formStartTracked.current = true;
     const attribution = inquiryAttribution();
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: "commission_form_start",
-      form_name: "private_commission_brief",
+      ...eventContext,
       lead_source: attribution.utmSource || (attribution.fbclid ? "facebook" : "website"),
       campaign_name: attribution.utmCampaign || "",
       language,
@@ -776,6 +875,7 @@ function CommissionForm({ text, language }) {
 
   useEffect(() => {
     if (!hasInquiryEndpoint) return undefined;
+    setTurnstileToken("");
     let active = true;
     const renderWidget = () => {
       if (!active || !turnstileContainer.current || !window.turnstile || turnstileWidgetId.current != null) return;
@@ -813,17 +913,20 @@ function CommissionForm({ text, language }) {
   }, [hasInquiryEndpoint, language]);
 
   const setValue = (name, value) => {
+    if (submitting.current) return;
     trackFormStart();
     setForm((current) => {
       const next = { ...current, [name]: value };
-      try { window.localStorage.setItem(draftStorageKey, JSON.stringify(next)); } catch { /* Draft persistence is optional. */ }
+      try { if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(isProduct ? productInquiryDraft(next) : next)); } catch { /* Draft persistence is optional. */ }
       return next;
     });
+    setFieldErrors(current => current[name] ? { ...current, [name]: validateInquiryField(name, value) } : current);
     if (status.type !== "idle") setStatus({ type: "idle", message: "", reference: "" });
     if (copied) setCopied(false);
   };
 
   const handleFiles = (event) => {
+    if (submitting.current || isProduct) return;
     trackFormStart();
     const nextFiles = Array.from(event.target.files || []);
     const invalid = nextFiles.length > fileLimit || nextFiles.reduce((total, file) => total + file.size, 0) > totalFileSizeLimit || nextFiles.some((file) => {
@@ -838,16 +941,17 @@ function CommissionForm({ text, language }) {
     }
     setFiles(nextFiles);
     setFileError("");
+    if (status.type !== "idle") setStatus({ type: "idle", message: "", reference: "" });
   };
 
   const submit = async (event) => {
     event.preventDefault();
-    if (!form.name.trim() || !form.company.trim() || !form.email.trim() || !form.projectType || !form.location.trim() || !form.message.trim()) {
-      setStatus({ type: "error", message: text.commission.required, reference: "" });
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-      setStatus({ type: "error", message: emailText.invalidEmail, reference: "" });
+    if (submitting.current || status.type === "success" || !eventContext) return;
+    const errors = validateInquiry(submissionForm);
+    invalidFieldToFocus.current = Object.keys(errors)[0] || "";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length) {
+      setStatus({ type: "idle", message: "", reference: "" });
       return;
     }
     if (!hasInquiryEndpoint) {
@@ -857,43 +961,43 @@ function CommissionForm({ text, language }) {
       window.location.href = emailBrief.href;
       return;
     }
-    if (fileError) return;
+    if (!isProduct && fileError) { formRef.current.elements.namedItem("files")?.focus(); return; }
     if (!turnstileToken) {
-      setStatus({ type: "error", message: text.commission.errorBody, reference: "" });
+      setStatus({ type: "error", message: "security", reference: "" });
       return;
     }
+    submitting.current = true;
     setStatus({ type: "loading", message: "", reference: "" });
     const payload = new FormData();
-    Object.entries(form).forEach(([key, value]) => payload.append(key, value));
+    Object.entries(submissionForm).forEach(([key, value]) => payload.append(key, value));
     payload.append("language", language);
-    payload.append("source", typeof window === "undefined" ? "/commission/" : window.location.href);
+    payload.append("source", inquirySource(window.location.href, isProduct ? context.path : undefined));
     const attribution = inquiryAttribution();
     for (const key of ["landingPath", "referrerHost", "utmSource", "utmMedium", "utmCampaign", "utmId", "utmContent", "utmTerm", "fbclid"]) {
       payload.append(key, attribution[key] || "");
     }
-    payload.append("interestRoute", new URL(window.location.href).searchParams.get("route") || "");
+    payload.append("interestRoute", isProduct ? context.inquiryId : safeInterestRoute(new URL(window.location.href).searchParams.get("route")));
     payload.append("cf-turnstile-response", turnstileToken);
-    files.forEach((file) => payload.append("files", file, file.name));
+    if (!isProduct) files.forEach((file) => payload.append("files", file, file.name));
 
     try {
-      const response = await fetch(inquiryEndpoint, { method: "POST", body: payload, headers: { Accept: "application/json" } });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || text.commission.errorBody);
+      const result = await sendInquiry(inquiryEndpoint, payload);
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "generate_lead",
         event_id: result.reference || "",
-        form_name: "private_commission_brief",
-        lead_source: attribution.utmSource || (attribution.fbclid ? "facebook" : "website"),
-        campaign_name: attribution.utmCampaign || "",
-        project_type: form.projectType,
-        has_attachments: files.length > 0,
+        ...eventContext,
+        ...analyticsAttribution(attribution),
+        project_type: analyticsProjectType(submissionForm.projectType, Object.values(copy).map(entry => entry.commission.options.projectTypes)),
+        has_attachments: !isProduct && files.length > 0,
         language,
       });
       setStatus({ type: "success", message: "", reference: result.reference || "" });
-      try { window.localStorage.removeItem(draftStorageKey); } catch { /* Email delivery succeeded; local draft removal is best-effort. */ }
+      try { window.localStorage.removeItem(storageKey); } catch { /* Email delivery succeeded; local draft removal is best-effort. */ }
     } catch {
-      setStatus({ type: "error", message: text.commission.errorBody, reference: "" });
+      setStatus({ type: "error", message: "uncertain", reference: "" });
+    } finally {
+      submitting.current = false;
       setTurnstileToken("");
       if (turnstileWidgetId.current != null && window.turnstile) window.turnstile.reset(turnstileWidgetId.current);
     }
@@ -916,58 +1020,78 @@ function CommissionForm({ text, language }) {
     }
   };
 
+  const fieldAttributes = name => ({
+    maxLength: fieldLimits[name],
+    "aria-invalid": fieldErrors[name] ? true : undefined,
+    "aria-describedby": fieldErrors[name] ? `brief-${name}-error` : undefined,
+  });
+  const renderFieldError = name => fieldErrors[name] ? (
+    <small className="field-error" id={`brief-${name}-error`}>
+      {fieldErrors[name] === "email" ? emailText.invalidEmail : fieldErrors[name] === "length"
+        ? feedback.length.replace("{limit}", fieldLimits[name]) : feedback.required}
+    </small>
+  ) : null;
+
   const renderSelect = (name, label, items, required = false) => (
     <label className="field">
       <span>{label}{required ? " *" : ""}</span>
-      <select name={name} value={form[name]} required={required} onChange={(event) => setValue(name, event.target.value)}>
+      <select name={name} {...fieldAttributes(name)} value={form[name]} required={required} onChange={(event) => setValue(name, event.target.value)}>
         <option value="">{selectPrompts[language] || selectPrompts.en}</option>
         {form[name] && !items.includes(form[name]) ? <option value={form[name]}>{form[name]}</option> : null}
         {items.map((item) => <option key={item} value={item}>{item}</option>)}
       </select>
+      {renderFieldError(name)}
     </label>
   );
 
+  if (isProduct && !context) return null;
+
   return (
-    <form className="commission-form" onSubmit={submit} noValidate>
-      <div className="form-heading"><h2>{text.commission.formTitle}</h2><p>{hasInquiryEndpoint ? text.commission.formBody : emailText.body}</p></div>
-      <div className="form-grid">
-        <label className="field"><span>{text.commission.fields.name} *</span><input name="name" autoComplete="name" value={form.name} onChange={(event) => setValue("name", event.target.value)} placeholder={text.commission.placeholders.name} required /></label>
-        <label className="field"><span>{text.commission.fields.company} *</span><input name="company" autoComplete="organization" value={form.company} onChange={(event) => setValue("company", event.target.value)} placeholder={text.commission.placeholders.company} required /></label>
-        <label className="field"><span>{text.commission.fields.email} *</span><input type="email" name="email" autoComplete="email" value={form.email} onChange={(event) => setValue("email", event.target.value)} placeholder={text.commission.placeholders.email} required /></label>
-        <label className="field"><span>{text.commission.fields.phone}</span><input name="phone" autoComplete="tel" value={form.phone} onChange={(event) => setValue("phone", event.target.value)} placeholder={text.commission.placeholders.phone} /></label>
-        {renderSelect("projectType", text.commission.fields.projectType, text.commission.options.projectTypes, true)}
-        <label className="field"><span>{text.commission.fields.location} *</span><input name="location" value={form.location} onChange={(event) => setValue("location", event.target.value)} placeholder={text.commission.placeholders.location} required /></label>
-        {renderSelect("material", text.commission.fields.material, text.commission.options.materials)}
+    <form ref={formRef} className={`commission-form${isProduct ? " product-inquiry-form" : ""}`} onSubmit={submit} noValidate aria-busy={status.type === "loading"}>
+      <div className="form-heading"><h2>{isProduct ? shortText.title : text.commission.formTitle}</h2><p>{isProduct ? shortText.body : hasInquiryEndpoint ? text.commission.formBody : emailText.body}</p>{isProduct ? <p>{shortText.selected}: <strong>{product?.title || context.title}</strong></p> : null}</div>
+      {!isProduct ? <CommissionEvidence language={language} /> : null}
+      <fieldset className="form-grid" disabled={status.type === "loading"}>
+        <legend className="sr-only">{isProduct ? shortText.title : text.commission.formTitle}</legend>
+        <label className="field"><span>{text.commission.fields.name} *</span><input name="name" {...fieldAttributes("name")} autoComplete="name" value={form.name} onChange={(event) => setValue("name", event.target.value)} placeholder={text.commission.placeholders.name} required />{renderFieldError("name")}</label>
+        <label className="field"><span>{text.commission.fields.company} *</span><input name="company" {...fieldAttributes("company")} autoComplete="organization" value={form.company} onChange={(event) => setValue("company", event.target.value)} placeholder={text.commission.placeholders.company} required />{renderFieldError("company")}</label>
+        <label className="field"><span>{text.commission.fields.email} *</span><input type="email" name="email" {...fieldAttributes("email")} autoComplete="email" value={form.email} onChange={(event) => setValue("email", event.target.value)} placeholder={text.commission.placeholders.email} required />{renderFieldError("email")}</label>
+        {!isProduct ? <><label className="field"><span>{text.commission.fields.phone}</span><input type="tel" name="phone" {...fieldAttributes("phone")} autoComplete="tel" value={form.phone} onChange={(event) => setValue("phone", event.target.value)} placeholder={text.commission.placeholders.phone} />{renderFieldError("phone")}</label>
+        {renderSelect("projectType", text.commission.fields.projectType, text.commission.options.projectTypes, true)}</> : null}
+        <label className="field"><span>{text.commission.fields.location} *</span><input name="location" {...fieldAttributes("location")} value={form.location} onChange={(event) => setValue("location", event.target.value)} placeholder={text.commission.placeholders.location} required />{renderFieldError("location")}</label>
+        {!isProduct ? <>{renderSelect("material", text.commission.fields.material, text.commission.options.materials)}
         {renderSelect("scale", text.commission.fields.scale, text.commission.options.scales)}
-        <label className="field"><span>{text.commission.fields.timeline}</span><input name="timeline" value={form.timeline} onChange={(event) => setValue("timeline", event.target.value)} placeholder={text.commission.placeholders.timeline} /></label>
-        {renderSelect("installation", text.commission.fields.installation, text.commission.options.installation)}
-        <label className="field field-wide"><span>{text.commission.fields.message} *</span><textarea name="message" rows="6" value={form.message} onChange={(event) => setValue("message", event.target.value)} placeholder={text.commission.placeholders.message} required /></label>
-        {hasInquiryEndpoint ? (
+        <label className="field"><span>{text.commission.fields.timeline}</span><input name="timeline" {...fieldAttributes("timeline")} value={form.timeline} onChange={(event) => setValue("timeline", event.target.value)} placeholder={text.commission.placeholders.timeline} />{renderFieldError("timeline")}</label>
+        {renderSelect("installation", text.commission.fields.installation, text.commission.options.installation)}</> : null}
+        <label className="field field-wide"><span>{isProduct ? shortText.message : text.commission.fields.message} *</span><textarea name="message" {...fieldAttributes("message")} rows={isProduct ? 3 : 6} value={form.message} onChange={(event) => setValue("message", event.target.value)} placeholder={isProduct ? shortText.placeholder : text.commission.placeholders.message} required />{renderFieldError("message")}</label>
+        {!isProduct ? hasInquiryEndpoint ? (
           <label className="field field-wide file-field">
             <span>{text.commission.fields.files}</span>
-            <input type="file" name="files" accept=".pdf,.jpg,.jpeg,.png,.webp,.dwg" multiple onChange={handleFiles} />
+            <input type="file" name="files" aria-label={text.commission.fields.files} accept=".pdf,.jpg,.jpeg,.png,.webp,.dwg" multiple onChange={handleFiles} aria-invalid={fileError ? true : undefined} aria-describedby={fileError ? "brief-files-error" : "brief-files-hint"} />
             <span className="file-control"><FileArrowUp size={22} aria-hidden="true" /><strong>{text.commission.upload}</strong><small>{files.length ? files.map((file) => file.name).join(", ") : `${text.commission.uploadHint} ${deliveryCopy[language]?.total || deliveryCopy.en.total}`}</small></span>
-            {fileError ? <small className="field-error">{fileError}</small> : null}
+            <small id="brief-files-hint" className="sr-only">{feedback.files}</small>
+            {fileError ? <small id="brief-files-error" className="field-error" role="alert">{feedback.files}</small> : null}
           </label>
         ) : (
           <div className="field field-wide file-field"><span>{text.commission.fields.files}</span><div className="file-control is-email"><EnvelopeSimple size={22} aria-hidden="true" /><strong>{businessContact.email}</strong><small>{emailText.files}</small></div></div>
-        )}
-        <label className="honeypot" aria-hidden="true"><span>Website</span><input name="website" tabIndex="-1" autoComplete="off" value={form.website} onChange={(event) => setValue("website", event.target.value)} /></label>
-      </div>
+        ) : null}
+        <label className="honeypot" aria-hidden="true" inert><span>Website</span><input name="website" tabIndex="-1" autoComplete="off" value={form.website} onChange={(event) => setValue("website", event.target.value)} /></label>
+      </fieldset>
       {hasInquiryEndpoint ? <div className="commission-turnstile" ref={turnstileContainer} /> : null}
       <p className="commission-privacy">{(privacyCopy[language] || privacyCopy.en).note} <a href="/privacy/" target="_blank" rel="noreferrer" hrefLang="en">{(privacyCopy[language] || privacyCopy.en).link} (EN)</a></p>
-      <button className="form-submit" type="submit" disabled={status.type === "loading"}>
+      <p className="commission-review-scope">{isProduct ? shortText.scope : proof.scope}</p>
+      <button className="form-submit" type="submit" disabled={status.type === "loading" || status.type === "success"}>
         {status.type === "loading" ? <SpinnerGap className="spin" size={21} /> : <ArrowRight size={21} />}
-        {status.type === "loading" ? text.commission.submitting : hasInquiryEndpoint ? text.commission.submit : emailText.submit}
+        {status.type === "loading" ? text.commission.submitting : status.type === "success" ? feedback.sent : hasInquiryEndpoint ? isProduct ? shortText.submit : text.commission.submit : emailText.submit}
       </button>
+      {isProduct ? <p className="commission-full-link"><a href={`/commission/?route=${context.inquiryId}`}>{shortText.full}<ArrowUpRight size={18} aria-hidden="true" /></a></p> : null}
       {status.type === "prepared" ? (
         <div className="form-status is-prepared" role="status"><EnvelopeSimple size={24} /><div><strong>{emailText.preparedTitle}</strong><p>{emailText.preparedBody}</p><a href={emailBrief.href}>{emailText.reopen}</a><button type="button" onClick={copyBrief}>{copied ? emailText.copied : emailText.copy}</button>{copyFailed ? <textarea readOnly value={emailBrief.body} aria-label={emailText.manualCopy} /> : null}</div></div>
       ) : null}
       {status.type === "error" ? (
-        <div className="form-status is-error" role="alert"><WarningCircle size={24} /><div><strong>{text.commission.errorTitle}</strong><p>{status.message || text.commission.errorBody}</p><a href={emailBrief.href}>{emailText.reopen}</a><a href={whatsappHref(followupMessage)} target="_blank" rel="noreferrer">{text.commission.whatsapp}</a></div></div>
+        <div className="form-status is-error" role="alert"><WarningCircle size={24} /><div><strong>{text.commission.errorTitle}</strong><p>{feedback[status.message] || text.commission.errorBody}</p><a href={emailBrief.href}>{emailText.reopen}</a><a href={whatsappHref(followupMessage)} target="_blank" rel="noreferrer">{text.commission.whatsapp}</a></div></div>
       ) : null}
       {status.type === "success" ? (
-        <div className="form-status is-success" role="status"><Check size={24} weight="bold" /><div><strong>{text.commission.successTitle}</strong><p>{deliveryCopy[language]?.success || deliveryCopy.en.success}</p>{status.reference ? <p>{text.commission.reference}: {status.reference}</p> : null}<div><a href={whatsappHref(followupMessage)} target="_blank" rel="noreferrer"><WhatsappLogo size={18} weight="fill" />{text.commission.whatsapp}</a><a href={`mailto:${businessContact.email}`}><EnvelopeSimple size={18} />{text.commission.email}</a></div></div></div>
+        <div className="form-status is-success" role="status"><Check size={24} weight="bold" /><div><strong>{text.commission.successTitle}</strong><p>{isProduct ? shortText.success : deliveryCopy[language]?.success || deliveryCopy.en.success}</p>{status.reference ? <p>{text.commission.reference}: {status.reference}</p> : null}<div><a href={whatsappHref(followupMessage)} target="_blank" rel="noreferrer"><WhatsappLogo size={18} weight="fill" />{text.commission.whatsapp}</a><a href={`mailto:${businessContact.email}`}><EnvelopeSimple size={18} />{text.commission.email}</a><a href="/projects/#project-evidence-title">{proof.next}<ArrowUpRight size={18} aria-hidden="true" /></a></div></div></div>
       ) : null}
     </form>
   );
@@ -996,7 +1120,7 @@ function CommissionPage({ text, language }) {
   );
 }
 
-function SiteFooter({ text }) {
+function SiteFooter({ text, language }) {
   const routeLinks = ["garden-sculpture", "resort-sculpture", "public-art", "custom-sculpture"];
   const materialLinks = ["bronze-sculpture", "stainless-steel-sculpture", "stone-sculpture", "materials"];
   return (
@@ -1007,7 +1131,7 @@ function SiteFooter({ text }) {
         <p>{text.footer.body}</p>
       </div>
       <div className="footer-links">
-        <div><h3>{text.footer.routes}</h3>{routeLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
+        <div><h3>{text.footer.routes}</h3><a href="/sculptures/">{(catalogUi[language] || catalogUi.en).nav}</a>{routeLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
         <div><h3>{text.footer.materials}</h3>{materialLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
         <div><h3>{text.footer.studio}</h3><a href="/custom-outdoor-sculpture-supplier/">Supplier route</a><a href="/process/">{text.nav.process}</a><a href="/projects/">{text.nav.projects}</a><a href="/faq/">{text.routeNames.faq}</a><a href="/insights/">Insights</a></div>
         <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
@@ -1036,16 +1160,23 @@ export function App({ initialRoute }) {
   }, [language, option.dir, option.htmlLang]);
 
   useEffect(() => {
-    if (route || !window.location.hash) return undefined;
-    const targetId = decodeURIComponent(window.location.hash.slice(1));
-    const scrollTimer = window.setTimeout(() => {
+    if (!window.location.hash) return undefined;
+    let targetId;
+    try { targetId = decodeURIComponent(window.location.hash.slice(1)); } catch { return undefined; }
+    // Native hash navigation can run while the static backup is hidden and
+    // before React adds the destination. Locate it after this render commits.
+    const scrollFrame = window.requestAnimationFrame(() => {
       document.getElementById(targetId)?.scrollIntoView({ block: "start" });
-    }, 180);
-    return () => window.clearTimeout(scrollTimer);
-  }, [route]);
+    });
+    return () => window.cancelAnimationFrame(scrollFrame);
+  }, [route, language]);
 
   const page = route === "commission"
     ? <CommissionPage text={text} language={language} />
+    : route === "sculptures"
+      ? <SculptureCollection language={language} />
+    : route.startsWith("sculptures/")
+      ? <SculptureDetail slug={route.slice("sculptures/".length)} language={language} renderInquiry={product => <CommissionForm key={`product:${product.slug}`} mode="product" product={product} text={text} language={language} />} />
     : routeKeys.includes(route)
       ? <SecondaryPage route={route} text={text} language={language} />
       : <HomePage text={text} language={language} />;
@@ -1054,7 +1185,7 @@ export function App({ initialRoute }) {
     <main className="site-shell" id="top">
       <SiteHeader language={language} setLanguage={setLanguage} text={text} />
       {page}
-      <SiteFooter text={text} />
+      <SiteFooter text={text} language={language} />
     </main>
   );
 }

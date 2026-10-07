@@ -25,13 +25,82 @@
     <meta name="twitter:image" content="https://weieryangart.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="WEIERYANG sculpture material desk with stone, bronze, finish samples, and project drawings" />
     <style>
-      html.js .seo-fallback {
+      html.js .seo-static-frame {
         display: none;
       }
 
       html.js #root {
         opacity: 1;
       }
+
+      .seo-static-frame .wy-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #0b0b09;
+        border-bottom: 1px solid #34332d;
+      }
+
+      .seo-static-frame .wy-top-inner,
+      .seo-static-frame .wy-footer-inner {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+
+      .seo-static-frame .wy-top-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        padding: 20px 0;
+      }
+
+      .seo-static-frame .wy-brand {
+        color: #f0eee8;
+        font-size: 24px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .seo-static-frame .wy-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .seo-static-frame .wy-nav a,
+      .seo-static-frame .wy-footer a {
+        color: #e39a7e;
+        line-height: 1.7;
+      }
+
+      .seo-static-frame .wy-footer {
+        padding: 42px 0;
+        border-top: 1px solid #34332d;
+      }
+
+      .seo-static-frame .wy-footer-inner {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+        gap: 28px;
+      }
+
+      .seo-static-frame .wy-footer h2 { font-size: 18px; }
+      .seo-static-frame .wy-footer p { color: #b7b3aa; line-height: 1.7; }
+      .seo-static-frame .wy-footer a { display: block; }
+
+      .seo-planning-table { overflow-x: auto; }
+      .seo-planning-table table { width: 100%; min-width: 640px; border-collapse: collapse; }
+      .seo-planning-table th, .seo-planning-table td { padding: 14px; border: 1px solid #34332d; text-align: left; line-height: 1.7; }
+      .seo-commission-proof figure { max-width: 620px; margin: 20px 0; }
+      .seo-commission-proof img { display: block; max-width: 100%; height: auto; }
+      .seo-catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 28px; }
+      .seo-catalog-card { border: 1px solid #34332d; padding: 20px; }
+      .seo-catalog-card figure, .seo-catalog-gallery figure { margin: 20px 0; }
+      .seo-catalog-card img, .seo-catalog-gallery img { display: block; width: 100%; height: auto; object-fit: contain; }
+      .seo-catalog-gallery { max-width: 880px; }
 
       .seo-fallback {
         width: min(1120px, calc(100% - 40px));
@@ -156,7 +225,7 @@
             "@type": "WebPage",
             "@id": "https://weieryangart.com/custom-sculpture/#page",
             "name": "Custom Sculpture | WEIERYANG Sculpture Studio",
-            "headline": "Custom sculpture starts with site facts, not a catalog shape",
+            "headline": "Custom sculpture starts with site facts, not a catalogue shape",
             "description": "Custom sculpture commissions for architects, landscape designers, hospitality developers, and public art teams.",
             "url": "https://weieryangart.com/custom-sculpture/",
             "isPartOf": {
@@ -174,6 +243,7 @@
               "@id": "https://weieryangart.com/seo-media/studio-material-desk.webp#image"
             },
             "inLanguage": "en",
+            "dateModified": "2026-10-07",
             "mainEntity": {
               "@id": "https://weieryangart.com/custom-sculpture/#service"
             }
@@ -190,7 +260,7 @@
               {
                 "@type": "ListItem",
                 "position": 2,
-                "name": "Custom sculpture starts with site facts, not a catalog shape",
+                "name": "Custom sculpture starts with site facts, not a catalogue shape",
                 "item": "https://weieryangart.com/custom-sculpture/"
               }
             ]
@@ -231,12 +301,12 @@
           {
             "@type": "Service",
             "@id": "https://weieryangart.com/custom-sculpture/#service",
-            "name": "Custom sculpture starts with site facts, not a catalog shape",
+            "name": "Custom sculpture starts with site facts, not a catalogue shape",
             "provider": {
               "@id": "https://weieryangart.com/#organization"
             },
             "areaServed": "Worldwide",
-            "serviceType": "Custom sculpture starts with site facts, not a catalog shape",
+            "serviceType": "Custom sculpture starts with site facts, not a catalogue shape",
             "description": "Custom sculpture commissions for architects, landscape designers, hospitality developers, and public art teams."
           },
           {
@@ -248,7 +318,7 @@
                 "name": "What should I send before requesting a quote?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Send site photos, plan dimensions, desired scale, material direction, destination country, deadline, and any installation constraints."
+                  "text": "Send site photos or drawings, approximate dimensions, material direction, destination country, installation access and the required completion date."
                 }
               },
               {
@@ -256,23 +326,15 @@
                 "name": "Can WEIERYANG review confidential drawings?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. Confidential drawings can be reviewed privately, and an NDA can be discussed before deeper technical review."
+                  "text": "Yes. Project drawings can be reviewed privately, and an NDA can be discussed before detailed technical review."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Which materials are common for outdoor sculpture?",
+                "name": "Do you support overseas delivery and installation?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Common routes include bronze, 316L stainless steel, stone, corten steel, and hybrid combinations selected for exposure, touch, and maintenance."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do you support overseas delivery?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "The commission route can include segmentation, trial assembly, export packing, documents, and installation guidance for overseas projects."
+                  "text": "The delivery route can include segmentation, trial assembly, export packing, documentation and installation guidance for the local site team."
                 }
               }
             ]
@@ -284,10 +346,13 @@
   </head>
   <body style="margin:0;background:#0b0b09;color:#f0eee8">
     <div id="root">
-      <main class="seo-fallback" data-seo-fallback="true">
-      <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Custom sculpture starts with site facts, not a catalog shape</span></nav>
-      <h1>Custom sculpture starts with site facts, not a catalog shape</h1>
-      <p>A serious custom sculpture commission starts with site use, viewing distance, climate, material exposure, installation access, and delivery route. WEIERYANG supports architects, landscape designers, hospitality developers, and public art teams who need project-specific sculpture rather than standard product selection.</p>
+      <div class="seo-static-frame">
+        <header class="wy-top"><div class="wy-top-inner"><a class="wy-brand" href="/" aria-label="WEIERYANG home">WEIERYANG</a><nav class="wy-nav" aria-label="Main navigation"><a href="/sculptures/">Collection</a><a href="/resort-sculpture/">Hotel sculpture</a><a href="/projects/">Projects &amp; studies</a><a href="/materials/">Materials</a><a href="/process/">Process</a><a href="/insights/">Insights</a><a href="mailto:tangkelian@weieryang.com">Contact Us</a><a href="/commission/?route=resort-sculpture">Project brief</a><span class="wy-language-label" lang="en" title="This guide is in English. Other interface languages are available on the studio homepage.">EN</span></nav></div></header>
+        <main class="seo-fallback" data-seo-fallback="true">
+      <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Custom sculpture starts with site facts, not a catalogue shape</span></nav>
+      <h1>Custom sculpture starts with site facts, not a catalogue shape</h1>
+      <p>A reliable commission starts with site use, viewing distance, climate, material exposure, installation access and the delivery route. WEIERYANG supports architects, landscape designers, hospitality developers and public-art teams with project-specific work.</p>
+
       <section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
         <h2>Material and process evidence</h2>
         <div class="seo-evidence-grid">
@@ -306,15 +371,15 @@
 
       <section>
         <h2>Project types</h2>
-        <ul><li>Garden and estate commissions</li><li>Public landscape sculpture</li><li>Resort, hotel, and water feature projects</li></ul>
+        <ul><li>Garden and estate commissions</li><li>Public landscape sculpture</li><li>Resort, hotel and water-feature projects</li></ul>
       </section>
       <section>
         <h2>Design inputs</h2>
-        <ul><li>Sketches, drawings, CAD, or site photos</li><li>Material and finish direction</li><li>Country, deadline, and installation context</li></ul>
+        <ul><li>Sketches, CAD, drawings or site photographs</li><li>Material and finish direction</li><li>Country, deadline and installation context</li></ul>
       </section>
       <section>
         <h2>Execution path</h2>
-        <ul><li>Concept and material route</li><li>Engineering and workshop proof</li><li>Packing, export, and installation guidance</li></ul>
+        <ul><li>Concept and material route</li><li>Engineering and workshop proof</li><li>Packing, export and installation guidance</li></ul>
       </section>
 
 
@@ -322,16 +387,25 @@
 
 
 
+      <nav aria-label="Related sculpture routes"><h2>Continue the project review</h2><p><a href="/insights/how-to-commission-custom-outdoor-sculpture/">How to commission</a></p><p><a href="/process/">Process</a></p><p><a href="/commission/">Private brief</a></p></nav>
       <section>
         <h2>FAQ</h2>
-        <article><h3>What should I send before requesting a quote?</h3><p>Send site photos, plan dimensions, desired scale, material direction, destination country, deadline, and any installation constraints.</p></article><article><h3>Can WEIERYANG review confidential drawings?</h3><p>Yes. Confidential drawings can be reviewed privately, and an NDA can be discussed before deeper technical review.</p></article><article><h3>Which materials are common for outdoor sculpture?</h3><p>Common routes include bronze, 316L stainless steel, stone, corten steel, and hybrid combinations selected for exposure, touch, and maintenance.</p></article><article><h3>Do you support overseas delivery?</h3><p>The commission route can include segmentation, trial assembly, export packing, documents, and installation guidance for overseas projects.</p></article>
+        <article><h3>What should I send before requesting a quote?</h3><p>Send site photos or drawings, approximate dimensions, material direction, destination country, installation access and the required completion date.</p></article><article><h3>Can WEIERYANG review confidential drawings?</h3><p>Yes. Project drawings can be reviewed privately, and an NDA can be discussed before detailed technical review.</p></article><article><h3>Do you support overseas delivery and installation?</h3><p>The delivery route can include segmentation, trial assembly, export packing, documentation and installation guidance for the local site team.</p></article>
       </section>
+
       <section>
         <h2>Start a private sculpture brief</h2>
         <p>Send drawings, site photos, scale, material direction, destination country, and schedule to begin a serious review.</p>
         <p><a href="/commission/">Open the commission brief</a></p>
       </section>
     </main>
+        <footer class="wy-footer"><div class="wy-footer-inner">
+<div><h2>WEIERYANG</h2><p>Custom sculpture for hotels, resorts and public spaces. Design, fabrication, export packing and overseas installation guidance.</p><p>U.S. project inquiries welcome. Delivery and local installation responsibilities are agreed for each commission.</p></div>
+<div><h2>Sculpture routes</h2><a href="/sculptures/">Custom sculpture collection</a><a href="/resort-sculpture/">Hotel &amp; resort sculpture</a><a href="/custom-sculpture/">Custom sculpture</a><a href="/garden-sculpture/">Garden sculpture</a><a href="/public-art/">Public art</a><a href="/water-feature-sculpture/">Water feature sculpture</a></div>
+<div><h2>Materials &amp; evidence</h2><a href="/stainless-steel-sculpture/">Stainless steel</a><a href="/bronze-sculpture/">Bronze</a><a href="/stone-sculpture/">Stone</a><a href="/projects/">Projects &amp; reference studies</a><a href="/process/">Process</a><a href="/insights/">Buyer guides</a><a href="/faq/">Commission FAQ</a></div>
+<div><h2>Project entry</h2><a href="/custom-outdoor-sculpture-supplier/#us-procurement">U.S. procurement checklist</a><a href="/commission/">Request a project review</a><a href="mailto:tangkelian@weieryang.com">Contact Us — email</a><a href="https://wa.me/8613317178019" rel="noreferrer" target="_blank">WhatsApp (optional)</a><a href="/privacy/">Privacy &amp; project information</a><p>weieryangart.com</p></div>
+</div></footer>
+      </div>
     </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

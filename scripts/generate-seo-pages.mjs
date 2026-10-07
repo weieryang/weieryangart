@@ -1,8 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { hospitalityService, hospitalitySections, hospitalityEntry } from "../src/hospitalityContent.js";
+import { hospitalitySections, hospitalityEntry, hospitalityPlanning } from "../src/hospitalityContent.js";
 import { routeSeoContent } from "../src/seoContent.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
+import { commissionEvidenceImage, commissionProof } from "../src/commissionProof.js";
+import { staticHeader, staticFooter } from "./static-frame.mjs";
+import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
@@ -295,13 +298,6 @@ const preservedRoutes = [
   { url: `${site}/insights/landscape-sculpture-quote-brief/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["studioDesk", "structuralStudy"] },
 ];
 
-const sharedFaq = [
-  ["What should I send before requesting a quote?", "Send site photos, plan dimensions, desired scale, material direction, destination country, deadline, and any installation constraints."],
-  ["Can WEIERYANG review confidential drawings?", "Yes. Confidential drawings can be reviewed privately, and an NDA can be discussed before deeper technical review."],
-  ["Which materials are common for outdoor sculpture?", "Common routes include bronze, 316L stainless steel, stone, corten steel, and hybrid combinations selected for exposure, touch, and maintenance."],
-  ["Do you support overseas delivery?", "The commission route can include segmentation, trial assembly, export packing, documents, and installation guidance for overseas projects."],
-];
-
 const pages = [
   {
     slug: "",
@@ -317,7 +313,6 @@ const pages = [
       ["Material proof", ["Bronze for warmth, patina, and touch", "316L stainless steel for public and coastal exposure", "Stone and hybrid routes for grounded outdoor work"]],
       ["Commission path", ["Site review before style", "Material and scale decision before quotation", "Engineering, fabrication, packing, and installation guidance before delivery"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "commission",
@@ -333,7 +328,6 @@ const pages = [
       ["What WEIERYANG reviews", ["Site condition and approach sequence", "Material exposure and finish samples", "Structure, segmentation, packing, and installation logic"]],
       ["Best-fit inquiries", ["Garden and estate sculpture", "Resort arrival and water feature sculpture", "Permanent public landscape art"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "garden-sculpture",
@@ -348,7 +342,6 @@ const pages = [
       ["Material directions", ["Bronze and stone for grounded warmth", "Brushed stainless steel for controlled reflection", "Corten and granite for weathered landscape edges"]],
       ["Custom process", ["Read photos, drawings, and access routes", "Resolve scale, base, drainage, and finish", "Plan fabrication, packing, export, and installation support"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "public-art",
@@ -363,7 +356,6 @@ const pages = [
       ["Technical concerns", ["Wind, touch, weathering, and cleaning", "Internal structure and foundation assumptions", "Export packing and installation access"]],
       ["Review materials", ["Site drawings and photos", "Target dimensions and viewing distance", "Local climate and deadline"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "resort-sculpture",
@@ -383,12 +375,7 @@ const pages = [
       ["Design and material decisions", ["Approach distance, facade mass and guest circulation", "Mirror or brushed stainless steel, bronze, stone and hybrid routes", "Lighting, water exposure, touch, cleaning and maintenance access"]],
       ["Fabrication and delivery scope", ["Design development, approved samples and structural coordination", "Workshop fabrication, trial assembly, finish review and export packing", "Overseas installation guidance coordinated with the local project team", "For quotation: site plans, approach photos, target scale, destination and installation date"]],
     ],
-    faq: [
-      ["What is included in a custom resort or hotel sculpture scope?", "Depending on the commission, the scope can include site and scale review, concept development, material and finish samples, structural coordination, sculpture fabrication, trial assembly, export packing and overseas installation guidance. Final responsibilities are agreed with the local project team."],
-      ["What should a hotel developer send before requesting a sculpture quote?", "Send a site plan, photographs from vehicle and pedestrian approaches, target dimensions, material direction, destination country, opening or installation date, foundation information and access constraints."],
-      ["Which materials work for hotel entrance and resort landscape sculpture?", "Common routes include brushed or mirror stainless steel, bronze, stone and hybrid systems. The correct choice depends on climate, salt or water exposure, touch, lighting, cleaning, maintenance and the intended visual weight."],
-      ["Can WEIERYANG support overseas resort sculpture installation?", "The delivery route can include segmentation, trial assembly, export packing, lifting information and installation guidance for the local contractor. Site engineering and statutory approval remain coordinated with qualified local professionals."],
-    ],
+
   },
   {
     slug: "water-feature-sculpture",
@@ -403,7 +390,6 @@ const pages = [
       ["Key checks", ["Splash radius and drainage", "Reflection, glare, and night lighting", "Cleaning and maintenance access"]],
       ["Useful first brief", ["Pool or fountain drawings", "Water depth and service access", "Preferred metal or stone route"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "bronze-sculpture",
@@ -418,7 +404,6 @@ const pages = [
       ["Hybrid routes", ["Bronze with black stone", "Bronze with brushed stainless steel", "Bronze details on water feature sculpture"]],
       ["Project evidence", ["Finish samples", "Base and structure review", "Packing and export planning"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "stainless-steel-sculpture",
@@ -433,7 +418,6 @@ const pages = [
       ["Technical checks", ["Stainless grade and exposure", "Welds, panels, and internal structure", "Reflection, glare, and surface direction"]],
       ["Related products", ["Outdoor mirror stainless sculpture", "Stainless water feature sculpture", "Animal and abstract stainless forms"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "stone-sculpture",
@@ -448,7 +432,6 @@ const pages = [
       ["Site factors", ["Base condition and foundation", "Water exposure and drainage", "Texture, touch, and maintenance"]],
       ["Brief requirements", ["Desired stone tone or texture", "Access for lifting and installation", "Target scale and destination country"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "custom-sculpture",
@@ -463,7 +446,6 @@ const pages = [
       ["Design inputs", ["Sketches, drawings, CAD, or site photos", "Material and finish direction", "Country, deadline, and installation context"]],
       ["Execution path", ["Concept and material route", "Engineering and workshop proof", "Packing, export, and installation guidance"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "projects",
@@ -480,7 +462,6 @@ const pages = [
       ["Landmark construction", ["Segmented wing structure", "Repeated stainless steel members", "Crane-assisted lifting and site alignment"]],
       ["Evidence boundary", ["Commercial-atrium reference is not claimed as a WEIERYANG commission", "Landmark images are verified construction-phase records", "Undisclosed client, city and dimensions are not inferred"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "process",
@@ -495,7 +476,6 @@ const pages = [
       ["Resolve", ["Material route and scale", "Structure, base, segmentation, and finish", "Surface samples and review drawings"]],
       ["Deliver", ["Workshop quality control", "Trial assembly and packing method", "Export documents and installation guidance"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "materials",
@@ -510,7 +490,6 @@ const pages = [
       ["Stainless steel", ["316L options for coastal exposure", "Brushed or controlled reflection", "Structure, welds, and public durability"]],
       ["Stone and hybrids", ["Mass, texture, and grounding", "Stone bases and plinths", "Drainage and weathering behavior"]],
     ],
-    faq: sharedFaq,
   },
   {
     slug: "faq",
@@ -525,23 +504,33 @@ const pages = [
       ["During review", ["The studio checks site, material, structure, packing, and maintenance", "Confidential drawings can be handled privately", "Material samples can be discussed for serious projects"]],
       ["After quotation", ["Fabrication route and finish control are confirmed", "Packing and export details are planned", "Installation guidance is prepared for local teams"]],
     ],
-    faq: [
-      ...sharedFaq,
-      ["Can I ask for sculpture similar to products on the MIC site?", "Yes. Product references such as stainless steel water features, bronze garden sculpture, stone sculpture, animal sculpture, and abstract forms can guide the route, but the final work should be adapted to the site."],
-      ["Is one inspiration image enough for a quotation?", "It is enough for a first conversation, but a reliable quotation needs scale, site condition, material direction, destination country, and installation context."],
-    ],
+
   },
 ];
 
-// One content source for the hospitality page, visible FAQ and JSON-LD.
-const hotelPage = pages.find(page => page.slug === "resort-sculpture");
-Object.assign(hotelPage, {
-  h1: hospitalityService.title, intro: hospitalityService.intro,
-  sections: hospitalityService.groups, faq: hospitalityService.faq,
-  audience: "U.S. hotel owners, resort developers, interior designers, art consultants and hospitality procurement teams",
-});
-const projectPage = pages.find(page => page.slug === "projects");
-Object.assign(projectPage, { h1: routeSeoContent.projects.title, intro: routeSeoContent.projects.intro });
+pages.push(...sculptureSeoPages);
+
+// The React route, static fallback and structured data share their buyer copy.
+// Keep metadata here while avoiding separate FAQ and related-link variants.
+for (const page of pages) {
+  const content = routeSeoContent[page.slug];
+  if (!content) continue;
+  Object.assign(page, {
+    h1: content.title, intro: content.intro, sections: content.groups,
+    faq: content.faq, related: content.related,
+  });
+}
+pages.find(page => page.slug === "resort-sculpture").audience =
+  "U.S. hotel owners, resort developers, interior designers, art consultants and hospitality procurement teams";
+
+// Only these app routes changed in this release. Preserved article dates below
+// continue to describe their editorial updates, not the date of the build.
+const updatedRoutes = new Set([
+  "", "commission", "garden-sculpture", "public-art", "resort-sculpture",
+  "water-feature-sculpture", "bronze-sculpture", "stainless-steel-sculpture",
+  "stone-sculpture", "custom-sculpture", "projects", "process", "materials", "faq",
+]);
+for (const page of pages) if (updatedRoutes.has(page.slug)) page.lastmod = "2026-10-07";
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 
@@ -562,6 +551,7 @@ function imageUrl(image) {
 }
 
 function imagesFor(page) {
+  if (page.images) return page.images;
   const keys = routeImageKeys[page.slug] || routeImageKeys[""];
   return keys.map((key) => evidenceImages[key]);
 }
@@ -579,8 +569,11 @@ function breadcrumb(page) {
   const items = [
     { "@type": "ListItem", position: 1, name: "Home", item: `${site}/` },
   ];
+  if (page.catalogKind === "detail") {
+    items.push({ "@type": "ListItem", position: 2, name: "Custom sculpture collection", item: `${site}/sculptures/` });
+  }
   if (page.slug) {
-    items.push({ "@type": "ListItem", position: 2, name: page.h1, item: urlFor(page) });
+    items.push({ "@type": "ListItem", position: items.length + 1, name: page.h1, item: urlFor(page) });
   }
   return { "@type": "BreadcrumbList", itemListElement: items };
 }
@@ -634,11 +627,12 @@ function pageSchema(page) {
       inLanguage: "en",
     },
     {
-      "@type": page.type === "Service" ? "WebPage" : page.type,
+      "@type": ["Service", "FAQPage"].includes(page.type) ? "WebPage" : page.type,
       "@id": `${urlFor(page)}#page`,
       name: page.title,
       headline: page.h1,
       description: page.description,
+      ...(page.catalogKind ? { abstract: page.intro } : {}),
       url: urlFor(page),
       isPartOf: { "@id": `${site}/#website` },
       about: { "@id": `${site}/#organization` },
@@ -654,6 +648,11 @@ function pageSchema(page) {
     breadcrumb(page),
     ...imageObjects,
   ];
+
+  if (page.catalogKind === "index") {
+    graph[2].mainEntity = { "@id": `${urlFor(page)}#collection` };
+    graph.push(...sculptureSchemaNodes(page, site));
+  }
 
   if (page.slug === "projects") {
     graph[2].about = {
@@ -694,6 +693,8 @@ function pageSchema(page) {
       areaServed: "Worldwide",
       serviceType: page.serviceTypes || page.h1,
       description: page.description,
+      ...(page.disclosure ? { disambiguatingDescription: page.disclosure } : {}),
+      ...(page.product ? { category: page.product.category, image: images.map(image => imageUrl(image)) } : {}),
       ...(page.keywords?.length ? { category: page.keywords } : {}),
       ...(page.audience
         ? { audience: { "@type": "Audience", audienceType: page.audience } }
@@ -717,6 +718,7 @@ function pageSchema(page) {
   }
 
   if (page.faq?.length) {
+    if (page.type === "FAQPage") graph[2].mainEntity = { "@id": `${urlFor(page)}#faq` };
     graph.push({
       "@type": "FAQPage",
       "@id": `${urlFor(page)}#faq`,
@@ -732,6 +734,7 @@ function pageSchema(page) {
 }
 
 function fallback(page) {
+  if (page.catalogKind) return sculptureFallback(page, esc);
   const images = imagesFor(page);
   const projectGuide = page.slug === "projects"
     ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/middle-east-stainless-steel-landmark-sculpture/">Read the Middle East landmark construction guide</a></p>'
@@ -777,10 +780,28 @@ function fallback(page) {
       </section>`
     : "";
 
+  const hotelPlanning = page.slug === "resort-sculpture" ? `<section id="${esc(hospitalityPlanning.id)}">
+      <h2>${esc(hospitalityPlanning.title)}</h2><p>${esc(hospitalityPlanning.answer)}</p>
+      <div class="seo-planning-table"><table>
+        <thead><tr>${hospitalityPlanning.columns.map(column => `<th scope="col">${esc(column)}</th>`).join("")}</tr></thead>
+        <tbody>${hospitalityPlanning.rows.map(row => `<tr><th scope="row">${esc(row.setting)}</th><td>${esc(row.review)}</td><td>${esc(row.team)}</td><td><a href="${esc(row.guide[1])}">${esc(row.guide[0])}</a></td></tr>`).join("")}</tbody>
+      </table></div>
+      <h2>${esc(hospitalityPlanning.resourcesTitle)}</h2>
+      <nav aria-label="Hotel sculpture buyer guides">${hospitalityPlanning.resources.map(([label, description, href]) => `<p><a href="${esc(href)}">${esc(label)}</a> — ${esc(description)}</p>`).join("")}</nav>
+    </section>` : "";
+
+  const proof = commissionProof.en;
+  const commissionEvidence = page.slug === "commission" ? `<section class="seo-commission-proof">
+      <p>${esc(proof.eyebrow)}</p><h2>${esc(proof.title)}</h2><p>${esc(proof.body)}</p>
+      <figure><img src="/seo-media/${esc(commissionEvidenceImage.file)}" alt="${esc(commissionEvidenceImage.alt)}" width="${commissionEvidenceImage.width}" height="${commissionEvidenceImage.height}" loading="lazy" decoding="async" /></figure>
+      <p>${esc(proof.scope)}</p><p><a href="/projects/#project-evidence-title">${esc(proof.action)}</a></p>
+    </section>` : "";
+
   return `<main class="seo-fallback" data-seo-fallback="true">
       <nav aria-label="Breadcrumb"><a href="/">Home</a>${page.slug ? ` / <span>${esc(page.h1)}</span>` : ""}</nav>
       <h1>${esc(page.h1)}</h1>
       <p>${esc(page.intro)}</p>
+      ${hotelPlanning}
       ${evidence}
       ${sections}
       ${projectGuide}
@@ -788,8 +809,10 @@ function fallback(page) {
       ${resortPlanningGuides}
       ${hotelRenovationGuide}
       ${page.slug === "" ? `<section><h2>${esc(hospitalityEntry.en.title)}</h2><p>${esc(hospitalityEntry.en.body)}</p><a href="/resort-sculpture/">Explore hotel sculpture</a></section>` : ""}
-      ${page.slug === "resort-sculpture" ? hospitalitySections.map(section => `<section id="${section.id}"><h2>${esc(section.title)}</h2><p>${esc(section.body)}</p><ul>${section.items.map(item => `<li>${esc(item)}</li>`).join("")}</ul></section>`).join("") + `<nav aria-label="Hotel project resources">${hospitalityService.related.map(([label, href]) => `<p><a href="${esc(href)}">${esc(label)}</a></p>`).join("")}</nav>` : ""}
+      ${page.slug === "resort-sculpture" ? hospitalitySections.map(section => `<section id="${section.id}"><h2>${esc(section.title)}</h2><p>${esc(section.body)}</p><ul>${section.items.map(item => `<li>${esc(item)}</li>`).join("")}</ul></section>`).join("") : ""}
+      ${page.related?.length ? `<nav aria-label="Related sculpture routes"><h2>Continue the project review</h2>${page.related.map(([label, href]) => `<p><a href="${esc(href)}">${esc(label)}</a></p>`).join("")}</nav>` : ""}
       ${faq}
+      ${commissionEvidence}
       <section>
         <h2>Start a private sculpture brief</h2>
         <p>Send drawings, site photos, scale, material direction, destination country, and schedule to begin a serious review.</p>
@@ -800,13 +823,82 @@ function fallback(page) {
 
 function fallbackCss() {
   return `<style>
-      html.js .seo-fallback {
+      html.js .seo-static-frame {
         display: none;
       }
 
       html.js #root {
         opacity: 1;
       }
+
+      .seo-static-frame .wy-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #0b0b09;
+        border-bottom: 1px solid #34332d;
+      }
+
+      .seo-static-frame .wy-top-inner,
+      .seo-static-frame .wy-footer-inner {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+
+      .seo-static-frame .wy-top-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        padding: 20px 0;
+      }
+
+      .seo-static-frame .wy-brand {
+        color: #f0eee8;
+        font-size: 24px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .seo-static-frame .wy-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .seo-static-frame .wy-nav a,
+      .seo-static-frame .wy-footer a {
+        color: #e39a7e;
+        line-height: 1.7;
+      }
+
+      .seo-static-frame .wy-footer {
+        padding: 42px 0;
+        border-top: 1px solid #34332d;
+      }
+
+      .seo-static-frame .wy-footer-inner {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+        gap: 28px;
+      }
+
+      .seo-static-frame .wy-footer h2 { font-size: 18px; }
+      .seo-static-frame .wy-footer p { color: #b7b3aa; line-height: 1.7; }
+      .seo-static-frame .wy-footer a { display: block; }
+
+      .seo-planning-table { overflow-x: auto; }
+      .seo-planning-table table { width: 100%; min-width: 640px; border-collapse: collapse; }
+      .seo-planning-table th, .seo-planning-table td { padding: 14px; border: 1px solid #34332d; text-align: left; line-height: 1.7; }
+      .seo-commission-proof figure { max-width: 620px; margin: 20px 0; }
+      .seo-commission-proof img { display: block; max-width: 100%; height: auto; }
+      .seo-catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 28px; }
+      .seo-catalog-card { border: 1px solid #34332d; padding: 20px; }
+      .seo-catalog-card figure, .seo-catalog-gallery figure { margin: 20px 0; }
+      .seo-catalog-card img, .seo-catalog-gallery img { display: block; width: 100%; height: auto; object-fit: contain; }
+      .seo-catalog-gallery { max-width: 880px; }
 
       .seo-fallback {
         width: min(1120px, calc(100% - 40px));
@@ -935,7 +1027,11 @@ for (const page of pages) {
     `${head(page)}
   <body style="margin:0;background:#0b0b09;color:#f0eee8">
     <div id="root">
-      ${fallback(page)}
+      <div class="seo-static-frame">
+        ${staticHeader}
+        ${fallback(page)}
+        ${staticFooter}
+      </div>
     </div>
     <script type="module" src="${script}"></script>
   </body>

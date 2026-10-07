@@ -2,7 +2,7 @@
 export const hospitalityService = {
   eyebrow: "Custom sculpture for U.S. hospitality projects",
   title: "Custom hotel and resort sculpture, from design brief to delivery planning",
-  intro: "WEIERYANG develops custom sculptures for hotels and resorts, working with owners, developers, interior designers, art consultants and procurement teams. For U.S. projects, we coordinate the sculpture design, material samples, fabrication, export packing and installation guidance with your local project team. Lobby, atrium, entrance and outdoor commissions are reviewed around the actual site, not a standard catalog size.",
+  intro: "WEIERYANG develops custom hotel and resort sculptures around your site, dimensions, material direction and installation window. Our scope can include design development, finish samples, fabrication, export packing and overseas installation guidance. For U.S. hotel owners, designers, art consultants and procurement teams, each proposal identifies the sculpture package and the shipping, local engineering and installation responsibilities before production.",
   groups: [
     ["Lobby and atrium sculpture", ["Statement pieces planned around guest sightlines and the interior design concept", "Mirror or brushed metal, bronze, stone and mixed-material options", "Floor-supported works reviewed for occupied space, access and maintenance"]],
     ["Hotel entrances and resort landscapes", ["Arrival courts, covered entrances, courtyards and gardens", "Poolside and coastal settings reviewed for water, exposure and cleaning", "Scale coordinated with architecture, vehicle approaches and pedestrian circulation"]],
@@ -20,29 +20,53 @@ export const hospitalityService = {
   ],
 };
 
+// Existing buyer guides form one hospitality topic cluster, rather than new
+// near-duplicate city or service pages. Shared with the static HTML fallback.
+export const hospitalityPlanning = {
+  id: "hotel-sculpture-planning",
+  title: "How do you choose a sculpture for a hotel or resort?",
+  answer: "Start with the location and how guests use it. A lobby piece must leave room for circulation; an atrium work needs coordinated views and access across floors; an arrival sculpture needs a clear approach and base zone. Compare those conditions with material, finish, maintenance and installation responsibilities before choosing the form.",
+  columns: ["Hotel setting", "Review first", "Coordinate with", "Planning guide"],
+  rows: [
+    { setting: "Lobby / water feature", review: "Guest circulation, occupied footprint, reflection, water edges and cleaning access.", team: "Interior designer, hotel operations and water-feature team where applicable.", guide: ["Lobby renovation and interfaces", "/insights/hotel-lobby-sculpture-renovation-guide/"] },
+    { setting: "Multi-level atrium", review: "Sightlines from each floor, ceiling clearance, support interfaces and the lifting route.", team: "Architect, structural engineer and appointed installation contractor.", guide: ["Large atrium sculpture planning", "/insights/large-hotel-atrium-sculpture-planning-guide/"] },
+    { setting: "Hotel arrival / entrance", review: "Vehicle and pedestrian approaches, base footprint, paving and delivery access.", team: "Landscape architect, civil/site team and hotel receiving team.", guide: ["Arrival sculpture site brief", "/insights/hotel-arrival-sculpture-site-brief/"] },
+    { setting: "Outdoor resort / poolside", review: "Salt or splash exposure, drainage, guest touch, finish samples and maintenance access.", team: "Landscape designer, pool/water team and hotel maintenance team.", guide: ["Water-feature material checklist", "/insights/water-feature-sculpture-material-checklist/"] },
+  ],
+  resourcesTitle: "What should your team review before requesting a proposal?",
+  resources: [
+    ["Material comparison", "Compare 316L stainless steel, bronze and stone against the intended setting.", "/insights/316l-stainless-steel-vs-bronze-vs-stone/"],
+    ["Cost and quotation scope", "Separate form, finish and structure from freight and local site work.", "/insights/large-outdoor-sculpture-cost-guide/"],
+    ["Resort entrance scale", "Review approach views, architecture, base area and access together.", "/insights/resort-entrance-sculpture-scale-guide/"],
+    ["Export packing", "Agree segment identification, protection, handling and receiving information.", "/insights/large-sculpture-export-packing-checklist/"],
+    ["Overseas installation", "Define the local team's responsibilities and the sculpture guidance package.", "/insights/overseas-sculpture-installation-checklist/"],
+    ["Verified construction record", "See the Middle East flying-bird construction evidence and its disclosed limits.", "/insights/middle-east-stainless-steel-landmark-sculpture/"],
+  ],
+};
+
 export const hospitalitySections = [
   {
-    id: "us-project-team", title: "One sculpture package, several hotel decision makers",
+    id: "us-project-team", title: "Who should approve a hotel sculpture package?",
     body: "An owner may approve the investment while an interior designer defines the setting, an art consultant develops the artwork brief and a purchasing team coordinates the order. Name the decision makers early so the approved form, finish and installation scope stay aligned.",
     items: ["Owners and developers: intended guest experience, opening or renovation milestone, and approval route.", "Designers and art consultants: approved viewpoints, artwork dimensions, adjacent finishes and lighting intent.", "Purchasing and site teams: specification, inspection records, delivery address, receiving contact and installation window."],
   },
   {
-    id: "hotel-approval-sequence", title: "Approve the form and finish before committing to production",
+    id: "hotel-approval-sequence", title: "What should be approved before sculpture fabrication?",
     body: "Use a review sequence that connects the design to the object the hotel will receive. A photograph of a similar finish is a reference; it is not a substitute for an agreed physical sample and project drawings.",
     items: ["Brief review: photographs, plans, intended viewing positions and overall dimensions with explicit units.", "Design and interface review: artwork envelope, base, structure, adjacent services and delivery access.", "Sample approval: material, surface texture, gloss, color and a recorded acceptance reference.", "Fabrication hold points: agree which workshop photographs, measurements, inspections and trial-assembly records are required.", "Release and handover: confirm packing, shipping marks, installation information and maintenance instructions."],
   },
   {
-    id: "us-delivery", title: "Separate the sculpture price from the U.S. delivery and site scope",
+    id: "us-delivery", title: "What does the sculpture price include for a U.S. hotel?",
     body: "A project quotation should identify what is included before the order is approved. WEIERYANG's export-packing and installation-guidance capability is not a promise of duty-paid delivery, local contracting or a fixed transit time.",
     items: ["Record the destination city, state, ZIP code and receiving arrangements, including any off-site receiving warehouse.", "Confirm the shipping terms, named delivery point, insurance scope and who arranges import clearance and charges with the appointed logistics advisers.", "Identify responsibility for storage, unloading, indoor movement, lifting equipment, foundations, anchors and final positioning.", "Plan backward from the hotel access window, allowing for approvals, production, inspection, shipping and local receiving. Obtain a project-specific schedule."],
   },
   {
-    id: "hotel-materials", title: "Choose materials for the hotel's actual operating conditions",
+    id: "hotel-materials", title: "Which materials suit a hotel lobby or outdoor resort?",
     body: "For an interior sculpture, review reflected lighting, guest touch, cleaning and the appearance from nearby seating. For outdoor resort sculpture, review rain, salt exposure, irrigation, pool splash and maintenance access. A material name alone does not define a complete specification.",
     items: ["Stainless steel: specify the proposed grade, finish reference, weld treatment and cleaning assumptions for review.", "Bronze: agree patina direction, expected appearance changes and touch or cleaning zones.", "Stone and mixed materials: coordinate weight, edges, support, drainage and the interfaces between materials."],
   },
   {
-    id: "hotel-evidence", title: "Know what each image actually documents",
+    id: "hotel-evidence", title: "Which images document verified sculpture work?",
     body: "Design references help discuss scale, reflection and spatial relationships. Verified construction records show work that was physically undertaken. They answer different questions and are labeled separately throughout the project review.",
     items: ["Landscape and commercial-atrium references: visual discussion only; no U.S. hotel client, location or WEIERYANG authorship is asserted.", "Flying-bird construction record: documented segmentation, site lifting and alignment at a Middle East public site; not completed-hotel photography.", "For a proposed commission: request the relevant drawings, sample records and agreed production evidence rather than inferring specifications from reference photos."],
   },

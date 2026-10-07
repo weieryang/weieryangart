@@ -1,0 +1,14 @@
+export const commissionEvidenceImage = {
+  file: "middle-east-stainless-steel-landmark-installation.webp",
+  width: 2000, height: 1398,
+  alt: "Verified construction-phase flying-bird sculpture being lifted at a Middle East public site",
+};
+
+export const commissionProof = {
+  en: { eyebrow: "Review the evidence", title: "See the work behind the project review.", body: "Our Middle East flying-bird record shows segmented structure, crane-assisted lifting and site alignment. These are construction-phase photographs, not completed hotel commissions.", action: "View the verified construction record", scope: "Before ordering, confirm the material, approval stages, delivery scope and local installation responsibilities in writing.", next: "Explore the construction record" },
+  zh: { eyebrow: "先看真实记录", title: "了解项目评估背后的工程实践。", body: "中东飞鸟雕塑记录展示分段结构、吊装与现场对位。这些是施工阶段照片，并非已完工酒店案例。", action: "查看已核实的施工记录", scope: "订购前，请书面确认材料、审批节点、交付范围与当地安装责任。", next: "继续查看施工记录" },
+  ar: { eyebrow: "راجع الأدلة", title: "تعرّف إلى العمل وراء مراجعة المشروع.", body: "يوثق سجل منحوتة الطائر في الشرق الأوسط الهيكل المجزأ والرفع بالرافعات والمحاذاة في الموقع. هذه صور لمرحلة الإنشاء، وليست مشاريع فندقية مكتملة.", action: "عرض سجل الإنشاء الموثق", scope: "قبل الطلب، أكد كتابياً الخامة ومراحل الموافقة ونطاق التسليم ومسؤوليات التركيب المحلي.", next: "استكشف سجل الإنشاء" },
+  fr: { eyebrow: "Consultez les preuves", title: "Le travail derrière l’étude de votre projet.", body: "Le dossier de notre sculpture d’oiseau au Moyen-Orient montre la structure segmentée, le levage et l’alignement sur site. Il s’agit de photos de chantier, pas de commandes hôtelières achevées.", action: "Voir le chantier documenté", scope: "Avant commande, confirmez par écrit la matière, les validations, la livraison et les responsabilités de montage local.", next: "Explorer le dossier de chantier" },
+  es: { eyebrow: "Revise la evidencia", title: "El trabajo detrás de la revisión del proyecto.", body: "El registro de nuestra escultura de ave en Oriente Medio muestra la estructura segmentada, el izado y la alineación en obra. Son fotografías de construcción, no encargos hoteleros terminados.", action: "Ver el registro de obra verificado", scope: "Antes de encargar, confirme por escrito el material, las aprobaciones, la entrega y las responsabilidades de instalación local.", next: "Explorar el registro de obra" },
+  de: { eyebrow: "Nachweise ansehen", title: "Die Arbeit hinter der Projektprüfung.", body: "Die Dokumentation unserer Vogelskulptur im Nahen Osten zeigt Segmentbauweise, Kranhebung und Ausrichtung vor Ort. Dies sind Bauaufnahmen, keine abgeschlossenen Hotelaufträge.", action: "Verifizierte Baudokumentation ansehen", scope: "Bestätigen Sie vor der Bestellung Material, Freigaben, Lieferumfang und lokale Montageverantwortung schriftlich.", next: "Baudokumentation entdecken" },
+};

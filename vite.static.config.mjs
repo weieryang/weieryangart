@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { sculptureRoutes } from "./src/sculptureCatalog.js";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const pageRoutes = [
@@ -17,6 +18,7 @@ const pageRoutes = [
   "process",
   "materials",
   "faq",
+  ...sculptureRoutes,
 ];
 
 export default defineConfig({

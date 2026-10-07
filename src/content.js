@@ -178,3 +178,15 @@ export const copy = {
     footer: { statement: "Künstlerische Skulptur mit technischer Lieferung.", body: "Sonderskulptur für Hotels, Entwicklungen, Landschaften und öffentliche Orte.", routes: "Skulpturenrouten", materials: "Materialrouten", studio: "Studionachweis", contact: "Kontakt", private: "Privates Briefing", rights: "WEIERYANG Skulpturenstudio" },
   },
 };
+
+// Project-type indices are shared by full briefs and collection inquiries.
+const localizedProjectTypes = {
+  ar: ["بهو الفندق / الأتريوم", "مدخل الفندق / المنتجع", "مناظر المنتجع / بجانب المسبح", "منحوتة طبيعية", "فن عام", "عنصر مائي", "عقار خاص", "مشروع مخصص آخر"],
+  zh: ["酒店大堂 / 中庭", "酒店 / 度假村入口", "度假村景观 / 泳池边", "景观雕塑", "公共艺术", "水景装置", "私人庄园", "其他定制项目"],
+  fr: ["Hall / atrium d’hôtel", "Entrée d’hôtel / resort", "Paysage de resort / piscine", "Sculpture paysagère", "Art public", "Installation aquatique", "Domaine privé", "Autre projet sur mesure"],
+  es: ["Vestíbulo / atrio de hotel", "Entrada de hotel / resort", "Paisaje de resort / piscina", "Escultura de paisaje", "Arte público", "Instalación acuática", "Finca privada", "Otro proyecto a medida"],
+  de: ["Hotellobby / Atrium", "Hotel- / Resorteingang", "Resortlandschaft / Poolbereich", "Landschaftsskulptur", "Kunst im öffentlichen Raum", "Wasserinstallation", "Privatanwesen", "Anderes Sonderprojekt"],
+};
+for (const [language, projectTypes] of Object.entries(localizedProjectTypes)) {
+  copy[language].commission.options.projectTypes = projectTypes;
+}
