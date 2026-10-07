@@ -1,48 +1,43 @@
-const attributionKey = "weieryang-attribution-v2";
+import { readAttribution, safePagePath, isCommissionPath, safeInterestRoute, analyticsProductSlug } from "./attribution.js";
 
-try {
-  if (!window.sessionStorage.getItem(attributionKey)) {
-    const url = new URL(window.location.href);
-    const referrer = document.referrer ? new URL(document.referrer) : null;
-    window.sessionStorage.setItem(attributionKey, JSON.stringify({
-      landingPath: url.pathname,
-      referrerHost: referrer && referrer.origin !== url.origin ? referrer.hostname : "",
-      utmSource: url.searchParams.get("utm_source") || "",
-      utmMedium: url.searchParams.get("utm_medium") || "",
-      utmCampaign: url.searchParams.get("utm_campaign") || "",
-      utmId: url.searchParams.get("utm_id") || "",
-      utmContent: url.searchParams.get("utm_content") || "",
-      utmTerm: url.searchParams.get("utm_term") || "",
-      fbclid: url.searchParams.get("fbclid") || "",
-    }));
+// ES modules run once per URL; this guard also covers duplicate script tags
+// with different cache keys without double-counting views or clicks.
+if (!window.__weieryangAnalyticsReady) {
+  window.__weieryangAnalyticsReady = true;
+  try {
+    readAttribution(window.location.href, document.referrer, window.sessionStorage);
+  } catch { /* Contact events also work when access to storage is blocked. */ }
+
+  const track = details => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ...details, page_path: safePagePath(window.location.pathname) });
+  };
+
+  if (isCommissionPath(window.location.pathname)) {
+    track({ event: "commission_view", form_name: "private_commission_brief" });
   }
-} catch {
-  // The form can still be submitted when session storage is unavailable.
-}
-
-if (/^\/commission\/?(?:index\.html)?$/.test(window.location.pathname)) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: "commission_view", form_name: "private_commission_brief" });
-}
-
-document.addEventListener("click", (event) => {
-  const link = event.target.closest?.("a[href]");
-  if (!link) return;
-
-  const href = link.getAttribute("href") || "";
-  let name;
-  let method;
-  if (href.startsWith("mailto:")) {
-    name = "contact_click";
-    method = "email";
-  } else if (/^https:\/\/wa\.me\//i.test(href)) {
-    name = "contact_click";
-    method = "whatsapp";
-  } else if (new URL(href, location.href).pathname === "/commission/") {
-    name = "commission_open";
+  const productSlug = analyticsProductSlug(window.location.pathname);
+  if (productSlug) {
+    track({ event: "product_view", product_slug: productSlug, form_name: "product_inquiry" });
   }
 
-  if (!name) return;
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: name, ...(method ? { contact_method: method } : {}) });
-});
+  document.addEventListener("click", event => {
+    const link = event.target?.closest?.("a[href]");
+    if (!link) return;
+    const href = link.getAttribute("href") || "";
+    let target;
+    try { target = new URL(href, window.location.href); } catch { return; }
+
+    if (target.protocol === "mailto:") {
+      track({ event: "contact_click", contact_method: "email" });
+    } else if (target.protocol === "tel:") {
+      track({ event: "contact_click", contact_method: "phone" });
+    } else if (target.protocol === "https:" && target.hostname === "wa.me") {
+      track({ event: "contact_click", contact_method: "whatsapp" });
+    } else if (target.origin === window.location.origin && isCommissionPath(target.pathname)) {
+      track({ event: "commission_open", interest_route: safeInterestRoute(target.searchParams.get("route")) });
+    } else if (target.origin === window.location.origin && target.hash === "#product-inquiry" && analyticsProductSlug(target.pathname)) {
+      track({ event: "product_inquiry_open", form_name: "product_inquiry", product_slug: analyticsProductSlug(target.pathname) });
+    }
+  });
+}
