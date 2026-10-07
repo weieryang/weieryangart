@@ -45,3 +45,11 @@ test("product email and manual copy retain only the registered direction, locali
   const { body } = createInquiryEmail(simple, { company: "Company", message: "Message" }, "studio@example.test", { product: { slug: "unregistered-product" } });
   assert.ok(!body.includes("Product ID:"));
 });
+
+test("a private owner fallback includes role and optional budget without inventing a company", () => {
+  const form = { name: "Pat", email: "pat@example.test", customerRole: "private-owner", company: "", budget: "Undecided", message: "Garden sculpture, size undecided" };
+  const result = createInquiryEmail(form, copy.en.commission.fields, "studio@example.test");
+  assert.match(result.body, /Your role: Private owner/);
+  assert.match(result.body, /Budget range \(optional\): Undecided/);
+  assert.doesNotMatch(result.body, /Company|undefined/);
+});

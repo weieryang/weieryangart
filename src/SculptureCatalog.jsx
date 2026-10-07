@@ -1,6 +1,8 @@
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { sculptureProducts, getSculpture } from "./sculptureCatalog.js";
 import { catalogUi, localizeSculpture } from "./sculptureCatalogCopy.js";
+import { commissionEvidenceImage, studioIdentity } from "./commissionProof.js";
+import "./sculptureEvidence.css";
 
 function SculptureImage({ image, priority = false, sizes = "(max-width: 767px) calc(100vw - 36px), 50vw" }) {
   const src = `/seo-media/${image.file}`;
@@ -44,9 +46,10 @@ export function SculptureDetail({ slug, language = "en", renderInquiry }) {
   const ui = catalogUi[language] || catalogUi.en;
   if (!canonical) return <section className="collection-index section-shell"><h1>{ui.notFound}</h1><p>{ui.notFoundBody}</p><a className="text-link" href="/sculptures/">{ui.back}</a></section>;
   const product = localizeSculpture(canonical, language);
+  const identity = studioIdentity[language] || studioIdentity.en;
   return <>
     <section className="collection-detail-hero section-shell">
-      <div className="collection-detail-copy"><a className="collection-back" href="/sculptures/">← {ui.back}</a><p className="hero-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="collection-intro">{product.intro}</p>
+      <div className="collection-detail-copy"><a className="collection-back" href="/sculptures/">← {ui.back}</a><p className="hero-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="collection-studio-intro">{identity.body}</p><p className="collection-intro">{product.intro}</p>
         <span className="collection-evidence-tag">{product.evidenceType === "construction" ? ui.constructionLabel : ui.referenceLabel}</span>
         <p className="collection-disclosure">{product.disclosure}</p><a className="hero-cta" href="#product-inquiry">{ui.request}<ArrowRight size={20} aria-hidden="true" /></a>
       </div>
@@ -57,6 +60,10 @@ export function SculptureDetail({ slug, language = "en", renderInquiry }) {
       <div><h2>{ui.reviewHeading}</h2><ol>{product.review.map(item => <li key={item}>{item}</li>)}</ol></div>
     </section>
     <section className="collection-gallery section-shell" aria-label={product.category}>{product.images.slice(1).map(image => <figure key={image.file}><SculptureImage image={image} /><figcaption>{image.caption}</figcaption></figure>)}</section>
+    <section className={`collection-studio-evidence section-shell${product.evidenceType === "construction" ? " collection-studio-evidence-text" : ""}`} aria-labelledby="collection-studio-evidence-title">
+      {product.evidenceType !== "construction" && <figure><SculptureImage image={{ ...commissionEvidenceImage, alt: identity.evidenceAlt }} sizes="(max-width: 767px) calc(100vw - 36px), 35vw" /><figcaption>{ui.constructionLabel}</figcaption></figure>}
+      <div><p className="hero-eyebrow">WEIERYANG</p><h2 id="collection-studio-evidence-title">{identity.evidenceTitle}</h2><p>{identity.capability}</p><p>{identity.evidenceBody}</p><p>{identity.delivery}</p><nav aria-label={identity.evidenceTitle}><a className="text-link" href="/projects/#project-evidence-title">{identity.evidenceAction}<ArrowUpRight size={18} aria-hidden="true" /></a><a className="text-link" href="/custom-sculpture/">{identity.processAction}<ArrowUpRight size={18} aria-hidden="true" /></a></nav></div>
+    </section>
     <section className="collection-inquiry section-shell" id="product-inquiry" aria-labelledby="product-inquiry-title"><header><p className="hero-eyebrow">{product.category}</p><h2 id="product-inquiry-title">{ui.formHeading}</h2><p>{ui.formBody}</p><p>{ui.scopeBody}</p><a className="text-link" href={`/commission/?route=${canonical.inquiryId}`}>{ui.briefLink}<ArrowUpRight size={18} aria-hidden="true" /></a></header><div>{renderInquiry(product)}</div></section>
     <section className="collection-faq section-shell"><h2>{ui.faqHeading}</h2><div>{product.faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></section>
     <section className="collection-related section-shell"><h2>{ui.relatedHeading}</h2><nav aria-label={ui.relatedHeading}>{product.related.map(([label, href]) => <a href={href} key={href}>{label}<ArrowUpRight size={18} aria-hidden="true" /></a>)}</nav></section>

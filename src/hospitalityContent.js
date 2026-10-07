@@ -1,8 +1,10 @@
 // Shared by the visible service page and its static HTML/structured data.
+import { studioIdentity } from "./commissionProof.js";
+
 export const hospitalityService = {
   eyebrow: "Custom sculpture for U.S. hospitality projects",
   title: "Custom hotel and resort sculpture, from design brief to delivery planning",
-  intro: "WEIERYANG develops custom hotel and resort sculptures around your site, dimensions, material direction and installation window. Our scope can include design development, finish samples, fabrication, export packing and overseas installation guidance. For U.S. hotel owners, designers, art consultants and procurement teams, each proposal identifies the sculpture package and the shipping, local engineering and installation responsibilities before production.",
+  intro: `${studioIdentity.en.body} We develop hotel and resort sculptures around your site, dimensions, material direction and installation window. ${studioIdentity.en.capability} ${studioIdentity.en.delivery}`,
   groups: [
     ["Lobby and atrium sculpture", ["Statement pieces planned around guest sightlines and the interior design concept", "Mirror or brushed metal, bronze, stone and mixed-material options", "Floor-supported works reviewed for occupied space, access and maintenance"]],
     ["Hotel entrances and resort landscapes", ["Arrival courts, covered entrances, courtyards and gardens", "Poolside and coastal settings reviewed for water, exposure and cleaning", "Scale coordinated with architecture, vehicle approaches and pedestrian circulation"]],
@@ -10,7 +12,7 @@ export const hospitalityService = {
   ],
   related: [["Compare supplier scope", "/custom-outdoor-sculpture-supplier/#us-procurement"], ["Hotel lobby renovation guide", "/insights/hotel-lobby-sculpture-renovation-guide/"], ["Large atrium planning guide", "/insights/large-hotel-atrium-sculpture-planning-guide/"], ["Verified construction records", "/projects/#project-evidence-title"], ["Commercial-atrium reference study", "/projects/hotel-lobby-sculpture-engineering-case/"], ["Send a hotel project brief", "/commission/?route=resort-sculpture"]],
   faq: [
-    ["Can WEIERYANG review a custom sculpture for a U.S. hotel?", "Yes. Send the hotel location, site drawings, approximate dimensions, material direction and target installation date. WEIERYANG reviews design development, fabrication, export packing and installation guidance. The proposal must identify shipping, import, site engineering and local installation responsibilities; a U.S. office or locally staffed installation service is not implied."],
+    ["Can WEIERYANG review a custom sculpture for a U.S. hotel?", "Yes. WEIERYANG is a China-based sculpture studio and manufacturer. Send your drawings or design brief, hotel location, approximate dimensions, material direction and target installation date. We review design, structural development, fabrication, export packing and overseas installation guidance. Shipping, import, on-site services, local engineering and installation responsibilities must be confirmed in writing for your project; a U.S. office or locally staffed installation service is not implied."],
     ["Do you work with hotel interior designers and art consultants?", "Yes. The sculpture package can be developed around an approved design brief, artwork schedule and finish direction. Identify who approves the design, sample, budget and site interface. WEIERYANG supplies the sculpture scope, not a complete hotel interior design or art-advisory service."],
     ["Can we send drawings in feet and inches?", "Yes. Label the units on every drawing and dimension. Provide the overall height, width and depth, the base footprint and delivery-route constraints. Before production, agree a coordinated drawing set and the controlling units; do not use rounded conversions as fabrication dimensions."],
     ["How much does a custom hotel sculpture cost?", "Price depends on form, dimensions, material, finish, structure, quantity, inspection requirements, packing and delivery scope. Request an itemized proposal with its currency, exclusions and validity. Freight, import charges, local unloading and installation should not be assumed to be included in the sculpture price."],
@@ -67,12 +69,12 @@ export const hospitalitySections = [
   },
   {
     id: "hotel-evidence", title: "Which images document verified sculpture work?",
-    body: "Design references help discuss scale, reflection and spatial relationships. Verified construction records show work that was physically undertaken. They answer different questions and are labeled separately throughout the project review.",
+    body: `${studioIdentity.en.capability} Design references help discuss scale, reflection and spatial relationships. The verified Middle East record documents construction work; it is not a workshop inspection or project drawing record. Agree the drawings, samples and manufacturing checks required for your commission separately.`,
     items: ["Landscape and commercial-atrium references: visual discussion only; no U.S. hotel client, location or WEIERYANG authorship is asserted.", "Flying-bird construction record: documented segmentation, site lifting and alignment at a Middle East public site; not completed-hotel photography.", "For a proposed commission: request the relevant drawings, sample records and agreed production evidence rather than inferring specifications from reference photos."],
   },
 ];
 
-export const hospitalityEntry = {
+const hospitalityEntryCopy = {
   en: { eyebrow: "U.S. hotel project teams", title: "Custom sculpture for hotel lobbies, atriums and resort arrivals.", body: "Bring the design brief, site drawings and opening schedule. We help owners, designers, art consultants and purchasing teams coordinate the sculpture, fabrication and delivery scope.", action: "Explore hotel sculpture", brief: "Request a project review" },
   zh: { eyebrow: "美国酒店项目团队", title: "为酒店大堂、中庭与度假村入口定制雕塑。", body: "从设计简报、现场图纸和开业计划出发，协助业主、设计师、艺术顾问与采购团队明确雕塑制作和交付范围。", action: "了解酒店雕塑", brief: "申请项目评估" },
   ar: { eyebrow: "فرق مشاريع الفنادق الأمريكية", title: "منحوتات مخصصة لردهات الفنادق وأفنيتها ومداخل المنتجعات.", body: "شارك موجز التصميم ومخططات الموقع وجدول الافتتاح لتنسيق نطاق المنحوتة والتصنيع والتسليم مع فريق مشروعك.", action: "استكشف منحوتات الفنادق", brief: "اطلب مراجعة المشروع" },
@@ -80,6 +82,10 @@ export const hospitalityEntry = {
   es: { eyebrow: "Proyectos hoteleros en Estados Unidos", title: "Esculturas a medida para vestíbulos, atrios y accesos de resorts.", body: "Comparta el brief, los planos y la fecha de apertura para coordinar la escultura, la fabricación y la entrega con su equipo.", action: "Esculturas para hoteles", brief: "Solicitar una revisión" },
   de: { eyebrow: "Hotelprojekte in den USA", title: "Individuelle Skulpturen für Hotellobbys, Atrien und Resort-Eingänge.", body: "Teilen Sie Briefing, Pläne und Eröffnungstermin, um Skulptur, Fertigung und Lieferung mit Ihrem Projektteam abzustimmen.", action: "Skulpturen für Hotels", brief: "Projektprüfung anfragen" },
 };
+
+export const hospitalityEntry = Object.fromEntries(Object.entries(hospitalityEntryCopy).map(([language, entry]) => [language, {
+  ...entry, body: `${studioIdentity[language].body} ${entry.body}`,
+}]));
 
 export const privacyCopy = {
   en: { link: "Privacy & project information", note: "Your text draft is saved in this browser. Submitted details and attachments are emailed to the studio. Please send only files you are authorized to share." },

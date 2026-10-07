@@ -8,10 +8,10 @@ import { handleInquiryRequest } from "../worker/inquiries.mjs";
 import { analyticsProductSlugs, analyticsProductSlug, safeInterestRoute, inquirySource, analyticsProjectType } from "./attribution.js";
 import { productInquiryFields, productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
 
-const facts = { name: "Pat", company: "Test Hotel", email: "pat@example.test", location: "Miami, FL, USA", message: "Review a lobby sculpture direction." };
+const facts = { name: "Pat", customerRole: "private-owner", email: "pat@example.test", location: "Miami, FL, USA", message: "Review a lobby sculpture direction." };
 const optionGroups = Object.values(copy).map(entry => entry.commission.options.projectTypes);
 
-test("each registered product meets the unchanged six-required-field contract with five inputs in all languages", () => {
+test("each registered product accepts five core inputs without company in all languages", () => {
   assert.equal(productInquiryFields.length, 5);
   for (const product of sculptureProducts) {
     for (const [language, text] of Object.entries(copy)) {
@@ -30,10 +30,16 @@ test("product drafts have separate keys and never inherit full-brief optional fi
   assert.equal(new Set(keys).size, sculptureProducts.length);
   assert.ok(keys.every(key => key !== "weieryang-private-brief-v2"));
   const contaminated = { ...facts, projectType: "Private overriding category", phone: "+12125550100", material: "Private material note", files: ["private-plan.pdf"], website: "stale" };
-  assert.deepEqual(productInquiryDraft(contaminated), facts);
+  const draft = productInquiryDraft(contaminated);
+  for (const key of productInquiryFields) assert.equal(draft[key], facts[key]);
+  assert.equal(draft.phone, "+12125550100", "Explicit optional contact details stay in this product draft");
+  assert.equal(draft.material, undefined);
   const form = productInquiryForm(contaminated, sculptureProducts[0], copy.en.commission.options.projectTypes);
   assert.equal(form.projectType, "Hotel lobby / atrium");
-  for (const field of ["phone", "material", "scale", "timeline", "installation", "website"]) assert.equal(form[field], "");
+  for (const field of ["material", "scale", "timeline", "installation", "website"]) assert.equal(form[field], "");
+  assert.equal(form.phone, "+12125550100");
+  assert.equal(form.formVariant, "product-role-v2");
+  assert.equal(form.company, "", "A private owner is not given a fabricated company");
   assert.equal(form.files, undefined);
   assert.equal(productInquiryDraft({ name: null, company: {} }).name, "");
 });
@@ -91,6 +97,8 @@ test("short inquiries use the existing Worker, verification and confirmed-respon
   assert.equal(result.notifications.email, true);
   assert.equal(result.attachedFiles, 0);
   assert.match(emails[0].text, /Project type: Public art/);
+  assert.match(emails[0].text, /Customer role: Private owner/);
+  assert.doesNotMatch(emails[0].text, /Company:/);
   assert.match(emails[0].text, /Interest route: bird-landmark-sculpture/);
   assert.match(emails[0].text, /Source: \/sculptures\/bird-landmark-sculpture\//);
   assert.doesNotMatch(emails[0].text, /Untrusted draft/);

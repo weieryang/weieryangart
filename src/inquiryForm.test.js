@@ -3,6 +3,7 @@ import test from "node:test";
 import { fieldLimits, restoreInquiryDraft, validateInquiry, sendInquiry } from "./inquiryForm.js";
 import { inquiryFormCopy } from "./inquiryFormCopy.js";
 import { copy, emailBriefCopy } from "./content.js";
+import { customerRoleIds, inquiryIntakeCopy } from "./inquiryIntake.js";
 
 const valid = { ...restoreInquiryDraft(null), name: "Pat", company: "Hotel QA", email: "pat@example.com", projectType: "Hotel lobby / atrium", location: "Miami, FL, USA", message: "Lobby study; 8 ft tall." };
 const delivered = { reference: "WY-20261006-ABCDEF12", notifications: { email: true, whatsapp: false } };
@@ -25,6 +26,17 @@ test("legacy draft values survive, while invalid types and stale honeypots are e
   assert.equal(draft.projectType, "旧版项目类型");
   assert.equal(draft.extra, undefined);
   assert.equal(restoreInquiryDraft(null).email, "");
+});
+
+test("v2 intake accepts every listed role without a company and rejects unlisted or missing roles", () => {
+  for (const formVariant of ["product-role-v2", "full-role-v2"]) {
+    for (const customerRole of customerRoleIds) assert.deepEqual(validateInquiry({ ...valid, formVariant, company: "", customerRole }), {});
+    for (const customerRole of ["", "unknown", "<script>"]) assert.equal(validateInquiry({ ...valid, formVariant, company: "", customerRole }).customerRole, "required");
+  }
+  assert.equal(validateInquiry({ ...valid, company: "" }).company, "required", "Legacy contract remains compatible");
+  assert.equal(restoreInquiryDraft({ customerRole: "forged" }).customerRole, "");
+  assert.equal(validateInquiry({ ...valid, budget: "USD 100\n200" }).budget, "format");
+  for (const language of Object.keys(copy)) assert.equal(inquiryIntakeCopy[language].roles.length, customerRoleIds.length);
 });
 
 test("a confirmed response returns its reference and sends the same payload once", async () => {

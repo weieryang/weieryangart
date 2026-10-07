@@ -3,7 +3,7 @@ import path from "node:path";
 import { hospitalitySections, hospitalityEntry, hospitalityPlanning } from "../src/hospitalityContent.js";
 import { routeSeoContent } from "../src/seoContent.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
-import { commissionEvidenceImage, commissionProof } from "../src/commissionProof.js";
+import { commissionEvidenceImage, commissionProof, studioIdentity } from "../src/commissionProof.js";
 import { staticHeader, staticFooter } from "./static-frame.mjs";
 import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
 
@@ -48,64 +48,64 @@ const evidenceImages = {
     file: "studio-material-desk.webp",
     width: 1536,
     height: 1024,
-    alt: "WEIERYANG sculpture material desk with stone, bronze, finish samples, and project drawings",
-    caption: "Material desk evidence for sculpture route, finish, and site review.",
+    alt: "Illustrative sculpture material desk study with stone, bronze and drawing references",
+    caption: "Illustrative material-desk study, not a verified WEIERYANG workshop photograph or project drawing record.",
   },
   conceptSketch: {
     file: "concept-sketch.webp",
     width: 1448,
     height: 1086,
-    alt: "Full concept sketch for a site-specific garden sculpture with scale and landscape context",
-    caption: "Full sketch evidence preserves scale, base, people, and landscape context.",
+    alt: "Illustrative garden sculpture concept sketch with scale and landscape context",
+    caption: "Concept sketch study for discussing scale and setting, not an approved client drawing or verified manufacturing document.",
   },
   materialSamples: {
     file: "material-samples-dark.webp",
     width: 1536,
     height: 1024,
     alt: "Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes",
-    caption: "Material samples show finish direction before final sculpture quotation.",
+    caption: "Illustrative material and finish study, not a certified sample or an agreed project specification.",
   },
   structuralStudy: {
     file: "structural-engineering.webp",
     width: 1122,
     height: 1402,
-    alt: "Engineering screen for sculpture structure, segmentation, and technical review",
-    caption: "Engineering review supports structure, segmentation, and installation planning.",
+    alt: "Illustrative engineering-screen study for sculpture structure and segmentation",
+    caption: "Illustrative structural study, not a verified engineering calculation or approved fabrication drawing.",
   },
   fabricationWorkshop: {
     file: "fabrication-workshop.webp",
     width: 1122,
     height: 1402,
-    alt: "Sculpture fabrication workshop evidence with material handling and production review",
-    caption: "Workshop evidence connects concept decisions to fabrication and quality control.",
+    alt: "Illustrative sculpture fabrication workshop scene",
+    caption: "Illustrative workshop scene, not a verified photograph of the WEIERYANG production facility or a client inspection.",
   },
   installedProject: {
     file: "installed-project.webp",
     width: 1448,
     height: 1086,
-    alt: "Installed outdoor sculpture project evidence with site scale and landscape placement",
-    caption: "Installed project evidence shows scale, setting, and viewing distance.",
+    alt: "Illustrative outdoor sculpture placement study in a landscape",
+    caption: "Illustrative placement study for scale and viewing distance, not a verified completed WEIERYANG commission.",
   },
   materialSwatchStrip: {
     file: "material-swatch-strip.webp",
     width: 1600,
     height: 711,
     alt: "Sculpture material swatch strip with bronze, stone, stainless, and textured surface samples",
-    caption: "Material swatches make finish decisions concrete before production.",
+    caption: "Illustrative finish comparison, not a certificate or an approved physical sample for a client project.",
   },
   designDevelopment: {
     file: "design-development.webp",
     width: 1122,
     height: 1402,
-    alt: "Design development evidence for custom sculpture scale, form, and material decisions",
-    caption: "Design development evidence links site reading to fabrication decisions.",
+    alt: "Illustrative design-development study for sculpture scale, form and materials",
+    caption: "Illustrative design study, not a verified client approval or manufacturing record.",
   },
   sourceEngineeringAtelier: {
     file: "source-engineering-atelier.webp",
     width: 941,
     height: 1672,
-    alt: "Atelier engineering evidence for sculpture material review and custom production planning",
-    caption: "Atelier evidence supports serious review before price and production.",
+    alt: "Illustrative atelier study for sculpture material review and production planning",
+    caption: "Illustrative atelier study, not verified workshop or project documentation.",
   },
   hotelLobbyWhaleInstallation: {
     file: "hotel-lobby-stainless-steel-whale-installation.webp",
@@ -258,7 +258,7 @@ const evidenceImages = {
 
 const routeImageKeys = {
   "": ["homeLobbyReference", "commercialAtriumMirrorSculpture", "homeArrivalReference", "middleEastLandmarkInstallation"],
-  commission: ["materialSamples", "structuralStudy", "fabricationWorkshop"],
+  commission: ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
   "garden-sculpture": ["conceptSketch", "materialSamples", "installedProject"],
   "public-art": ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation"],
   "resort-sculpture": ["resortEntranceCanopyReference", "resortCanopyHumanScale", "hotelArrivalSiteContext", "materialSamples"],
@@ -599,12 +599,14 @@ function pageSchema(page) {
       name: "WEIERYANG",
       url: `${site}/`,
       logo: `${site}/weieryang-logo.webp`,
-      description: "Custom sculpture studio for hotel, resort and public-space projects, with design, fabrication, export packing and overseas installation guidance.",
+      description: studioIdentity.en.body,
+      address: { "@type": "PostalAddress", addressCountry: "CN" },
       email: "tangkelian@weieryang.com",
       telephone: "+86 133 1717 8019",
       areaServed: "Worldwide",
       knowsAbout: [
         "Custom outdoor sculpture",
+        "Custom sculpture from client drawings",
         "Stainless steel sculpture fabrication",
         "Structural coordination",
         "Export packing",
@@ -632,7 +634,7 @@ function pageSchema(page) {
       name: page.title,
       headline: page.h1,
       description: page.description,
-      ...(page.catalogKind ? { abstract: page.intro } : {}),
+      ...(page.catalogKind ? { abstract: page.catalogKind === "detail" ? `${studioIdentity.en.body} ${page.intro}` : page.intro } : {}),
       url: urlFor(page),
       isPartOf: { "@id": `${site}/#website` },
       about: { "@id": `${site}/#organization` },
@@ -755,8 +757,8 @@ function fallback(page) {
           return `<article><h3>${esc(card.title)}</h3><p>${esc(card.body)}</p><figure><img src="/seo-media/${esc(image.file)}" alt="${esc(image.alt)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async" /><figcaption>${esc(hotelCases.en.badge)}</figcaption></figure><ul>${card.checks.map(check => `<li>${esc(check)}</li>`).join("")}</ul><a href="${image.href}">${esc(hotelCases.en.action)}</a></article>`;
         }).join("")}
         <aside><h3>${esc(hotelCases.en.proofTitle)}</h3><p>${esc(hotelCases.en.proofBody)}</p><a href="/projects/#project-evidence-title">${esc(hotelCases.en.proofAction)}</a></aside>
-      </section>` : `<section class="seo-evidence-images" aria-label="Sculpture material and process evidence">
-        <h2>Material and process evidence</h2>
+      </section>` : `<section class="seo-evidence-images" aria-label="Sculpture images and evidence boundaries">
+        <h2>Images and evidence boundaries</h2>
         <div class="seo-evidence-grid">
           ${images.map((image, index) => `<figure>
             <img src="/seo-media/${esc(image.file)}" alt="${esc(image.alt)}" width="${image.width}" height="${image.height}" loading="${index === 0 ? "eager" : "lazy"}" decoding="async"${index === 0 ? ' fetchpriority="high"' : ""} />
@@ -800,6 +802,7 @@ function fallback(page) {
   return `<main class="seo-fallback" data-seo-fallback="true">
       <nav aria-label="Breadcrumb"><a href="/">Home</a>${page.slug ? ` / <span>${esc(page.h1)}</span>` : ""}</nav>
       <h1>${esc(page.h1)}</h1>
+      ${page.slug === "commission" ? `<p>${esc(studioIdentity.en.body)}</p>` : ""}
       <p>${esc(page.intro)}</p>
       ${hotelPlanning}
       ${evidence}

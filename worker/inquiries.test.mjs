@@ -120,3 +120,92 @@ test("oversized request bodies are rejected before form parsing", async () => {
   assert.equal(response.status, 413);
   assert.equal(env.calls.emails.length, 0);
 });
+
+test("both v2 variants accept every declared role without requiring or fabricating company", async () => {
+  for (const formVariant of ["product-role-v2", "full-role-v2"]) {
+    for (const customerRole of ["designer", "contractor", "supplier", "developer-procurement", "private-owner", "other"]) {
+      const env = bindings();
+      const response = await handleInquiryRequest(formRequest({ formVariant, customerRole, company: "" }), env, verified);
+      assert.equal(response.status, 201, `${formVariant} / ${customerRole}`);
+      assert.deepEqual((await response.json()).notifications, { email: true, whatsapp: false });
+      assert.equal(env.calls.emails.length, 1);
+      assert.match(env.calls.emails[0].text, new RegExp(`Form type: .*${formVariant}`));
+      assert.match(env.calls.emails[0].text, new RegExp(`Customer role: .*\\[${customerRole}\\]`));
+      assert.doesNotMatch(env.calls.emails[0].text, /Company:/);
+    }
+  }
+});
+
+test("legacy briefs retain the company requirement and original successful submission path", async () => {
+  const env = bindings();
+  assert.equal((await handleInquiryRequest(formRequest({ company: "" }), env, verified)).status, 400);
+  assert.equal((await handleInquiryRequest(formRequest({ company: "", customerRole: "private-owner" }), env, verified)).status, 400);
+  assert.equal(env.calls.emails.length, 0);
+  assert.equal((await handleInquiryRequest(formRequest(), env, verified)).status, 201);
+  assert.match(env.calls.emails[0].text, /Form type: Legacy full brief/);
+  assert.match(env.calls.emails[0].text, /Company: Hotel Group/);
+});
+
+test("unknown variants and invalid or missing v2 roles cannot send email", async () => {
+  const env = bindings();
+  for (const fields of [
+    { formVariant: "unknown", customerRole: "designer" },
+    { formVariant: "constructor", customerRole: "designer" },
+    { formVariant: "product-role-v2", customerRole: "" },
+    { formVariant: "full-role-v2", customerRole: "" },
+    { formVariant: "product-role-v2", customerRole: "hotel-owner" },
+    { formVariant: "product-role-v2", customerRole: "constructor" },
+    { formVariant: "product-role-v2", customerRole: "PRIVATE-OWNER" },
+    { customerRole: "unknown" },
+  ]) assert.equal((await handleInquiryRequest(formRequest(fields), env, verified)).status, 400);
+  assert.equal(env.calls.emails.length, 0);
+});
+
+test("v2 still requires all five user facts and the registry project type", async () => {
+  const env = bindings();
+  for (const field of ["name", "email", "customerRole", "location", "message", "projectType"]) {
+    const response = await handleInquiryRequest(formRequest({ formVariant: "product-role-v2", customerRole: "private-owner", company: "", [field]: "" }), env, verified);
+    assert.equal(response.status, 400, field);
+  }
+  assert.equal(env.calls.emails.length, 0);
+});
+
+test("optional phone, budget and timeline preserve exact limits without a budget gate", async () => {
+  const env = bindings();
+  const fields = { formVariant: "product-role-v2", customerRole: "private-owner", company: "", phone: "1".repeat(80), budget: "Not decided yet", timeline: "T".repeat(120) };
+  assert.equal((await handleInquiryRequest(formRequest(fields), env, verified)).status, 201);
+  assert.match(env.calls.emails[0].text, /Budget \(optional, not a qualification gate\): Not decided yet/);
+  assert.equal((await handleInquiryRequest(formRequest({ ...fields, budget: "B".repeat(120) }), env, verified)).status, 201);
+  for (const [field, limit] of [["phone", 80], ["budget", 120], ["timeline", 120]]) {
+    assert.equal((await handleInquiryRequest(formRequest({ ...fields, [field]: "X".repeat(limit + 1) }), env, verified)).status, 400, `${field} length`);
+    assert.equal((await handleInquiryRequest(formRequest({ ...fields, [field]: "value\nInjected: yes" }), env, verified)).status, 400, `${field} newline`);
+  }
+  assert.equal((await handleInquiryRequest(formRequest({ ...fields, budget: new File(["wrong field type"], "budget.txt") }), env, verified)).status, 400);
+  assert.equal(env.calls.emails.length, 2);
+});
+
+test("first-visit fields are reported separately and unsafe metadata is discarded", async () => {
+  const env = bindings();
+  const response = await handleInquiryRequest(formRequest({
+    formVariant: "product-role-v2", customerRole: "designer", company: "",
+    landingPath: "/sculptures/bird-landmark-sculpture/", utmSource: "facebook", utmMedium: "cpc", utmCampaign: "2026q4-us-hospitality",
+    utmId: "bird-local-ad-a", utmContent: "bird-video-v1",
+    firstLandingPath: "/resort-sculpture/", firstReferrerHost: "www.google.com", firstUtmSource: "google", firstUtmMedium: "organic", firstUtmCampaign: "always-on",
+  }), env, verified);
+  assert.equal(response.status, 201);
+  assert.match(env.calls.emails[0].text, /UTM source: facebook/);
+  assert.match(env.calls.emails[0].text, /UTM content: bird-video-v1/);
+  assert.match(env.calls.emails[0].text, /First landing page: \/resort-sculpture\//);
+  assert.match(env.calls.emails[0].text, /First referrer host: www.google.com/);
+  assert.match(env.calls.emails[0].text, /First UTM source: google/);
+  assert.match(env.calls.emails[0].text, /First UTM medium: organic/);
+  assert.match(env.calls.emails[0].text, /First UTM campaign: always-on/);
+  assert.match(env.calls.emails[0].text, /latest valid paid touch/);
+  const unsafe = { firstLandingPath: "//outside.example/", firstReferrerHost: "bad\nInjected: yes", firstUtmSource: "bad\nInjected: yes", firstUtmMedium: "bad\nInjected: yes", firstUtmCampaign: "bad\nInjected: yes" };
+  assert.equal((await handleInquiryRequest(formRequest(unsafe), env, verified)).status, 201);
+  assert.doesNotMatch(env.calls.emails[1].text, /Injected: yes|First landing page:|First referrer host:|First UTM/);
+  for (const [field, limit] of [["firstLandingPath", 300], ["firstReferrerHost", 120], ["firstUtmSource", 80], ["firstUtmMedium", 80], ["firstUtmCampaign", 80]]) {
+    assert.equal((await handleInquiryRequest(formRequest({ [field]: "a".repeat(limit + 1) }), env, verified)).status, 400, field);
+  }
+  assert.equal(env.calls.emails.length, 2);
+});

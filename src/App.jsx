@@ -36,12 +36,14 @@ import { businessContact, copy, emailBriefActions, emailBriefCopy, languageOptio
 import { createInquiryEmail } from "./inquiryEmail.js";
 import { fieldLimits, restoreInquiryDraft, validateInquiryField, validateInquiry, sendInquiry } from "./inquiryForm.js";
 import { inquiryFormCopy } from "./inquiryFormCopy.js";
-import { readAttribution, inquirySource, safeInterestRoute, analyticsAttribution, analyticsProjectType } from "./attribution.js";
+import { readAttribution, inquirySource, safeInterestRoute, analyticsAttribution, analyticsProjectType, inquiryAttributionFields, inquiryAttributionFieldNames } from "./attribution.js";
+import { trackConfirmedMetaLead } from "./metaLead.js";
 import { routeSeoContent } from "./seoContent.js";
 import { hospitalityEntry, hospitalityPlanning, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
-import { commissionEvidenceImage, commissionProof } from "./commissionProof.js";
+import { commissionEvidenceImage, commissionProof, studioIdentity } from "./commissionProof.js";
 import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
 import { productInquiryCopy } from "./productInquiryCopy.js";
+import { customerRoleIds, fullFormVariant, inquiryIntakeCopy } from "./inquiryIntake.js";
 
 
 function assetUrl(asset) {
@@ -824,6 +826,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
   const storageKey = isProduct ? productInquiryDraftKey(context) : draftStorageKey;
   const eventContext = inquiryEventContext(mode, context);
   const shortText = productInquiryCopy[language] || productInquiryCopy.en;
+  const intake = inquiryIntakeCopy[language] || inquiryIntakeCopy.en;
   const projectTypes = text.commission.options.projectTypes;
   const proof = commissionProof[language] || commissionProof.en;
   const [form, setForm] = useState(() => readDraft(storageKey, context, projectTypes));
@@ -840,12 +843,13 @@ function CommissionForm({ text, language, mode = "full", product }) {
   const [status, setStatus] = useState({ type: "idle", message: "", reference: "" });
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
+  const [optionalOpen, setOptionalOpen] = useState(false);
   const emailText = { ...(emailBriefCopy[language] || emailBriefCopy.en), ...(emailBriefActions[language] || emailBriefActions.en) };
   const feedback = inquiryFormCopy[language] || inquiryFormCopy.en;
   const hasInquiryEndpoint = Boolean(inquiryEndpoint) && (!isProduct || Boolean(context));
   // Rebuild the category from the registry on every render/submit so neither a
   // stale language nor a modified draft can override this product's category.
-  const submissionForm = isProduct && context ? productInquiryForm(form, context, projectTypes, { submitting: true }) : form;
+  const submissionForm = isProduct && context ? productInquiryForm(form, context, projectTypes, { submitting: true }) : { ...form, formVariant: fullFormVariant };
   const emailProduct = context || (!isProduct && typeof window !== "undefined" ? productInquiryContext(new URL(window.location.href).searchParams.get("route")) : null);
   const emailBrief = useMemo(() => createInquiryEmail(submissionForm, text.commission.fields, businessContact.email, { product: emailProduct, language }), [submissionForm, text, emailProduct, language]);
 
@@ -867,8 +871,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
     window.dataLayer.push({
       event: "commission_form_start",
       ...eventContext,
-      lead_source: attribution.utmSource || (attribution.fbclid ? "facebook" : "website"),
-      campaign_name: attribution.utmCampaign || "",
+      ...analyticsAttribution(attribution),
       language,
     });
   };
@@ -920,7 +923,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
       try { if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(isProduct ? productInquiryDraft(next) : next)); } catch { /* Draft persistence is optional. */ }
       return next;
     });
-    setFieldErrors(current => current[name] ? { ...current, [name]: validateInquiryField(name, value) } : current);
+    setFieldErrors(current => current[name] ? { ...current, [name]: validateInquiryField(name, value, submissionForm.formVariant) } : current);
     if (status.type !== "idle") setStatus({ type: "idle", message: "", reference: "" });
     if (copied) setCopied(false);
   };
@@ -948,6 +951,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
     event.preventDefault();
     if (submitting.current || status.type === "success" || !eventContext) return;
     const errors = validateInquiry(submissionForm);
+    if (isProduct && ["company", "phone", "budget", "timeline"].some(name => errors[name])) setOptionalOpen(true);
     invalidFieldToFocus.current = Object.keys(errors)[0] || "";
     setFieldErrors(errors);
     if (Object.keys(errors).length) {
@@ -973,8 +977,9 @@ function CommissionForm({ text, language, mode = "full", product }) {
     payload.append("language", language);
     payload.append("source", inquirySource(window.location.href, isProduct ? context.path : undefined));
     const attribution = inquiryAttribution();
-    for (const key of ["landingPath", "referrerHost", "utmSource", "utmMedium", "utmCampaign", "utmId", "utmContent", "utmTerm", "fbclid"]) {
-      payload.append(key, attribution[key] || "");
+    const attributionFields = inquiryAttributionFields(attribution);
+    for (const key of inquiryAttributionFieldNames) {
+      payload.append(key, attributionFields[key] || "");
     }
     payload.append("interestRoute", isProduct ? context.inquiryId : safeInterestRoute(new URL(window.location.href).searchParams.get("route")));
     payload.append("cf-turnstile-response", turnstileToken);
@@ -982,13 +987,15 @@ function CommissionForm({ text, language, mode = "full", product }) {
 
     try {
       const result = await sendInquiry(inquiryEndpoint, payload);
+      const projectTypeId = analyticsProjectType(submissionForm.projectType, Object.values(copy).map(entry => entry.commission.options.projectTypes));
+      void trackConfirmedMetaLead(result, { ...eventContext, product_slug: eventContext.product_slug || "", project_type: projectTypeId, language });
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "generate_lead",
         event_id: result.reference || "",
         ...eventContext,
         ...analyticsAttribution(attribution),
-        project_type: analyticsProjectType(submissionForm.projectType, Object.values(copy).map(entry => entry.commission.options.projectTypes)),
+        project_type: projectTypeId,
         has_attachments: !isProduct && files.length > 0,
         language,
       });
@@ -1028,7 +1035,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
   const renderFieldError = name => fieldErrors[name] ? (
     <small className="field-error" id={`brief-${name}-error`}>
       {fieldErrors[name] === "email" ? emailText.invalidEmail : fieldErrors[name] === "length"
-        ? feedback.length.replace("{limit}", fieldLimits[name]) : feedback.required}
+        ? feedback.length.replace("{limit}", fieldLimits[name]) : fieldErrors[name] === "format" ? feedback.format : feedback.required}
     </small>
   ) : null;
 
@@ -1044,25 +1051,32 @@ function CommissionForm({ text, language, mode = "full", product }) {
     </label>
   );
 
+  const renderRole = () => <label className="field"><span>{intake.role} *</span><select name="customerRole" {...fieldAttributes("customerRole")} value={form.customerRole} required onChange={event => setValue("customerRole", event.target.value)}><option value="">{selectPrompts[language] || selectPrompts.en}</option>{customerRoleIds.map((id, index) => <option key={id} value={id}>{intake.roles[index]}</option>)}</select>{renderFieldError("customerRole")}</label>;
+  const renderCompany = () => <label className="field"><span>{intake.company}</span><input name="company" {...fieldAttributes("company")} autoComplete="organization" value={form.company} onChange={event => setValue("company", event.target.value)} placeholder={text.commission.placeholders.company} />{renderFieldError("company")}</label>;
+  const renderPhone = () => <label className="field"><span>{text.commission.fields.phone}</span><input type="tel" name="phone" {...fieldAttributes("phone")} autoComplete="tel" value={form.phone} onChange={event => setValue("phone", event.target.value)} placeholder={text.commission.placeholders.phone} />{renderFieldError("phone")}</label>;
+  const renderTimeline = () => <label className="field"><span>{text.commission.fields.timeline}</span><input name="timeline" {...fieldAttributes("timeline")} value={form.timeline} onChange={event => setValue("timeline", event.target.value)} placeholder={text.commission.placeholders.timeline} />{renderFieldError("timeline")}</label>;
+  const renderBudget = () => <label className="field"><span>{intake.budget}</span><input name="budget" {...fieldAttributes("budget")} value={form.budget} onChange={event => setValue("budget", event.target.value)} placeholder={intake.budgetHint} />{renderFieldError("budget")}</label>;
+
   if (isProduct && !context) return null;
 
   return (
     <form ref={formRef} className={`commission-form${isProduct ? " product-inquiry-form" : ""}`} onSubmit={submit} noValidate aria-busy={status.type === "loading"}>
-      <div className="form-heading"><h2>{isProduct ? shortText.title : text.commission.formTitle}</h2><p>{isProduct ? shortText.body : hasInquiryEndpoint ? text.commission.formBody : emailText.body}</p>{isProduct ? <p>{shortText.selected}: <strong>{product?.title || context.title}</strong></p> : null}</div>
+      <div className="form-heading"><h2>{isProduct ? shortText.title : text.commission.formTitle}</h2><p>{isProduct ? shortText.body : hasInquiryEndpoint ? text.commission.formBody : emailText.body}</p>{isProduct ? <p>{shortText.selected}: <strong>{product?.title || context.title}</strong></p> : null}<p className="inquiry-studio-identity">{(studioIdentity[language] || studioIdentity.en).body}</p></div>
       {!isProduct ? <CommissionEvidence language={language} /> : null}
       <fieldset className="form-grid" disabled={status.type === "loading"}>
         <legend className="sr-only">{isProduct ? shortText.title : text.commission.formTitle}</legend>
         <label className="field"><span>{text.commission.fields.name} *</span><input name="name" {...fieldAttributes("name")} autoComplete="name" value={form.name} onChange={(event) => setValue("name", event.target.value)} placeholder={text.commission.placeholders.name} required />{renderFieldError("name")}</label>
-        <label className="field"><span>{text.commission.fields.company} *</span><input name="company" {...fieldAttributes("company")} autoComplete="organization" value={form.company} onChange={(event) => setValue("company", event.target.value)} placeholder={text.commission.placeholders.company} required />{renderFieldError("company")}</label>
-        <label className="field"><span>{text.commission.fields.email} *</span><input type="email" name="email" {...fieldAttributes("email")} autoComplete="email" value={form.email} onChange={(event) => setValue("email", event.target.value)} placeholder={text.commission.placeholders.email} required />{renderFieldError("email")}</label>
-        {!isProduct ? <><label className="field"><span>{text.commission.fields.phone}</span><input type="tel" name="phone" {...fieldAttributes("phone")} autoComplete="tel" value={form.phone} onChange={(event) => setValue("phone", event.target.value)} placeholder={text.commission.placeholders.phone} />{renderFieldError("phone")}</label>
+        <label className="field"><span>{intake.email} *</span><input type="email" name="email" {...fieldAttributes("email")} autoComplete="email" value={form.email} onChange={(event) => setValue("email", event.target.value)} placeholder={text.commission.placeholders.email} required />{renderFieldError("email")}</label>
+        {renderRole()}
+        {!isProduct ? <>{renderCompany()}{renderPhone()}
         {renderSelect("projectType", text.commission.fields.projectType, text.commission.options.projectTypes, true)}</> : null}
-        <label className="field"><span>{text.commission.fields.location} *</span><input name="location" {...fieldAttributes("location")} value={form.location} onChange={(event) => setValue("location", event.target.value)} placeholder={text.commission.placeholders.location} required />{renderFieldError("location")}</label>
+        <label className="field"><span>{isProduct ? intake.destination : text.commission.fields.location} *</span><input name="location" {...fieldAttributes("location")} value={form.location} onChange={(event) => setValue("location", event.target.value)} placeholder={isProduct ? intake.destinationHint : text.commission.placeholders.location} required />{renderFieldError("location")}</label>
         {!isProduct ? <>{renderSelect("material", text.commission.fields.material, text.commission.options.materials)}
         {renderSelect("scale", text.commission.fields.scale, text.commission.options.scales)}
-        <label className="field"><span>{text.commission.fields.timeline}</span><input name="timeline" {...fieldAttributes("timeline")} value={form.timeline} onChange={(event) => setValue("timeline", event.target.value)} placeholder={text.commission.placeholders.timeline} />{renderFieldError("timeline")}</label>
+        {renderTimeline()}{renderBudget()}
         {renderSelect("installation", text.commission.fields.installation, text.commission.options.installation)}</> : null}
-        <label className="field field-wide"><span>{isProduct ? shortText.message : text.commission.fields.message} *</span><textarea name="message" {...fieldAttributes("message")} rows={isProduct ? 3 : 6} value={form.message} onChange={(event) => setValue("message", event.target.value)} placeholder={isProduct ? shortText.placeholder : text.commission.placeholders.message} required />{renderFieldError("message")}</label>
+        <label className="field field-wide"><span>{isProduct ? intake.message : text.commission.fields.message} *</span><textarea name="message" {...fieldAttributes("message")} rows={isProduct ? 3 : 6} value={form.message} onChange={(event) => setValue("message", event.target.value)} placeholder={isProduct ? intake.messageHint : text.commission.placeholders.message} required />{renderFieldError("message")}</label>
+        {isProduct ? <details className="inquiry-optional field-wide" open={optionalOpen} onToggle={event => setOptionalOpen(event.currentTarget.open)}><summary>{intake.optional}</summary><div className="form-grid">{renderCompany()}{renderPhone()}{renderBudget()}{renderTimeline()}</div></details> : null}
         {!isProduct ? hasInquiryEndpoint ? (
           <label className="field field-wide file-field">
             <span>{text.commission.fields.files}</span>
@@ -1107,12 +1121,12 @@ function CommissionPage({ text, language }) {
           <p>{text.commission.body}</p>
           <ul>{text.commission.points.map((point) => <li key={point}><Check size={18} weight="bold" />{point}</li>)}</ul>
         </div>
-        <figure><img src={studioDesk} alt="Sculpture material desk prepared for project review" width="1536" height="1024" fetchPriority="high" decoding="async" /></figure>
+        <figure><img src={studioDesk} alt={(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy} width="1536" height="1024" fetchPriority="high" decoding="async" /><figcaption className="commission-study-caption">{(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy}</figcaption></figure>
       </section>
       <section className="commission-form-section section-shell">
         <CommissionForm text={text} language={language} />
         <aside className="brief-aside">
-          <figure><img src={conceptSketch} alt="Complete sculpture concept drawing with scale and landscape context" width="1448" height="1086" loading="lazy" decoding="async" /></figure>
+          <figure><img src={conceptSketch} alt={(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).drawingStudy} width="1448" height="1086" loading="lazy" decoding="async" /><figcaption className="commission-study-caption">{(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).drawingStudy}</figcaption></figure>
           <div><p>{text.commission.formBody}</p><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></div>
         </aside>
       </section>

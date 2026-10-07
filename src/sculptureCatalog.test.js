@@ -4,9 +4,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { createServer } from "vite";
 import { sculptureCatalog, sculptureProducts, sculptureRoutes, getSculpture } from "./sculptureCatalog.js";
 import { catalogUi, localizeSculpture } from "./sculptureCatalogCopy.js";
 import { copy } from "./content.js";
+import { commissionEvidenceImage, commissionProof, studioIdentity } from "./commissionProof.js";
+import { sculptureFallback, sculptureSeoPages } from "../scripts/sculpture-seo.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const languages = ["en", "zh", "ar", "fr", "es", "de"];
@@ -105,4 +110,66 @@ test("six language views preserve canonical paths, metadata and media geometry",
   }
   assert.equal(JSON.stringify(sculptureProducts), snapshot, "Localization mutated canonical catalog content");
   assert.equal(localizeSculpture(sculptureProducts[0], "unsupported"), sculptureProducts[0]);
+});
+
+test("studio identity and construction boundaries are complete in six languages", () => {
+  const identityKeys = Object.keys(studioIdentity.en).sort();
+  for (const language of languages) {
+    assert.deepEqual(Object.keys(studioIdentity[language]).sort(), identityKeys);
+    assert.ok(Object.values(studioIdentity[language]).every(text));
+    assert.ok(catalogUi[language].indexIntro.includes(studioIdentity[language].body));
+    assert.ok(catalogUi[language].scopeBody.includes(studioIdentity[language].capability));
+    assert.ok(catalogUi[language].scopeBody.includes(studioIdentity[language].delivery));
+    assert.ok(commissionProof[language].body.includes(studioIdentity[language].body));
+    assert.equal(commissionProof[language].scope, studioIdentity[language].delivery);
+  }
+  assert.match(studioIdentity.en.body, /studio and manufacturer based in China/);
+  assert.match(studioIdentity.en.body, /client drawings/);
+  for (const role of ["designers", "contractors", "suppliers", "developer procurement teams", "private owners"]) {
+    assert.ok(studioIdentity.en.body.includes(role));
+  }
+  assert.match(studioIdentity.en.evidenceBody, /construction-phase photographs, not completed hotel commissions or workshop inspection records/);
+  assert.match(studioIdentity.en.delivery, /shipping, on-site services and local installation responsibilities in writing/);
+  assert.equal(commissionEvidenceImage.file, "middle-east-stainless-steel-landmark-installation.webp");
+});
+
+test("static catalog copy uses the same identity and evidence as the visible site", () => {
+  const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+  for (const page of sculptureSeoPages) {
+    const html = sculptureFallback(page, esc);
+    assert.ok(html.includes(esc(studioIdentity.en.body)), page.slug);
+    assert.ok(html.includes(esc(studioIdentity.en.capability)), page.slug);
+    assert.ok(html.includes(esc(studioIdentity.en.delivery)), page.slug);
+    if (page.catalogKind !== "detail") continue;
+    assert.equal(html.match(/<h1>[^<]+<\/h1><p>([^<]+)<\/p>/)?.[1], esc(studioIdentity.en.body));
+    assert.ok(html.includes(esc(studioIdentity.en.evidenceBody)));
+    assert.ok(html.includes('href="/projects/#project-evidence-title"'));
+    assert.ok(html.includes('href="/custom-sculpture/"'));
+    assert.equal([...html.matchAll(new RegExp(`src="/seo-media/${commissionEvidenceImage.file}"`, "g"))].length, 1, "Construction proof is present once, even on the bird page");
+  }
+});
+
+test("all localized detail views expose identity and real evidence before the inquiry", async () => {
+  const server = await createServer({ configFile: path.join(root, "vite.static.config.mjs"), server: { middlewareMode: true, watch: null }, appType: "custom" });
+  const readable = html => html.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#x27;", "'").replaceAll("&#39;", "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+  try {
+    const { SculptureDetail } = await server.ssrLoadModule("/src/SculptureCatalog.jsx");
+    for (const language of languages) {
+      for (const product of sculptureProducts) {
+        const html = renderToStaticMarkup(React.createElement(SculptureDetail, { slug: product.slug, language, renderInquiry: () => React.createElement("form", { "data-inquiry-stub": "true" }) }));
+        const decoded = readable(html);
+        assert.ok(decoded.includes(studioIdentity[language].body), `${language}: ${product.slug}`);
+        assert.ok(decoded.includes(studioIdentity[language].capability));
+        assert.ok(decoded.includes(studioIdentity[language].evidenceBody));
+        assert.ok(decoded.includes(studioIdentity[language].delivery));
+        assert.ok(html.indexOf('id="collection-studio-evidence-title"') < html.indexOf('id="product-inquiry"'));
+        assert.ok(html.includes(`/seo-media/${commissionEvidenceImage.file}`));
+        assert.ok(html.includes('data-inquiry-stub="true"'));
+      }
+      const unknown = renderToStaticMarkup(React.createElement(SculptureDetail, { slug: "unknown", language, renderInquiry: () => { throw new Error("Unknown routes must not render an inquiry"); } }));
+      assert.ok(!unknown.includes("<form"));
+    }
+  } finally {
+    await server.close();
+  }
 });

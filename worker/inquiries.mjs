@@ -4,6 +4,18 @@ const maximumFiles = 5;
 const maximumFileSize = 10 * 1024 * 1024;
 const maximumAttachmentSize = 15 * 1024 * 1024;
 const maximumRequestSize = 17 * 1024 * 1024;
+const roleLabels = Object.freeze({
+  designer: "Designer / art consultant",
+  contractor: "Contractor",
+  supplier: "Supplier",
+  "developer-procurement": "Developer / procurement",
+  "private-owner": "Private owner",
+  other: "Other",
+});
+const formVariantLabels = Object.freeze({
+  "product-role-v2": "Product inquiry (product-role-v2)",
+  "full-role-v2": "Full project brief (full-role-v2)",
+});
 
 function responseHeaders(origin) {
   return {
@@ -24,6 +36,14 @@ function value(form, key, maximum) {
   if (typeof raw !== "string") return "";
   const result = raw.trim();
   if (result.length > maximum) throw new Error(`${key} is too long.`);
+  return result;
+}
+
+function singleLineValue(form, key, maximum) {
+  const raw = form.get(key);
+  if (raw != null && typeof raw !== "string") throw new Error(`${key} must be text.`);
+  const result = value(form, key, maximum);
+  if (/[\u0000-\u001f\u007f-\u009f]/.test(result)) throw new Error(`${key} must be a single line.`);
   return result;
 }
 
@@ -89,16 +109,22 @@ async function readFormWithLimit(request) {
 
 function notificationText(reference, inquiry, files) {
   const fields = [
-    ["Reference", reference], ["Name", inquiry.name], ["Company", inquiry.company],
+    ["Reference", reference],
+    ["Form type", formVariantLabels[inquiry.formVariant] || "Legacy full brief (no form variant)"],
+    ["Customer role", inquiry.customerRole ? `${roleLabels[inquiry.customerRole]} [${inquiry.customerRole}]` : "Not supplied by legacy form"],
+    ["Name", inquiry.name], ["Company", inquiry.company],
     ["Email", inquiry.email], ["Phone / WhatsApp", inquiry.phone],
     ["Project type", inquiry.projectType], ["Site", inquiry.location],
-    ["Material", inquiry.material], ["Scale", inquiry.scale], ["Timeline", inquiry.timeline],
+    ["Material", inquiry.material], ["Scale", inquiry.scale], ["Budget (optional, not a qualification gate)", inquiry.budget], ["Timeline", inquiry.timeline],
     ["Installation", inquiry.installation], ["Language", inquiry.language],
     ["Source", inquiry.source], ["Landing page", inquiry.landingPath],
     ["Referrer host", inquiry.referrerHost], ["UTM source", inquiry.utmSource],
     ["UTM medium", inquiry.utmMedium], ["UTM campaign", inquiry.utmCampaign],
     ["UTM ID", inquiry.utmId], ["UTM content", inquiry.utmContent],
     ["UTM term", inquiry.utmTerm], ["Facebook click ID", inquiry.fbclid],
+    ["First landing page", inquiry.firstLandingPath], ["First referrer host", inquiry.firstReferrerHost],
+    ["First UTM source", inquiry.firstUtmSource], ["First UTM medium", inquiry.firstUtmMedium],
+    ["First UTM campaign", inquiry.firstUtmCampaign],
     ["Interest route", inquiry.interestRoute],
     ["Project facts", inquiry.message],
   ];
@@ -106,7 +132,7 @@ function notificationText(reference, inquiry, files) {
   const attachments = files.length
     ? files.map((file) => `${file.name} (${file.size} bytes)`).join("\n")
     : "None";
-  return `${details}\n\nAttached project files:\n${attachments}`;
+  return `${details}\n\nAttribution note: Landing/UTM fields use the submitted effective attribution (latest valid paid touch when available, otherwise first visit). First-prefixed fields preserve the initial visit when supplied.\n\nAttached project files:\n${attachments}`;
 }
 
 async function verifyTurnstile(token, env, fetcher) {
@@ -150,15 +176,18 @@ export async function handleInquiryRequest(request, env, dependencies = {}) {
   try {
     if (value(form, "website", 200)) return json({ error: "Invalid submission." }, 400, origin);
     inquiry = {
+      formVariant: singleLineValue(form, "formVariant", 40),
+      customerRole: singleLineValue(form, "customerRole", 40),
       name: value(form, "name", 160),
       company: value(form, "company", 200),
       email: value(form, "email", 240).toLowerCase(),
-      phone: value(form, "phone", 80),
+      phone: singleLineValue(form, "phone", 80),
       projectType: value(form, "projectType", 160),
       location: value(form, "location", 240),
       material: value(form, "material", 160),
       scale: value(form, "scale", 100),
-      timeline: value(form, "timeline", 120),
+      budget: singleLineValue(form, "budget", 120),
+      timeline: singleLineValue(form, "timeline", 120),
       installation: value(form, "installation", 160),
       message: value(form, "message", 5000),
       language: value(form, "language", 12) || "en",
@@ -172,13 +201,26 @@ export async function handleInquiryRequest(request, env, dependencies = {}) {
       utmContent: safeCampaignValue(value(form, "utmContent", 80)),
       utmTerm: safeCampaignValue(value(form, "utmTerm", 80)),
       fbclid: safeClickId(value(form, "fbclid", 500)),
+      firstLandingPath: safeLandingPath(value(form, "firstLandingPath", 300)),
+      firstReferrerHost: safeReferrerHost(value(form, "firstReferrerHost", 120)),
+      firstUtmSource: safeCampaignValue(value(form, "firstUtmSource", 80)),
+      firstUtmMedium: safeCampaignValue(value(form, "firstUtmMedium", 80)),
+      firstUtmCampaign: safeCampaignValue(value(form, "firstUtmCampaign", 80)),
       interestRoute: safeCampaignValue(value(form, "interestRoute", 80)),
     };
   } catch (error) {
     return json({ error: error.message }, 400, origin);
   }
 
-  if (!inquiry.name || !inquiry.company || !inquiry.email || !inquiry.projectType || !inquiry.location || !inquiry.message) {
+  if (inquiry.formVariant && !Object.hasOwn(formVariantLabels, inquiry.formVariant)) {
+    return json({ error: "Unknown form variant." }, 400, origin);
+  }
+  if ((inquiry.formVariant || inquiry.customerRole) && !Object.hasOwn(roleLabels, inquiry.customerRole)) {
+    return json({ error: "Select a valid customer role." }, 400, origin);
+  }
+  // Missing variant preserves the deployed full-brief contract. The explicit v2
+  // forms accept private owners and do not require or invent a company.
+  if (!inquiry.name || (!inquiry.formVariant && !inquiry.company) || !inquiry.email || !inquiry.projectType || !inquiry.location || !inquiry.message) {
     return json({ error: "Required project facts are missing." }, 400, origin);
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inquiry.email)) {

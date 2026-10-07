@@ -3654,7 +3654,14 @@ body[data-language="ar"] .hero-content h1 {
   .collection-more { padding-block: 40px 50px; }
 }
 .product-inquiry-form .form-heading h2 { font-size: 30px; }
+.inquiry-optional { min-width: 0; border-block: 1px solid var(--line); padding-block: 12px; }
+.inquiry-optional summary { cursor: pointer; min-height: 44px; display: list-item; padding-block: 12px; color: var(--text-soft); font-size: 14px; line-height: 1.6; }
+.inquiry-optional summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.inquiry-optional .form-grid { padding-block: 16px; }
+.field select { max-width: 100%; }
 .product-inquiry-form .form-heading > p:last-child { font-size: 12px; color: #d4b99f; }
+.product-inquiry-form .form-heading .inquiry-studio-identity { font-size: 13px; line-height: 1.8; color: var(--text-soft); }
+.commission-study-caption { padding: 12px 14px; color: var(--text-soft); font-size: 12px; line-height: 1.6; }
 .commission-full-link { font-size: 12px; margin-top: 20px; }
 .commission-full-link a { display: inline-flex; align-items: center; gap: 10px; text-decoration: underline; text-underline-offset: 4px; }
 .collection-card { display: flex; flex-direction: column; }

@@ -1,7 +1,9 @@
 import { getSculpture } from "./sculptureCatalog.js";
 import { restoreInquiryDraft } from "./inquiryForm.js";
+import { customerRoleIds, productFormVariant } from "./inquiryIntake.js";
 
-export const productInquiryFields = Object.freeze(["name", "company", "email", "location", "message"]);
+export const productInquiryFields = Object.freeze(["name", "email", "customerRole", "location", "message"]);
+export const productInquiryOptionalFields = Object.freeze(["company", "phone", "budget", "timeline"]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function productInquiryContext(product) {
@@ -20,7 +22,7 @@ export function productInquiryDraftKey(product) {
 }
 
 export function productInquiryDraft(raw) {
-  return Object.fromEntries(productInquiryFields.map(name => [name, typeof raw?.[name] === "string" ? raw[name] : ""]));
+  return Object.fromEntries([...productInquiryFields, ...productInquiryOptionalFields].map(name => [name, typeof raw?.[name] === "string" && (name !== "customerRole" || customerRoleIds.includes(raw[name])) ? raw[name] : ""]));
 }
 
 export function productInquiryForm(raw, product, projectTypes, { submitting = false } = {}) {
@@ -31,6 +33,7 @@ export function productInquiryForm(raw, product, projectTypes, { submitting = fa
   }
   return {
     ...restoreInquiryDraft(null), ...productInquiryDraft(raw),
+    formVariant: productFormVariant,
     projectType: projectTypes[context.projectTypeIndex],
     // Drafts never restore honeypots; preserve an actual filled trap at submit.
     website: submitting && typeof raw?.website === "string" ? raw.website : "",

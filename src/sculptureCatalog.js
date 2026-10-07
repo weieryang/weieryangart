@@ -1,12 +1,14 @@
 // Canonical English content shared by the visible collection and static SEO pages.
 // Image display is authorized. Reference photographs do not establish authorship,
 // project completion, physical specifications, or permission to reproduce a work.
+import { studioIdentity } from "./commissionProof.js";
+
 export const sculptureCatalog = {
   path: "/sculptures/",
-  title: "Custom Sculpture Collection for Hotels & Public Spaces | WEIERYANG",
-  description: "Explore four custom sculpture directions for hotel lobbies, atriums, arrival landscapes and public sites. Review imagery, site requirements and request a project assessment.",
+  title: "Custom Sculpture Studio & Manufacturer in China | WEIERYANG",
+  description: "Explore custom sculpture from a China-based studio and manufacturer. Work from client drawings or develop a design for lobbies, atriums, landscapes and public sites.",
   h1: "Find a direction. Make it belong to your site.",
-  intro: "Four starting points for a custom sculpture commission. Choose a spatial direction, review the evidence and tell us about your site. Design, dimensions, finish and delivery scope are developed for each project.",
+  intro: `${studioIdentity.en.body} Four starting points for a custom sculpture commission. Choose a spatial direction, review the evidence and tell us about your site. Design, dimensions, finish and delivery scope are developed for each project.`,
 };
 
 export const sculptureProducts = [
@@ -14,8 +16,8 @@ export const sculptureProducts = [
     slug: "mirror-lobby-sculpture", path: "/sculptures/mirror-lobby-sculpture/", inquiryId: "mirror-lobby-sculpture", projectTypeIndex: 0,
     title: "Mirror sculpture for a lobby or water feature",
     category: "Lobby / water feature", evidenceType: "reference",
-    metaTitle: "Custom Mirror Lobby & Water Feature Sculpture | WEIERYANG",
-    metaDescription: "Plan a reflective lobby sculpture around guest circulation, water edges and lighting. View authorized spatial references and request a site-specific assessment.",
+    metaTitle: "Custom Mirror Lobby Sculpture Manufacturer in China | WEIERYANG",
+    metaDescription: "China-based sculpture studio and manufacturer for custom mirror lobby and water-feature work. Send client drawings or develop a design around your site and lighting.",
     intro: "A reflective focal point needs room to work. Start with guest circulation, the water edge and the surrounding architecture, then develop a distinct sculpture for your lobby.",
     disclosure: "Authorized commercial-space references. These photographs are not presented as completed WEIERYANG hotel commissions. Hotel use is a proposed application; the images inform an original, site-specific design.",
     images: [
@@ -38,8 +40,8 @@ export const sculptureProducts = [
     slug: "vertical-atrium-sculpture", path: "/sculptures/vertical-atrium-sculpture/", inquiryId: "vertical-atrium-sculpture", projectTypeIndex: 0,
     title: "Vertical sculpture for a multi-level atrium",
     category: "Atrium / interior landmark", evidenceType: "reference",
-    metaTitle: "Custom Vertical Atrium Sculpture Planning | WEIERYANG",
-    metaDescription: "Develop an atrium sculpture around multi-level sightlines, clearances, structural interfaces and lifting access. View spatial references and discuss your building.",
+    metaTitle: "Custom Atrium Sculpture Manufacturer in China | WEIERYANG",
+    metaDescription: "China-based sculpture studio and manufacturer for custom atrium work. Develop client drawings around multi-level views, structural interfaces and lifting access.",
     intro: "An atrium sculpture is seen from several floors at once. Develop its silhouette and scale with the building team, with clearances, structural interfaces and installation access considered together.",
     disclosure: "Authorized commercial-atrium references, not completed WEIERYANG hotel commissions. The photographed form, mounting system and materials are not offered as verified specifications or as a replica product.",
     images: [
@@ -63,8 +65,8 @@ export const sculptureProducts = [
     slug: "tree-canopy-sculpture", path: "/sculptures/tree-canopy-sculpture/", inquiryId: "tree-canopy-sculpture", projectTypeIndex: 1,
     title: "Tree and canopy sculpture for an arrival landscape",
     category: "Arrival / landscape", evidenceType: "reference",
-    metaTitle: "Custom Tree & Canopy Landscape Sculpture | WEIERYANG",
-    metaDescription: "Explore tree and canopy sculpture directions for hotel arrival spaces. Review approach views, exposure and anchoring before a custom design and project proposal.",
+    metaTitle: "Custom Tree & Canopy Sculpture Manufacturer in China | WEIERYANG",
+    metaDescription: "China-based sculpture studio and manufacturer for custom tree and canopy landscape work. Review client drawings, approach views, exposure and anchoring requirements.",
     intro: "Let the arrival sequence shape the sculpture. Tree and canopy references offer different ways to define a focal point, frame a pedestrian space and connect a piece to the surrounding landscape.",
     disclosure: "Authorized landscape references showing different works, not multiple views of one product. Gold-toned appearance does not confirm a metal grade or coating. These are not presented as WEIERYANG hotel commissions.",
     images: [
@@ -87,8 +89,8 @@ export const sculptureProducts = [
     slug: "bird-landmark-sculpture", path: "/sculptures/bird-landmark-sculpture/", inquiryId: "bird-landmark-sculpture", projectTypeIndex: 4,
     title: "Bird-form stainless steel landmark sculpture",
     category: "Public site / landmark", evidenceType: "construction",
-    metaTitle: "Custom Bird Landmark Sculpture & Construction Evidence | WEIERYANG",
-    metaDescription: "Review verified Middle East bird landmark construction photographs, assembly and lifting considerations. Discuss a custom stainless steel sculpture for your site.",
+    metaTitle: "Custom Bird Landmark Sculpture Manufacturer in China | WEIERYANG",
+    metaDescription: "China-based sculpture studio and manufacturer. Review verified Middle East bird landmark construction records and discuss custom design, fabrication and export scope.",
     intro: "A landmark begins with a form and a credible delivery plan. Our Middle East construction record offers a grounded starting point for discussing a custom bird-form sculpture, segmented assembly and site installation coordination.",
     disclosure: "Verified construction-phase photographs from a Middle East public site. They document assembly and installation work, not a completed hotel project or a U.S. commission. New designs and delivery scopes require a separate project review.",
     images: [

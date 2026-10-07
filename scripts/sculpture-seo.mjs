@@ -1,4 +1,5 @@
 import { sculptureCatalog, sculptureProducts } from "../src/sculptureCatalog.js";
+import { commissionEvidenceImage, studioIdentity } from "../src/commissionProof.js";
 
 // Page metadata and body text come from the same catalog used by React.
 export const sculptureSeoPages = [
@@ -25,6 +26,7 @@ function imageMarkup(image, esc, eager = false) {
 }
 
 export function sculptureFallback(page, esc) {
+  const identity = studioIdentity.en;
   if (page.catalogKind === "index") {
     return `<main class="seo-fallback" data-seo-fallback="true">
       <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Custom sculpture collection</span></nav>
@@ -37,6 +39,7 @@ export function sculptureFallback(page, esc) {
           <a href="${esc(product.path)}">Review this direction</a>
         </article>`).join("")}
       </section>
+      <section><h2>Agree the scope before production</h2><p>${esc(identity.capability)}</p><p>${esc(identity.delivery)}</p><a href="/commission/">Send your project brief</a></section>
       <p><a href="/resort-sculpture/">Review the hotel and resort sculpture service</a></p>
     </main>`;
   }
@@ -44,13 +47,18 @@ export function sculptureFallback(page, esc) {
   const product = page.product;
   return `<main class="seo-fallback" data-seo-fallback="true">
     <nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="${esc(sculptureCatalog.path)}">Custom sculpture collection</a> / <span>${esc(product.title)}</span></nav>
-    <p>${esc(product.category)}</p><h1>${esc(product.title)}</h1><p>${esc(product.intro)}</p>
+    <p>${esc(product.category)}</p><h1>${esc(product.title)}</h1><p>${esc(identity.body)}</p><p>${esc(product.intro)}</p>
     <p>${esc(product.disclosure)}</p>
     <div class="seo-catalog-gallery">${product.images.map((image, index) => imageMarkup(image, esc, index === 0)).join("")}</div>
     <section><h2>Project specification</h2><dl>${product.specification.map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join("")}</dl></section>
     <section><h2>What should be reviewed for your site?</h2><ul>${product.review.map(item => `<li>${esc(item)}</li>`).join("")}</ul></section>
+    <section aria-labelledby="collection-studio-evidence-title"><h2 id="collection-studio-evidence-title">${esc(identity.evidenceTitle)}</h2>
+      ${product.evidenceType !== "construction" ? `<figure><img src="/seo-media/${esc(commissionEvidenceImage.file)}" alt="${esc(identity.evidenceAlt)}" width="${commissionEvidenceImage.width}" height="${commissionEvidenceImage.height}" loading="lazy" decoding="async" /><figcaption>Verified construction record</figcaption></figure>` : ""}
+      <p>${esc(identity.capability)}</p><p>${esc(identity.evidenceBody)}</p><p>${esc(identity.delivery)}</p>
+      <p><a href="/projects/#project-evidence-title">${esc(identity.evidenceAction)}</a></p><p><a href="/custom-sculpture/">${esc(identity.processAction)}</a></p>
+    </section>
     <section><h2>Questions before commissioning</h2>${product.faq.map(([question, answer]) => `<article><h3>${esc(question)}</h3><p>${esc(answer)}</p></article>`).join("")}</section>
-    <section><h2>Discuss this direction for your project</h2><p><a href="/commission/?route=${esc(encodeURIComponent(product.inquiryId))}">Request a project assessment</a></p></section>
+    <section><h2>Discuss this direction for your project</h2><p>${esc(identity.body)}</p><p>${esc(identity.delivery)}</p><p><a href="/commission/?route=${esc(encodeURIComponent(product.inquiryId))}">Request a project assessment</a></p></section>
     <nav aria-label="Related sculpture guides"><h2>Continue the project review</h2>${product.related.map(([label, href]) => `<p><a href="${esc(href)}">${esc(label)}</a></p>`).join("")}</nav>
   </main>`;
 }

@@ -12,6 +12,8 @@ Overseas architects, landscape designers, hospitality developers, public-art con
 
 The site positions the company as a premium custom sculpture and public-art fabrication partner. Success means a qualified buyer understands the studio's taste level, engineering competence, material range, and inquiry path within the first visit, then submits a project brief or starts a quote conversation.
 
+State the actual China-based studio and manufacturing identity early. Support client drawings as well as original design development, and welcome project procurement teams and private owners without requiring an invented company or a minimum budget. Delivery and local installation responsibilities are confirmed per project.
+
 ## Brand Personality
 
 Precise, architectural, and quietly rare. The brand should feel like a private atelier that can also pass a contractor's technical review.
