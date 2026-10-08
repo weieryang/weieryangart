@@ -278,7 +278,7 @@ const routeImageKeys = {
 const preservedRoutes = [
   { url: `${site}/insights/large-hotel-atrium-sculpture-planning-guide/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelAtriumPlanningOverview", "hotelAtriumMultilevelReference", "hotelAtriumUpperLevelView", "hotelAtriumBaseClearance", "hotelAtriumCrossLevelSightline"] },
   { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
-  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
+  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-10-08", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
   { url: `${site}/insights/`, lastmod: "2026-09-30", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
@@ -286,13 +286,13 @@ const preservedRoutes = [
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
   { url: `${site}/insights/large-outdoor-sculpture-foundation-anchor-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "studioDesk", "materialSamples"] },
-  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
+  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-08", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
   { url: `${site}/insights/water-feature-sculpture-material-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["birdSculpture", "materialSamples", "materialSwatchStrip", "structuralStudy", "studioDesk"] },
   { url: `${site}/insights/overseas-sculpture-installation-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["largeStructuralAssembly", "studioDesk", "materialSamples", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
-  { url: `${site}/insights/hotel-arrival-sculpture-site-brief/`, lastmod: "2026-09-27", priority: "0.86", imageKeys: ["hotelArrivalSiteContext", "hotelArrivalPedestrianFlow", "middleEastLandmarkInstallation", "materialSamples", "stainlessWingSlatInstallation"] },
+  { url: `${site}/insights/hotel-arrival-sculpture-site-brief/`, lastmod: "2026-10-08", priority: "0.86", imageKeys: ["hotelArrivalSiteContext", "hotelArrivalPedestrianFlow", "middleEastLandmarkInstallation", "materialSamples", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/middle-east-stainless-steel-landmark-sculpture/`, lastmod: today, priority: "0.88", imageKeys: ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "birdSculpture"] },
   { url: `${site}/insights/material-led-sculpture-review-2026/`, lastmod: today, priority: "0.8", imageKeys: ["designDevelopment", "materialSamples", "fabricationWorkshop"] },
   { url: `${site}/insights/how-to-commission-custom-outdoor-sculpture/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["conceptSketch", "materialSamples"] },
@@ -438,8 +438,8 @@ const pages = [
   {
     slug: "custom-sculpture",
     file: "custom-sculpture/index.html",
-    title: "Custom Sculpture | WEIERYANG Sculpture Studio",
-    description: "Custom sculpture commissions for architects, landscape designers, hospitality developers, and public art teams.",
+    title: "Custom Sculpture from Your Drawings | WEIERYANG",
+    description: "Custom sculpture from client drawings or original designs by a China-based manufacturer. Review fabrication records and prepare your project brief.",
     type: "Service",
     h1: "Custom sculpture starts with site facts, not a catalog shape",
     intro: "A serious custom sculpture commission starts with site use, viewing distance, climate, material exposure, installation access, and delivery route. WEIERYANG supports architects, landscape designers, hospitality developers, and public art teams who need project-specific sculpture rather than standard product selection.",
@@ -468,8 +468,8 @@ const pages = [
   {
     slug: "process",
     file: "process/index.html",
-    title: "Sculpture Process | WEIERYANG Sculpture Studio",
-    description: "WEIERYANG sculpture process from site review and material route to engineering, fabrication, packing, and installation support.",
+    title: "Sculpture Fabrication Process & Workshop Records | WEIERYANG",
+    description: "Review actual sculpture fabrication records and the process from drawings and material approval to structural development, export packing and overseas guidance.",
     type: "HowTo",
     h1: "A custom sculpture process built to reduce risk before production",
     intro: "WEIERYANG's process begins with site reading and material judgment, then moves through scale testing, engineering review, surface samples, fabrication control, export packing, and installation guidance. The aim is to make the quote feel engineered, not guessed.",
@@ -496,8 +496,8 @@ const pages = [
   {
     slug: "faq",
     file: "faq/index.html",
-    title: "Sculpture FAQ | WEIERYANG Sculpture Studio",
-    description: "WEIERYANG sculpture FAQ for custom quotes, drawings, NDA, material samples, overseas delivery, and installation support.",
+    title: "Custom Sculpture FAQ: Drawings, Quotes & Delivery | WEIERYANG",
+    description: "Where WEIERYANG is based, how to commission from drawings, what a sculpture quote needs, and how to confirm fabrication, shipping and installation scope.",
     type: "FAQPage",
     h1: "Sculpture commission FAQ",
     intro: "These questions help overseas buyers understand what makes a custom sculpture quote reliable: drawings, site facts, material route, confidentiality, samples, packing, export, and installation support.",
@@ -533,7 +533,7 @@ const updatedRoutes = new Set([
   "stone-sculpture", "custom-sculpture", "projects", "process", "materials", "faq",
 ]);
 for (const page of pages) if (updatedRoutes.has(page.slug)) page.lastmod = "2026-10-07";
-for (const page of pages) if (["", "commission", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-10-08";
+for (const page of pages) if (["", "commission", "process", "custom-sculpture", "faq"].includes(page.slug)) page.lastmod = "2026-10-08";
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 

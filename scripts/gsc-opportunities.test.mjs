@@ -51,6 +51,13 @@ test('missing or blank Page never creates a landing page', () => {
   assert.equal(blank.pageColumnPresent, true);
 });
 
+test('current GSC Chinese export header accepts 展示 and keeps small samples below the threshold', () => {
+  const report = analyzeCsv('热门查询,点击次数,展示,点击率,排名\nexample sculpture,0,2,0%,10\nexample maker,0,4,0%,80.25\n');
+  assert.equal(report.inputRows, 2);
+  assert.equal(report.resultCount, 0);
+  assert.equal(report.pageColumnPresent, false);
+});
+
 test('CSV output round-trips quoted data and includes source, page status and scope', () => {
   const report = analyzeCsv(`${header}\n"hotel, \"\"art\"\"\nconsultant",10,200,5%,12`, '/exports/query.csv');
   const output = parseCsv(reportToCsv(report));

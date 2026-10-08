@@ -10,7 +10,7 @@ const PAGE_CHECK = '需 GSC 查询 + 页面联合导出确认落地页';
 const ALIASES = {
   query: ['query', 'top queries', '热门查询', '查询'],
   clicks: ['clicks', '点击次数'],
-  impressions: ['impressions', '展示次数', '曝光次数'],
+  impressions: ['impressions', '展示', '展示次数', '曝光次数'],
   ctr: ['ctr', '点击率'],
   position: ['position', 'average position', '排名', '平均排名'],
   page: ['page', 'top pages', '网页', 'url'],
@@ -160,7 +160,7 @@ export function reportToCsv(report) {
 const HELP = `用法：node scripts/gsc-opportunities.mjs <GSC导出.csv> [--output-dir <目录>]
 
 默认输出目录：qa/growth（相对于当前工作目录）。生成 CSV 和 JSON，原始 CSV 保持不变；已有报告不会被覆盖，复测请使用新的输出目录。
-必需列：Query/Top queries/查询/热门查询、Clicks/点击次数、Impressions/展示次数、CTR/点击率、Position/排名/平均排名。
+必需列：Query/Top queries/查询/热门查询、Clicks/点击次数、Impressions/展示/展示次数、CTR/点击率、Position/排名/平均排名。
 可选列：Page/网页/URL。缺少页面时不会猜测落地页，需 GSC 查询 + 页面联合导出确认。
 筛选：平均排名 8–20（含边界），展示次数 >100，按展示次数降序。
 CTR 支持 5% 或 0.05；千位逗号数字必须遵守 CSV 引号规则，如 "1,200"。
