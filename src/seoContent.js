@@ -92,8 +92,8 @@ export const routeSeoContent = {
   },
   "custom-sculpture": {
     eyebrow: "Custom sculpture",
-    title: "Custom sculpture fabrication from your drawings or design brief",
-    intro: `${studioIdentity.en.body} Share your intended use, approximate scale and destination so we can review the design, material and fabrication scope for your project.`,
+    title: "Custom sculpture fabrication",
+    intro: "WEIERYANG is a sculpture studio and manufacturer based in China. We make custom sculptures from client drawings or develop original designs. Send your site, approximate size and destination for a fabrication and delivery review.",
     groups: [
       ["Start from drawings or a brief", ["Send client sketches, CAD or drawings for a fabrication review", "For an original design, describe the site, intended use and visual direction", "State an approximate size or explain which dimensions are still undecided"]],
       ["Resolve the sculpture for its site", ["Review viewing distance, climate, water exposure and public access", "Agree the material, finish, structure and base interfaces for this commission", "Confirm drawing approvals and any surface samples before production"]],
@@ -121,7 +121,7 @@ export const routeSeoContent = {
   },
   process: {
     eyebrow: "Sculpture process",
-    title: "Custom sculpture fabrication, from drawing review to export",
+    title: "Sculpture fabrication process",
     intro: `${studioIdentity.en.body} The process connects the approved design to fabrication, export packing and overseas installation guidance. Our fabrication-stage photographs and Middle East construction record show different parts of that work; the checks and deliverables for your commission are agreed before production.`,
     groups: [
       ["Review the brief and approvals", ["Read client drawings, scale, site photographs and destination requirements", "Resolve the material, finish, structure, base and installation access", "Agree review drawings, samples, approval stages and project responsibilities"]],
@@ -150,7 +150,7 @@ export const routeSeoContent = {
   },
   faq: {
     eyebrow: "Before commissioning",
-    title: "Custom sculpture questions: location, drawings and delivery",
+    title: "Custom sculpture FAQ",
     intro: `${studioIdentity.en.body} These answers explain who we work with, how to prepare an inquiry and which design, export and installation responsibilities need to be agreed for an overseas commission.`,
     groups: [
       ["Identify your project", ["Tell us your role, intended use and destination", "Send available drawings or describe the original design you need", "Share approximate scale, material direction and the desired schedule"]],
