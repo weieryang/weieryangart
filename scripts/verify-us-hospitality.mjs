@@ -60,7 +60,8 @@ for (const url of urls) {
     assert.match(link.pathname, /\.webp$/, `Non-WebP content image: ${route}`);
     assert.match(match[0], /\balt="[^"]*"/, `Image alt: ${route}`);
     for (const candidate of (match[0].match(/srcset="([^"]+)"/)?.[1] || "").split(",").filter(Boolean)) {
-      assert.ok(fs.existsSync(path.join(root, candidate.trim().split(/\s+/)[0])), `Missing image variant: ${candidate}`);
+      const variant = new URL(decode(candidate.trim().split(/\s+/)[0]), url);
+      assert.ok(variant.origin === base && fs.existsSync(path.join(root, decodeURIComponent(variant.pathname))), `Missing image variant: ${candidate}`);
     }
   }
 }

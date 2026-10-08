@@ -44,6 +44,8 @@ import { commissionEvidenceImage, commissionProof, studioIdentity } from "./comm
 import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
 import { productInquiryCopy } from "./productInquiryCopy.js";
 import { customerRoleIds, fullFormVariant, inquiryIntakeCopy } from "./inquiryIntake.js";
+import { WorkshopEvidence } from "./WorkshopEvidence.jsx";
+import { getWorkshopImage } from "./workshopEvidence.js";
 
 
 function assetUrl(asset) {
@@ -627,15 +629,20 @@ function QualificationBand({ text }) {
   );
 }
 
-function InsightsPreview({ text }) {
+function WorkshopPhoto({ id, language, priority = false }) {
+  const image = getWorkshopImage(id, language);
+  return <figure className="workshop-photo">
+    <img className="workshop-record-image" src={image.src} {...responsiveMedia(image.src, image.width)} width={image.width} height={image.height} alt={image.alt} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} decoding="async" />
+    <figcaption>{image.caption}</figcaption>
+  </figure>;
+}
+
+function InsightsPreview({ text, language }) {
   const insights = text.insights || copy.en.insights;
   return (
     <section className="insights-preview section-shell" id="insights">
       <div className="insights-visual">
-        <figure>
-          <img src={studioDesk} alt="Sculpture material desk with drawings and finish samples prepared for project review" width="1536" height="1024" loading="lazy" decoding="async" />
-          <figcaption>Material, site and delivery notes</figcaption>
-        </figure>
+        <WorkshopPhoto id="whaleSurface" language={language} />
         <p className="hero-eyebrow">{insights.eyebrow}</p>
         <h2>{insights.title}</h2>
         <p>{insights.body}</p>
@@ -708,7 +715,8 @@ function HomePage({ text, language }) {
       <SculptureCollectionPreview language={language} />
       <ProjectRoutes text={text} />
       <StudioMethod text={text} />
-      <InsightsPreview text={text} />
+      <WorkshopEvidence language={language} compact />
+      <InsightsPreview text={text} language={language} />
       <QualificationBand text={text} />
     </>
   );
@@ -717,12 +725,14 @@ function HomePage({ text, language }) {
 function SecondaryPage({ route, text, language }) {
   const seo = language === "en" ? routeSeoContent[route] : null;
   const title = seo?.title || text.routeNames[route] || text.routeNames.projects;
-  const media = routeHeroMedia[route];
+  const media = route === "process" ? getWorkshopImage("handsAssembly", language)
+    : route === "custom-sculpture" ? getWorkshopImage("whaleOverview", language)
+    : routeHeroMedia[route];
   const image = media?.src || routeImages[route] || studioDesk;
   const groups = seo?.groups || text.secondary.checks.map(([itemTitle, body]) => [itemTitle, [body]]);
   return (
     <>
-      <section className="secondary-hero section-shell">
+      <section className={`secondary-hero${["process", "custom-sculpture"].includes(route) ? " has-workshop-media" : ""} section-shell`}>
         <div>
           <p className="secondary-breadcrumb"><a href="/">Home</a><span>/</span>{text.routeNames[route] || text.routeNames.projects}</p>
           <p className="hero-eyebrow">{seo?.eyebrow || text.secondary.eyebrow}</p>
@@ -735,6 +745,7 @@ function SecondaryPage({ route, text, language }) {
           <figcaption>{media?.caption || (route === "projects" ? text.cases.verified : text.secondary.imageLabel)}</figcaption>
         </figure>
       </section>
+      {["process", "custom-sculpture"].includes(route) ? <WorkshopEvidence language={language} /> : null}
       {route === "resort-sculpture" && language === "en" ? <HospitalityPlanning /> : null}
       <section className="seo-route-content section-shell">
         <header>
@@ -1114,19 +1125,19 @@ function CommissionForm({ text, language, mode = "full", product }) {
 function CommissionPage({ text, language }) {
   return (
     <>
-      <section className="commission-hero section-shell">
+      <section className="commission-hero has-workshop-media section-shell">
         <div>
           <p className="hero-eyebrow">{text.commission.eyebrow}</p>
           <h1>{text.commission.title}</h1>
           <p>{text.commission.body}</p>
           <ul>{text.commission.points.map((point) => <li key={point}><Check size={18} weight="bold" />{point}</li>)}</ul>
         </div>
-        <figure><img src={studioDesk} alt={(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy} width="1536" height="1024" fetchPriority="high" decoding="async" /><figcaption className="commission-study-caption">{(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy}</figcaption></figure>
+        <WorkshopPhoto id="handsAssembly" language={language} priority />
       </section>
       <section className="commission-form-section section-shell">
         <CommissionForm text={text} language={language} />
         <aside className="brief-aside">
-          <figure><img src={conceptSketch} alt={(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).drawingStudy} width="1448" height="1086" loading="lazy" decoding="async" /><figcaption className="commission-study-caption">{(inquiryIntakeCopy[language] || inquiryIntakeCopy.en).drawingStudy}</figcaption></figure>
+          <WorkshopPhoto id="whaleOverview" language={language} />
           <div><p>{text.commission.formBody}</p><a href={`mailto:${businessContact.email}`}>{businessContact.email}</a></div>
         </aside>
       </section>

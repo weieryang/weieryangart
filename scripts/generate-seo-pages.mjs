@@ -6,6 +6,8 @@ import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
 import { commissionEvidenceImage, commissionProof, studioIdentity } from "../src/commissionProof.js";
 import { staticHeader, staticFooter } from "./static-frame.mjs";
 import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
+import { workshopEvidenceImages, getWorkshopEvidence, getWorkshopImage } from "../src/workshopEvidence.js";
+import { workshopGalleryHtml } from "./workshop-seo.mjs";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
@@ -531,6 +533,7 @@ const updatedRoutes = new Set([
   "stone-sculpture", "custom-sculpture", "projects", "process", "materials", "faq",
 ]);
 for (const page of pages) if (updatedRoutes.has(page.slug)) page.lastmod = "2026-10-07";
+for (const page of pages) if (["", "commission", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-10-08";
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 
@@ -553,7 +556,14 @@ function imageUrl(image) {
 function imagesFor(page) {
   if (page.images) return page.images;
   const keys = routeImageKeys[page.slug] || routeImageKeys[""];
-  return keys.map((key) => evidenceImages[key]);
+  const images = keys.map((key) => evidenceImages[key]);
+  if (page.slug === "") return [...images, ...getWorkshopEvidence("en").compactImages, getWorkshopImage("whaleSurface")];
+  if (page.slug === "commission") return [getWorkshopImage("handsAssembly"), getWorkshopImage("whaleOverview"), ...images];
+  if (["process", "custom-sculpture"].includes(page.slug)) {
+    const primary = getWorkshopImage(page.slug === "process" ? "handsAssembly" : "whaleOverview");
+    return [primary, ...workshopEvidenceImages.filter(image => image.id !== primary.id)];
+  }
+  return images;
 }
 
 function priorityFor(page) {
@@ -750,7 +760,7 @@ function fallback(page) {
   const resortPlanningGuides = page.slug === "resort-sculpture"
     ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
     : "";
-  const evidence = page.slug === "" ? `
+  const evidence = ["process", "custom-sculpture"].includes(page.slug) ? workshopGalleryHtml() : page.slug === "" ? `
       <section id="cases"><h2>${esc(hotelCases.en.title)}</h2><p>${esc(hotelCases.en.body)}</p><p>${esc(hotelCases.en.note)}</p>
         ${hotelCases.en.cards.map((card, index) => {
           const image = hotelCaseImages[index];
@@ -806,6 +816,7 @@ function fallback(page) {
       <p>${esc(page.intro)}</p>
       ${hotelPlanning}
       ${evidence}
+      ${page.slug === "" ? workshopGalleryHtml({ compact: true }) : ""}
       ${sections}
       ${projectGuide}
       ${stainlessGradeGuide}
