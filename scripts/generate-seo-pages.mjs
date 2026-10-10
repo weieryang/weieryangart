@@ -534,6 +534,7 @@ const updatedRoutes = new Set([
 ]);
 for (const page of pages) if (updatedRoutes.has(page.slug)) page.lastmod = "2026-10-07";
 for (const page of pages) if (["", "commission", "process", "custom-sculpture", "faq"].includes(page.slug)) page.lastmod = "2026-10-08";
+for (const page of pages) if (page.slug === "commission") page.lastmod = "2026-10-10";
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 

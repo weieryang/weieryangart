@@ -43,7 +43,7 @@ import { hospitalityEntry, hospitalityPlanning, hospitalitySections, privacyCopy
 import { commissionEvidenceImage, commissionProof, studioIdentity } from "./commissionProof.js";
 import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
 import { productInquiryCopy } from "./productInquiryCopy.js";
-import { customerRoleIds, fullFormVariant, inquiryIntakeCopy } from "./inquiryIntake.js";
+import { customerRoleIds, fullFormVariant, inquiryIntakeCopy, projectFormJumpCopy } from "./inquiryIntake.js";
 import { WorkshopEvidence } from "./WorkshopEvidence.jsx";
 import { getWorkshopImage } from "./workshopEvidence.js";
 
@@ -148,15 +148,6 @@ function navigate(path) {
   if (typeof window !== "undefined") window.location.href = path;
 }
 
-function homeAnchor(id) {
-  const path = currentPath();
-  if (!path) {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  navigate(`/#${id}`);
-}
-
 function whatsappHref(message) {
   return `https://wa.me/${businessContact.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
@@ -180,15 +171,19 @@ function LanguageSelect({ language, setLanguage, compact = false }) {
 
 function SiteHeader({ language, setLanguage, text }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuKeyboard, setMenuKeyboard] = useState(false);
   const menuRef = useRef(null);
   const menuButtonRef = useRef(null);
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = event => {
+    if (event?.detail === 0) setMenuKeyboard(true);
+    setMenuOpen(false);
+  };
   const nav = [
     { label: text.nav.projects, id: "projects" },
     { label: (catalogUi[language] || catalogUi.en).nav, href: "/sculptures/" },
     { label: text.hero.routes[0], href: "/resort-sculpture/" },
-    { label: text.nav.materials, id: "materials" },
-    { label: text.nav.process, id: "process" },
+    { label: text.nav.materials, href: "/materials/" },
+    { label: text.nav.process, href: "/process/" },
     { label: text.nav.studio, id: "studio" },
     { label: text.nav.insights || "Insights", href: "/insights/" },
   ];
@@ -213,7 +208,7 @@ function SiteHeader({ language, setLanguage, text }) {
     const onEntrance = event => { if (event.target === menu) focusMenu(); };
     menu.addEventListener("transitionend", onEntrance);
     const onKeyDown = (event) => {
-      if (event.key === "Escape") closeMenu();
+      if (event.key === "Escape") { setMenuKeyboard(true); closeMenu(); }
       if (event.key !== "Tab") return;
       const elements = focusable();
       const first = elements[0], last = elements.at(-1);
@@ -264,11 +259,11 @@ function SiteHeader({ language, setLanguage, text }) {
           {text.nav.brief}
         </a>
       </div>
-      <button ref={menuButtonRef} className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-expanded={menuOpen} aria-controls="mobile-menu">
+      <button ref={menuButtonRef} className="menu-button" type="button" onClick={event => { setMenuKeyboard(event.detail === 0); setMenuOpen(true); }} aria-expanded={menuOpen} aria-controls="mobile-menu">
         <List size={25} aria-hidden="true" />
         <span>{text.nav.menu}</span>
       </button>
-      <div ref={menuRef} className={`mobile-menu${menuOpen ? " is-open" : ""}`} id="mobile-menu" role="dialog" aria-label={text.nav.menu} aria-modal={menuOpen ? true : undefined} aria-hidden={!menuOpen} inert={!menuOpen}>
+      <div ref={menuRef} className={`mobile-menu${menuOpen ? " is-open" : ""}${menuKeyboard ? " is-keyboard" : ""}`} id="mobile-menu" role="dialog" aria-label={text.nav.menu} aria-modal={menuOpen ? true : undefined} aria-hidden={!menuOpen} inert={!menuOpen}>
         <div className="mobile-menu-top">
           <a className="brand-lockup" href="/" onClick={closeMenu}>
             <img src={logoPrimary} alt="" width="56" height="59" />
@@ -458,9 +453,9 @@ function Hero({ text, language }) {
           <a className="hero-cta" href="/commission/">
             {text.hero.brief}<ArrowRight size={23} aria-hidden="true" />
           </a>
-          <button className="hero-glass-cta" type="button" onClick={() => homeAnchor("materials")}>
+          <a className="hero-glass-cta" href="/materials/">
             {text.nav.materials}<ArrowRight size={22} aria-hidden="true" />
-          </button>
+          </a>
           <button
             className={`hero-time-toggle is-${heroTime}`}
             type="button"
@@ -1074,7 +1069,7 @@ function CommissionForm({ text, language, mode = "full", product }) {
     <form ref={formRef} className={`commission-form${isProduct ? " product-inquiry-form" : ""}`} onSubmit={submit} noValidate aria-busy={status.type === "loading"}>
       <div className="form-heading"><h2>{isProduct ? shortText.title : text.commission.formTitle}</h2><p>{isProduct ? shortText.body : hasInquiryEndpoint ? text.commission.formBody : emailText.body}</p>{isProduct ? <p>{shortText.selected}: <strong>{product?.title || context.title}</strong></p> : null}<p className="inquiry-studio-identity">{(studioIdentity[language] || studioIdentity.en).body}</p></div>
       {!isProduct ? <CommissionEvidence language={language} /> : null}
-      <fieldset className="form-grid" disabled={status.type === "loading"}>
+      <fieldset className="form-grid" id={isProduct ? undefined : "project-details"} disabled={status.type === "loading"}>
         <legend className="sr-only">{isProduct ? shortText.title : text.commission.formTitle}</legend>
         <label className="field"><span>{text.commission.fields.name} *</span><input name="name" {...fieldAttributes("name")} autoComplete="name" value={form.name} onChange={(event) => setValue("name", event.target.value)} placeholder={text.commission.placeholders.name} required />{renderFieldError("name")}</label>
         <label className="field"><span>{intake.email} *</span><input type="email" name="email" {...fieldAttributes("email")} autoComplete="email" value={form.email} onChange={(event) => setValue("email", event.target.value)} placeholder={text.commission.placeholders.email} required />{renderFieldError("email")}</label>
@@ -1123,6 +1118,13 @@ function CommissionForm({ text, language, mode = "full", product }) {
 }
 
 function CommissionPage({ text, language }) {
+  const jumpToForm = event => {
+    const field = document.getElementById("project-details")?.querySelector('input[name="name"]');
+    if (!field) return;
+    event.preventDefault();
+    field.focus({ preventScroll: true });
+    field.scrollIntoView({ block: "center", behavior: "instant" });
+  };
   return (
     <>
       <section className="commission-hero has-workshop-media section-shell">
@@ -1131,6 +1133,7 @@ function CommissionPage({ text, language }) {
           <h1>{text.commission.title}</h1>
           <p>{text.commission.body}</p>
           <ul>{text.commission.points.map((point) => <li key={point}><Check size={18} weight="bold" />{point}</li>)}</ul>
+          <a className="text-link commission-form-jump" href="#project-details" onClick={jumpToForm}>{projectFormJumpCopy[language] || projectFormJumpCopy.en}<ArrowRight size={18} aria-hidden="true" /></a>
         </div>
         <WorkshopPhoto id="handsAssembly" language={language} priority />
       </section>

@@ -2,6 +2,15 @@ export const customerRoleIds = Object.freeze(["designer", "contractor", "supplie
 export const productFormVariant = "product-role-v2";
 export const fullFormVariant = "full-role-v2";
 
+export const projectFormJumpCopy = {
+  en: "Go to project form",
+  zh: "直接填写项目需求",
+  ar: "الانتقال إلى نموذج المشروع",
+  fr: "Accéder au formulaire du projet",
+  es: "Ir al formulario del proyecto",
+  de: "Direkt zum Projektformular",
+};
+
 export const inquiryIntakeCopy = {
   en: { destination: "Delivery city / region and country", destinationHint: "e.g. Austin, TX, USA", materialStudy: "Illustrative material study; not a workshop or completed-project photograph.", drawingStudy: "Illustrative concept study; not a client-approved project drawing.", role: "Your role", email: "Email", company: "Company / studio (optional)", budget: "Budget range (optional)", optional: "Add optional company, phone, budget or timing", budgetHint: "Amount and currency, or undecided", roles: ["Designer / architect / art consultant", "Contractor", "Supplier", "Developer / procurement team", "Private owner", "Other"], message: "Project use and approximate size", messageHint: "Where will it be used, and what size do you have in mind? Include units; “undecided” is fine. We can also review your own drawing." },
   zh: { destination: "项目交付城市 / 地区与国家", destinationHint: "例如：美国得克萨斯州奥斯汀", materialStudy: "材料示意研究，并非真实车间或已完工项目照片。", drawingStudy: "概念示意研究，并非客户已批准的项目图纸。", role: "您的角色", email: "邮箱", company: "公司 / 工作室（选填）", budget: "预算范围（选填）", optional: "补充公司、电话、预算或时间（选填）", budgetHint: "金额和币种，或填写未定", roles: ["设计师 / 建筑师 / 艺术顾问", "承包商", "供应商", "开发商 / 采购团队", "私人业主", "其他"], message: "项目用途与大致尺寸", messageHint: "用于什么场地，大致需要多大？请注明单位，尚未确定可写“未定”。也可按您的图稿评估定制。" },
