@@ -64,7 +64,7 @@ const evidenceImages = {
     file: "material-samples-dark.webp",
     width: 1536,
     height: 1024,
-    alt: "Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes",
+    alt: "Illustrative study of bronze, stainless steel and dark stone finishes",
     caption: "Illustrative material and finish study, not a certified sample or an agreed project specification.",
   },
   structuralStudy: {
