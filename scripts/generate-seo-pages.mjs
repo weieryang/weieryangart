@@ -640,7 +640,7 @@ function pageSchema(page) {
       inLanguage: "en",
     },
     {
-      "@type": ["Service", "FAQPage"].includes(page.type) ? "WebPage" : page.type,
+      "@type": ["WebSite", "Service", "FAQPage", "HowTo"].includes(page.type) ? "WebPage" : page.type,
       "@id": `${urlFor(page)}#page`,
       name: page.title,
       headline: page.h1,
@@ -658,7 +658,8 @@ function pageSchema(page) {
         ? { audience: { "@type": "Audience", audienceType: page.audience } }
         : {}),
     },
-    breadcrumb(page),
+    // The homepage has no parent trail; do not invent a second breadcrumb.
+    ...(page.slug ? [breadcrumb(page)] : []),
     ...imageObjects,
   ];
 
@@ -691,7 +692,10 @@ function pageSchema(page) {
       publisher: { "@id": `${site}/#organization` },
       spatialCoverage: { "@type": "Place", name: "Middle East" },
       about: { "@type": "Thing", name: "Large stainless steel flying-bird landmark sculpture" },
-      image: images.map((image) => ({ "@id": `${imageUrl(image)}#image` })),
+      // This report documents the three construction photos. The separate
+      // commercial reference remains an image of the surrounding collection page.
+      image: [evidenceImages.middleEastLandmarkInstallation, evidenceImages.largeStructuralAssembly, evidenceImages.stainlessWingSlatInstallation]
+        .map((image) => ({ "@id": `${imageUrl(image)}#image` })),
       inLanguage: "en",
     });
   }
@@ -717,7 +721,7 @@ function pageSchema(page) {
 
   if (page.type === "HowTo") {
     let stepPosition = 0;
-    graph[2].step = page.sections.flatMap(([heading, items]) =>
+    const steps = page.sections.flatMap(([heading, items]) =>
       items.map((item) => {
         stepPosition += 1;
         return {
@@ -728,6 +732,19 @@ function pageSchema(page) {
         };
       }),
     );
+    // The process is a CreativeWork, while page-only properties belong to WebPage.
+    graph[2].mainEntity = { "@id": `${urlFor(page)}#howto` };
+    graph.push({
+      "@type": "HowTo",
+      "@id": `${urlFor(page)}#howto`,
+      name: page.h1,
+      description: page.description,
+      mainEntityOfPage: { "@id": `${urlFor(page)}#page` },
+      image: images.map((image) => ({ "@id": `${imageUrl(image)}#image` })),
+      inLanguage: "en",
+      ...(page.lastmod ? { dateModified: page.lastmod } : {}),
+      step: steps,
+    });
   }
 
   if (page.faq?.length) {

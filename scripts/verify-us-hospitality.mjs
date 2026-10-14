@@ -38,7 +38,16 @@ for (const url of urls) {
   assert.ok(html.includes(`rel="canonical" href="${url}"`), `Canonical: ${route}`);
   assert.ok(html.includes("GTM-NV6T388X"), `GTM: ${route}`);
   for (const match of html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
-    JSON.parse(match[1]); schemaCount++;
+    const parsed = JSON.parse(match[1]); schemaCount++;
+    for (const node of parsed["@graph"] || [parsed]) {
+      const types = [].concat(node["@type"] || []);
+      if (node.primaryImageOfPage) {
+        assert.ok(types.some(type => ["WebPage", "CollectionPage", "ContactPage", "FAQPage"].includes(type)), `Page-only image property: ${route}`);
+      }
+      if (types.includes("BreadcrumbList")) {
+        assert.ok(node.itemListElement.length >= 2, `Breadcrumb must describe a real parent trail: ${route}`);
+      }
+    }
   }
   if (!html.includes('id="root"')) staticCount++;
   assert.equal([...html.matchAll(/<header class="wy-top"/g)].length, 1, `Shared header: ${route}`);
@@ -65,6 +74,29 @@ for (const url of urls) {
     }
   }
 }
+
+// A website, its homepage and a fabrication procedure are distinct entities.
+const schemaFor = route => JSON.parse(documents.get(route).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+const homeSchema = schemaFor("/");
+assert.equal(homeSchema.filter(node => node["@type"] === "WebSite").length, 1);
+assert.equal(homeSchema.find(node => node["@id"] === `${base}/#page`)["@type"], "WebPage");
+assert.equal(homeSchema.filter(node => node["@type"] === "BreadcrumbList").length, 0);
+const processSchema = schemaFor("/process/");
+const processPage = processSchema.find(node => node["@id"] === `${base}/process/#page`);
+const processHowTo = processSchema.find(node => node["@type"] === "HowTo");
+assert.equal(processPage["@type"], "WebPage");
+assert.equal(processPage.mainEntity["@id"], processHowTo["@id"]);
+assert.equal(processHowTo.mainEntityOfPage["@id"], processPage["@id"]);
+assert.equal(processHowTo.step.length, routeSeoContent.process.groups.reduce((count, [, items]) => count + items.length, 0));
+for (const step of processHowTo.step) {
+  assert.ok(decode(documents.get("/process/")).includes(step.text), `Process step must be visible: ${step.position}`);
+}
+const constructionReport = schemaFor("/projects/").find(node => node["@type"] === "Report");
+assert.deepEqual(constructionReport.image.map(image => image["@id"]), [
+  "middle-east-stainless-steel-landmark-installation.webp",
+  "large-sculpture-structural-assembly.webp",
+  "stainless-steel-wing-slat-installation.webp",
+].map(file => `${base}/seo-media/${file}#image`), "Construction report must not include commercial reference studies");
 
 // Follow plain HTML links from the homepage: a Sitemap entry alone cannot keep
 // a route from becoming an orphan when client-side navigation changes.
