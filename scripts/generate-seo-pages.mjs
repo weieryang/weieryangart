@@ -1062,7 +1062,7 @@ const sitemapEntries = [
     priority: priorityFor(page),
   })),
   ...preservedRoutes,
-  { url: `${site}/privacy/`, lastmod: "2026-09-30", priority: "0.2" },
+  { url: `${site}/privacy/`, lastmod: "2026-10-14", priority: "0.2" },
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

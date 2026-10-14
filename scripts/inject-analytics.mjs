@@ -4,6 +4,10 @@ import path from "node:path";
 const dist = path.resolve("dist");
 const containerId = "GTM-NV6T388X";
 const marker = "<!-- WEIERYANG GTM -->";
+const consentMarker = "<!-- WEIERYANG optional Ads measurement -->";
+const consentSnippet = `${consentMarker}
+    <link rel="stylesheet" href="/ads-consent.css" />
+    <script src="/ads-consent.js"></script>`;
 const headSnippet = `${marker}
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -32,7 +36,8 @@ await copyFile(new URL("../src/attribution.js", import.meta.url), path.join(dist
 for (const file of files) {
   const html = await readFile(file, "utf8");
   if (html.includes(marker)) {
-    const updated = html.replace(/<script\b[^>]*\bsrc=["']\/analytics-events\.js["'][^>]*>\s*<\/script>/gi,
+    const withConsent = html.includes(consentMarker) ? html : html.replace(marker, `${consentSnippet}\n    ${marker}`);
+    const updated = withConsent.replace(/<script\b[^>]*\bsrc=["']\/analytics-events\.js["'][^>]*>\s*<\/script>/gi,
       '<script type="module" src="/analytics-events.js"></script>');
     if (updated !== html) await writeFile(file, updated);
     continue;
@@ -44,7 +49,7 @@ for (const file of files) {
     throw new Error(`Missing head or body tag: ${file}`);
   }
   const updated = html
-    .replace(/<head(?:\s[^>]*)?>/i, (tag) => `${tag}\n    ${headSnippet}`)
+    .replace(/<head(?:\s[^>]*)?>/i, (tag) => `${tag}\n    ${consentSnippet}\n    ${headSnippet}`)
     .replace(/<body(?:\s[^>]*)?>/i, (tag) => `${tag}\n    ${bodySnippet}`);
   await writeFile(file, updated);
 }
