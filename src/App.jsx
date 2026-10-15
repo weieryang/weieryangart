@@ -719,6 +719,7 @@ function HomePage({ text, language }) {
 
 function SecondaryPage({ route, text, language }) {
   const seo = language === "en" ? routeSeoContent[route] : null;
+  const materialStudy = (inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy;
   const title = seo?.title || text.routeNames[route] || text.routeNames.projects;
   const media = route === "process" ? getWorkshopImage("handsAssembly", language)
     : route === "custom-sculpture" ? getWorkshopImage("whaleOverview", language)
@@ -792,7 +793,10 @@ function SecondaryPage({ route, text, language }) {
         </section>
       ) : null}
       <section className="secondary-scope section-shell">
-        <figure><img src={materialSamples} alt="Sculpture material samples" width="1536" height="1024" loading="lazy" decoding="async" /></figure>
+        <figure>
+          <img src={materialSamples} alt={materialStudy} width="1536" height="1024" loading="lazy" decoding="async" />
+          <figcaption>{materialStudy}</figcaption>
+        </figure>
         <div><h2>{text.secondary.scopeTitle}</h2><p>{text.secondary.scopeBody}</p><a className="text-link" href="/process/">{text.nav.process}<ArrowRight size={18} /></a></div>
       </section>
       {seo ? (
