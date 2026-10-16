@@ -1,0 +1,56 @@
+SCULPTURE RFQ / QUOTATION SCOPE WORKSHEET
+WEIERYANG | https://weieryangart.com/
+Version: 2026-10-16
+
+Use the same brief when comparing suppliers. Fill what you know; mark
+unknown items "to confirm". This worksheet is a request for review,
+not an approved specification, quotation or delivery commitment.
+
+A. PROJECT INPUTS
+Project name or internal reference: ______________________________
+Your role / project team (optional): _____________________________
+Use / setting (hotel, resort, landscape, other): __________________
+Destination city, state/region and country: ______________________
+Quantity: ______________________________________________________
+Overall height x width x depth: _________________________________
+Units (ft/in, mm or m; write units beside each dimension): _______
+Drawing / reference filenames and revision dates: _______________
+Drawing status (reference, concept, for review, approved): _______
+Open design decisions / intended viewing distance: ______________
+Material and grade, if specified (or undecided): _________________
+Finish / colour reference and sample approval owner: ____________
+Exposure (indoor/outdoor, salt, splash, public touch): ____________
+Base / foundation status and local engineering contact: _________
+Site access / lifting / unloading constraints: __________________
+Target installation or opening date (for review): _______________
+Budget range and currency (optional): ___________________________
+
+B. SUPPLIER SCOPE COMPARISON
+Supplier / quote reference / revision: __________________________
+Quote currency / validity / proposed schedule: __________________
+For EACH line record: included, excluded or to confirm; responsible
+party; assumptions or limits. Do not leave an omission as consent.
+
+Design development, drawings and review rounds: _________________
+Material, fabrication and finish/sample approvals: ______________
+Internal structure, base interface and engineering review: ______
+Segmentation, trial assembly and lifting information: ___________
+Export packing, surface protection and documents: _______________
+Freight terms and exact delivery point: _________________________
+Import handling, duties and taxes: ______________________________
+Foundation, local crane, unloading and site storage: _____________
+Site assembly, finish touch-up and installation guidance: _______
+Lighting, power or other specialist coordination: _______________
+
+Evidence / approval records requested: __________________________
+Items excluded from the price: _________________________________
+Unresolved questions, responsible person and next review: _______
+
+C. SHARE THE BRIEF
+Edit this TXT file locally. Paste relevant details into the project
+message at https://weieryangart.com/commission/ (up to 5,000
+characters), or export a longer completed sheet as a PDF to attach.
+The commission form accepts PDF, JPG/JPEG, PNG, WebP and DWG;
+it does not accept TXT attachments. Keep contact details in the
+form's contact fields. Downloading this file does not send an inquiry.
+Final scope, price, responsibilities and dates need written agreement.
