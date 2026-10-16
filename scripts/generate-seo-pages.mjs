@@ -286,7 +286,7 @@ const preservedRoutes = [
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
   { url: `${site}/insights/large-outdoor-sculpture-foundation-anchor-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "studioDesk", "materialSamples"] },
-  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-08", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
+  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-16", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: "2026-10-13", priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
@@ -297,7 +297,7 @@ const preservedRoutes = [
   { url: `${site}/insights/material-led-sculpture-review-2026/`, lastmod: today, priority: "0.8", imageKeys: ["designDevelopment", "materialSamples", "fabricationWorkshop"] },
   { url: `${site}/insights/how-to-commission-custom-outdoor-sculpture/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["conceptSketch", "materialSamples"] },
   { url: `${site}/insights/316l-stainless-steel-vs-bronze-vs-stone/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["materialSamples", "materialSwatchStrip"] },
-  { url: `${site}/insights/landscape-sculpture-quote-brief/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["studioDesk", "structuralStudy"] },
+  { url: `${site}/insights/landscape-sculpture-quote-brief/`, lastmod: "2026-10-16", priority: "0.78", imageKeys: ["studioDesk", "structuralStudy"] },
 ];
 
 const pages = [
