@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://weieryangart.com/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-22</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://weieryangart.com/resort-sculpture/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-22</lastmod>
     <priority>0.72</priority>
   </url>
   <url>
@@ -72,7 +72,7 @@
   </url>
   <url>
     <loc>https://weieryangart.com/sculptures/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-22</lastmod>
     <priority>0.72</priority>
   </url>
   <url>
@@ -93,6 +93,21 @@
   <url>
     <loc>https://weieryangart.com/sculptures/bird-landmark-sculpture/</loc>
     <lastmod>2026-10-07</lastmod>
+    <priority>0.72</priority>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/retail-restaurant-sculpture/</loc>
+    <lastmod>2026-10-22</lastmod>
+    <priority>0.72</priority>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/themed-art-installations/</loc>
+    <lastmod>2026-10-22</lastmod>
+    <priority>0.72</priority>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/landscape-public-art/</loc>
+    <lastmod>2026-10-22</lastmod>
     <priority>0.72</priority>
   </url>
   <url>

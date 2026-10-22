@@ -1,6 +1,8 @@
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { sculptureProducts, getSculpture } from "./sculptureCatalog.js";
 import { catalogUi, localizeSculpture } from "./sculptureCatalogCopy.js";
+import { ApplicationCards } from "./ApplicationSections.jsx";
+import { applicationUi, getApplicationCategories } from "./applicationContent.js";
 import { commissionEvidenceImage, studioIdentity } from "./commissionProof.js";
 import "./sculptureEvidence.css";
 
@@ -33,8 +35,9 @@ export function SculptureCollectionPreview({ language = "en" }) {
 export function SculptureCollection({ language = "en" }) {
   const ui = catalogUi[language] || catalogUi.en;
   return <>
-    <section className="collection-index section-shell">
-      <header className="collection-heading"><p className="hero-eyebrow">{ui.eyebrow}</p><h1>{ui.indexTitle}</h1><p>{ui.indexIntro}</p></header>
+    <ApplicationCards language={language} headingLevel={1} />
+    <section className="collection-directions section-shell">
+      <header className="collection-heading"><p className="hero-eyebrow">{ui.eyebrow}</p><h2>{ui.indexTitle}</h2><p>{ui.indexIntro}</p></header>
       <div className="collection-grid">{sculptureProducts.map((product, index) => <CollectionCard key={product.slug} product={localizeSculpture(product, language)} ui={ui} index={index} />)}</div>
     </section>
     <section className="collection-scope section-shell"><div><p className="hero-eyebrow">WEIERYANG</p><h2>{ui.scopeHeading}</h2></div><div><p>{ui.scopeBody}</p><a className="text-link" href="/commission/">{ui.briefLink}<ArrowRight size={18} aria-hidden="true" /></a></div></section>
@@ -46,10 +49,12 @@ export function SculptureDetail({ slug, language = "en", renderInquiry }) {
   const ui = catalogUi[language] || catalogUi.en;
   if (!canonical) return <section className="collection-index section-shell"><h1>{ui.notFound}</h1><p>{ui.notFoundBody}</p><a className="text-link" href="/sculptures/">{ui.back}</a></section>;
   const product = localizeSculpture(canonical, language);
+  const application = getApplicationCategories(language).find(category => category.id === canonical.applicationId);
+  const applicationText = applicationUi[language] || applicationUi.en;
   const identity = studioIdentity[language] || studioIdentity.en;
   return <>
     <section className="collection-detail-hero section-shell">
-      <div className="collection-detail-copy"><a className="collection-back" href="/sculptures/">← {ui.back}</a><p className="hero-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="collection-studio-intro">{identity.body}</p><p className="collection-intro">{product.intro}</p>
+      <div className="collection-detail-copy"><a className="collection-back" href="/sculptures/">← {ui.back}</a>{application && <a className="collection-back" href={application.path}>{applicationText.nav} / {application.name}</a>}<p className="hero-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="collection-studio-intro">{identity.body}</p><p className="collection-intro">{product.intro}</p>
         <span className="collection-evidence-tag">{product.evidenceType === "construction" ? ui.constructionLabel : ui.referenceLabel}</span>
         <p className="collection-disclosure">{product.disclosure}</p><a className="hero-cta" href="#product-inquiry">{ui.request}<ArrowRight size={20} aria-hidden="true" /></a>
       </div>

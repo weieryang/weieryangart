@@ -3,6 +3,9 @@ import { useHeroPlayer } from "./useHeroPlayer.js";
 import { HotelEngineeringCases } from "./HotelEngineeringCases.jsx";
 import { SculptureCollection, SculptureCollectionPreview, SculptureDetail } from "./SculptureCatalog.jsx";
 import { catalogUi } from "./sculptureCatalogCopy.js";
+import "./applicationNavigation.css";
+import { applicationCategories, applicationUi, getApplicationCategories } from "./applicationContent.js";
+import { ApplicationCards, ApplicationCategory, ApplicationEvidence } from "./ApplicationSections.jsx";
 import { heroStatus } from "./hotelCases.js";
 import {
   ArrowRight,
@@ -169,6 +172,23 @@ function LanguageSelect({ language, setLanguage, compact = false }) {
   );
 }
 
+function ApplicationNavigation({ language, mobile = false, onNavigate }) {
+  const navigationRef = useRef(null);
+  useEffect(() => {
+    if (mobile) return undefined;
+    const closeOutside = event => { if (navigationRef.current && !navigationRef.current.contains(event.target)) navigationRef.current.open = false; };
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [mobile]);
+  const ui = applicationUi[language] || applicationUi.en;
+  const links = <><a href="/sculptures/" onClick={onNavigate}>{ui.allApplications}</a>{getApplicationCategories(language).map(category => <a key={category.id} href={category.path} onClick={onNavigate}>{category.name}</a>)}</>;
+  if (mobile) return <div className="mobile-application-links"><p>{ui.nav}</p>{links}</div>;
+  return <details ref={navigationRef} className="application-navigation" onKeyDown={event => { if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); } }}>
+    <summary>{ui.nav}<CaretDown size={13} aria-hidden="true" /></summary>
+    <div className="application-navigation-links">{links}</div>
+  </details>;
+}
+
 function SiteHeader({ language, setLanguage, text }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuKeyboard, setMenuKeyboard] = useState(false);
@@ -180,8 +200,7 @@ function SiteHeader({ language, setLanguage, text }) {
   };
   const nav = [
     { label: text.nav.projects, id: "projects" },
-    { label: (catalogUi[language] || catalogUi.en).nav, href: "/sculptures/" },
-    { label: text.hero.routes[0], href: "/resort-sculpture/" },
+    { applications: true },
     { label: text.nav.materials, href: "/materials/" },
     { label: text.nav.process, href: "/process/" },
     { label: text.nav.studio, id: "studio" },
@@ -242,7 +261,7 @@ function SiteHeader({ language, setLanguage, text }) {
         <span>WEIERYANG</span>
       </a>
       <nav className="desktop-nav" aria-label="Primary navigation">
-        {nav.map((item) => item.href
+        {nav.map((item) => item.applications ? <ApplicationNavigation key="applications" language={language} /> : item.href
           ? <a key={item.href} href={item.href}>{item.label}</a>
           : <a key={item.id} href={`/#${item.id}`}>{item.label}</a>)}
       </nav>
@@ -274,7 +293,7 @@ function SiteHeader({ language, setLanguage, text }) {
           </button>
         </div>
         <nav aria-label="Mobile navigation">
-          {nav.map((item) => item.href
+          {nav.map((item) => item.applications ? <ApplicationNavigation key="applications" language={language} mobile onNavigate={closeMenu} /> : item.href
             ? <a key={item.href} href={item.href} onClick={closeMenu}>{item.label}<ArrowUpRight size={18} /></a>
             : <a key={item.id} href={`/#${item.id}`} onClick={closeMenu}>{item.label}<ArrowUpRight size={18} /></a>)}
         </nav>
@@ -707,7 +726,7 @@ function HomePage({ text, language }) {
       <AssuranceStrip items={text.assurance} />
       <HospitalityEntry language={language} />
       <HotelEngineeringCases language={language} />
-      <SculptureCollectionPreview language={language} />
+      <ApplicationCards language={language} compact />
       <ProjectRoutes text={text} />
       <StudioMethod text={text} />
       <WorkshopEvidence language={language} compact />
@@ -742,6 +761,7 @@ function SecondaryPage({ route, text, language }) {
         </figure>
       </section>
       {["process", "custom-sculpture"].includes(route) ? <WorkshopEvidence language={language} /> : null}
+      {route === "resort-sculpture" ? <ApplicationEvidence id="hospitality" language={language} /> : null}
       {route === "resort-sculpture" && language === "en" ? <HospitalityPlanning /> : null}
       <section className="seo-route-content section-shell">
         <header>
@@ -1163,7 +1183,7 @@ function SiteFooter({ text, language }) {
         <p>{text.footer.body}</p>
       </div>
       <div className="footer-links">
-        <div><h3>{text.footer.routes}</h3><a href="/sculptures/">{(catalogUi[language] || catalogUi.en).nav}</a>{routeLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
+        <div><h3>{(applicationUi[language] || applicationUi.en).nav}</h3><a href="/sculptures/">{(applicationUi[language] || applicationUi.en).allApplications}</a>{getApplicationCategories(language).map(category => <a key={category.id} href={category.path}>{category.name}</a>)}<a href="/custom-sculpture/">{text.routeNames["custom-sculpture"]}</a></div>
         <div><h3>{text.footer.materials}</h3>{materialLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
         <div><h3>{text.footer.studio}</h3><a href="/custom-outdoor-sculpture-supplier/">Supplier route</a><a href="/process/">{text.nav.process}</a><a href="/projects/">{text.nav.projects}</a><a href="/faq/">{text.routeNames.faq}</a><a href="/insights/">Insights</a></div>
         <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
@@ -1207,6 +1227,8 @@ export function App({ initialRoute }) {
     ? <CommissionPage text={text} language={language} />
     : route === "sculptures"
       ? <SculptureCollection language={language} />
+    : applicationCategories.some(category => category.id !== "hospitality" && category.path === `/${route}/`)
+      ? <ApplicationCategory id={applicationCategories.find(category => category.path === `/${route}/`).id} language={language} />
     : route.startsWith("sculptures/")
       ? <SculptureDetail slug={route.slice("sculptures/".length)} language={language} renderInquiry={product => <CommissionForm key={`product:${product.slug}`} mode="product" product={product} text={text} language={language} />} />
     : routeKeys.includes(route)

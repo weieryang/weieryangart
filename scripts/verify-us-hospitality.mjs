@@ -1,3 +1,4 @@
+import { applicationCategories, applicationUi } from "../src/applicationContent.js";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -225,7 +226,7 @@ assert.ok(catalogHtml, "Collection page is listed in the Sitemap");
 verifyCollection(catalogHtml, "static collection");
 const catalogGraph = JSON.parse(catalogHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
 assert.equal(catalogGraph.filter(item => item["@type"] === "CollectionPage").length, 1);
-const itemList = catalogGraph.find(item => item["@type"] === "ItemList");
+const itemList = catalogGraph.find(item => item["@id"] === `${base}/sculptures/#collection`);
 assert.equal(itemList.numberOfItems, sculptureProducts.length);
 assert.deepEqual(itemList.itemListElement.map(item => [item.position, item.name, item.url]), sculptureProducts.map((product, index) => [index + 1, product.title, `${base}${product.path}`]));
 
@@ -242,24 +243,43 @@ for (const product of sculptureProducts) {
   assert.deepEqual(graph.find(item => item["@type"] === "FAQPage").mainEntity.map(item => [item.name, item.acceptedAnswer.text]), product.faq);
   assert.equal(graph.find(item => item["@type"] === "Service").disambiguatingDescription, product.disclosure);
   assert.deepEqual(graph.filter(item => item["@type"] === "ImageObject").map(item => [item.contentUrl, item.name, item.caption]), product.images.map(image => [`${base}/seo-media/${image.file}`, image.alt, image.caption]));
-  assert.deepEqual(graph.find(item => item["@type"] === "BreadcrumbList").itemListElement.map(item => item.item), [`${base}/`, `${base}${sculptureCatalog.path}`, `${base}${product.path}`]);
+  assert.deepEqual(graph.find(item => item["@type"] === "BreadcrumbList").itemListElement.map(item => item.item), [`${base}/`, `${base}${sculptureCatalog.path}`, `${base}${applicationCategories.find(category => category.id === product.applicationId).path}`, `${base}${product.path}`]);
   assert.ok(!/"(?:offers|price|priceCurrency|sku|aggregateRating|review)"\s*:/.test(JSON.stringify(graph)), `Unverified commerce fields: ${product.path}`);
   const imageEntry = [...imageSitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].find(match => match[1].includes(`<loc>${base}${product.path}</loc>`))?.[1];
   assert.ok(imageEntry, `Sculpture image Sitemap entry: ${product.path}`);
   for (const image of product.images) assert.ok(imageEntry.includes(`<image:loc>${base}/seo-media/${image.file}</image:loc>`), `Sculpture image Sitemap coverage: ${product.path}: ${image.file}`);
 }
 
+const applicationList = catalogGraph.find(item => item["@id"] === `${base}/sculptures/#applications`);
+assert.deepEqual(applicationList.itemListElement.map(item => item.url), applicationCategories.map(category => `${base}${category.path}`));
+for (const category of applicationCategories) {
+  const html = documents.get(category.path);
+  assert.ok(html, `Application in sitemap: ${category.path}`);
+  const readable = decode(html);
+  for (const value of [category.name, category.intro, category.evidenceNote, ...category.buyerNeeds, ...category.scope]) assert.ok(readable.includes(value), `Application visible facts: ${category.path}: ${value}`);
+  for (const image of category.gallery) {
+    assert.ok(readable.includes(image.caption) && readable.includes(image.alt) && html.includes(image.file), `Application evidence: ${category.path}: ${image.file}`);
+  }
+  if (category.id !== "hospitality") {
+    const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+    assert.deepEqual(graph.find(node => node["@type"] === "FAQPage").mainEntity.map(item => [item.name,item.acceptedAnswer.text]), category.faq);
+    assert.deepEqual(graph.find(node => node["@type"] === "BreadcrumbList").itemListElement.map(item => item.item), [`${base}/`,`${base}/sculptures/`,`${base}${category.path}`]);
+  }
+}
+
 // Render the actual React components without exercising a live inquiry endpoint.
 const server = await createServer({ configFile: "vite.static.config.mjs", server: { middlewareMode: true, watch: null }, appType: "custom" });
 try {
   const { App } = await server.ssrLoadModule("/src/App.jsx");
-  for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes]) {
+  for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1))]) {
     const html = renderToStaticMarkup(React.createElement(App, { initialRoute: route }));
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `Rendered H1: ${route}`);
     assert.ok(html.includes('href="/privacy/"'), `Rendered privacy: ${route}`);
     if (route === "sculptures") verifyCollection(html, "rendered collection");
     const sculpture = sculptureProducts.find(product => route === `sculptures/${product.slug}`);
     if (sculpture) verifySculpture(html, sculpture, "rendered detail");
+    const application = applicationCategories.find(category => category.path === `/${route}/`);
+    if (application) for (const value of [application.name, application.intro, ...application.buyerNeeds, ...application.scope, application.evidenceNote]) assert.ok(decode(html).includes(value), `Rendered application parity: ${route}: ${value}`);
     const content = routeSeoContent[route];
     if (content) {
       const readable = decode(html);
@@ -316,4 +336,4 @@ try {
   }
   assert.ok(fallback.includes(hotelCases.en.note));
 } finally { await server.close(); }
-console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length} React routes rendered; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
+console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length} React routes rendered; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);

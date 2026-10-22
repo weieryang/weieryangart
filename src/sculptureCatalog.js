@@ -5,8 +5,8 @@ import { studioIdentity } from "./commissionProof.js";
 
 export const sculptureCatalog = {
   path: "/sculptures/",
-  title: "Custom Sculpture Studio & Manufacturer in China | WEIERYANG",
-  description: "Explore custom sculpture from a China-based studio and manufacturer. Work from client drawings or develop a design for lobbies, atriums, landscapes and public sites.",
+  title: "Sculpture for Hotels, Retail & Public Spaces | WEIERYANG",
+  description: "Browse sculpture for hotels and commercial spaces, retail and dining, themed destinations and public landscapes. Review fabrication records and project references.",
   h1: "Find a direction. Make it belong to your site.",
   intro: `${studioIdentity.en.body} Four starting points for a custom sculpture commission. Choose a spatial direction, review the evidence and tell us about your site. Design, dimensions, finish and delivery scope are developed for each project.`,
 };
@@ -15,7 +15,7 @@ export const sculptureProducts = [
   {
     slug: "mirror-lobby-sculpture", path: "/sculptures/mirror-lobby-sculpture/", inquiryId: "mirror-lobby-sculpture", projectTypeIndex: 0,
     title: "Mirror sculpture for a lobby or water feature",
-    category: "Lobby / water feature", evidenceType: "reference",
+    category: "Lobby / water feature", evidenceType: "reference", applicationId: "hospitality",
     metaTitle: "Custom Mirror Lobby Sculpture Manufacturer in China | WEIERYANG",
     metaDescription: "China-based sculpture studio and manufacturer for custom mirror lobby and water-feature work. Send client drawings or develop a design around your site and lighting.",
     intro: "A reflective focal point needs room to work. Start with guest circulation, the water edge and the surrounding architecture, then develop a distinct sculpture for your lobby.",
@@ -39,7 +39,7 @@ export const sculptureProducts = [
   {
     slug: "vertical-atrium-sculpture", path: "/sculptures/vertical-atrium-sculpture/", inquiryId: "vertical-atrium-sculpture", projectTypeIndex: 0,
     title: "Vertical sculpture for a multi-level atrium",
-    category: "Atrium / interior landmark", evidenceType: "reference",
+    category: "Atrium / interior landmark", evidenceType: "reference", applicationId: "hospitality",
     metaTitle: "Custom Atrium Sculpture Manufacturer in China | WEIERYANG",
     metaDescription: "China-based sculpture studio and manufacturer for custom atrium work. Develop client drawings around multi-level views, structural interfaces and lifting access.",
     intro: "An atrium sculpture is seen from several floors at once. Develop its silhouette and scale with the building team, with clearances, structural interfaces and installation access considered together.",
@@ -64,7 +64,7 @@ export const sculptureProducts = [
   {
     slug: "tree-canopy-sculpture", path: "/sculptures/tree-canopy-sculpture/", inquiryId: "tree-canopy-sculpture", projectTypeIndex: 1,
     title: "Tree and canopy sculpture for an arrival landscape",
-    category: "Arrival / landscape", evidenceType: "reference",
+    category: "Arrival / landscape", evidenceType: "reference", applicationId: "public",
     metaTitle: "Custom Tree & Canopy Sculpture Manufacturer in China | WEIERYANG",
     metaDescription: "China-based sculpture studio and manufacturer for custom tree and canopy landscape work. Review client drawings, approach views, exposure and anchoring requirements.",
     intro: "Let the arrival sequence shape the sculpture. Tree and canopy references offer different ways to define a focal point, frame a pedestrian space and connect a piece to the surrounding landscape.",
@@ -88,7 +88,7 @@ export const sculptureProducts = [
   {
     slug: "bird-landmark-sculpture", path: "/sculptures/bird-landmark-sculpture/", inquiryId: "bird-landmark-sculpture", projectTypeIndex: 4,
     title: "Bird-form stainless steel landmark sculpture",
-    category: "Public site / landmark", evidenceType: "construction",
+    category: "Public site / landmark", evidenceType: "construction", applicationId: "public",
     metaTitle: "Custom Bird Landmark Sculpture Manufacturer in China | WEIERYANG",
     metaDescription: "China-based sculpture studio and manufacturer. Review verified Middle East bird landmark construction records and discuss custom design, fabrication and export scope.",
     intro: "A landmark begins with a form and a credible delivery plan. Our Middle East construction record offers a grounded starting point for discussing a custom bird-form sculpture, segmented assembly and site installation coordination.",

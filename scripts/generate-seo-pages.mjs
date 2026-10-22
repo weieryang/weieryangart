@@ -7,6 +7,8 @@ import { commissionEvidenceImage, commissionProof, studioIdentity } from "../src
 import { staticHeader, staticFooter } from "./static-frame.mjs";
 import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
 import { workshopEvidenceImages, getWorkshopEvidence, getWorkshopImage } from "../src/workshopEvidence.js";
+import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, applicationFallback, applicationItemList } from "./application-seo.mjs";
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
 
 const site = "https://weieryangart.com";
@@ -510,7 +512,7 @@ const pages = [
   },
 ];
 
-pages.push(...sculptureSeoPages);
+pages.push(...sculptureSeoPages, ...applicationSeoPages);
 
 // The React route, static fallback and structured data share their buyer copy.
 // Keep metadata here while avoiding separate FAQ and related-link variants.
@@ -535,6 +537,16 @@ const updatedRoutes = new Set([
 for (const page of pages) if (updatedRoutes.has(page.slug)) page.lastmod = "2026-10-07";
 for (const page of pages) if (["", "commission", "process", "custom-sculpture", "faq"].includes(page.slug)) page.lastmod = "2026-10-08";
 for (const page of pages) if (page.slug === "commission") page.lastmod = "2026-10-10";
+for (const page of pages) {
+  if (["", "sculptures", "resort-sculpture", ...applicationSeoPages.map(item => item.slug)].includes(page.slug)) page.lastmod = "2026-10-22";
+  if (page.slug === "sculptures") { page.h1 = applicationUi.en.indexTitle; page.images = [...applicationCategories.map(category => category.gallery[0]), ...page.images].filter((image,index,images) => images.findIndex(item => item.file === image.file) === index); }
+  if (page.slug === "resort-sculpture") {
+    const category = applicationCategories[0];
+    page.application = category;
+    page.title = category.metaTitle; page.description = category.metaDescription;
+    page.images = [...category.gallery, ...imagesFor(page)].filter((image,index,images) => images.findIndex(item => item.file === image.file) === index);
+  }
+}
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 
@@ -580,8 +592,12 @@ function breadcrumb(page) {
   const items = [
     { "@type": "ListItem", position: 1, name: "Home", item: `${site}/` },
   ];
-  if (page.catalogKind === "detail") {
-    items.push({ "@type": "ListItem", position: 2, name: "Custom sculpture collection", item: `${site}/sculptures/` });
+  if (page.application || page.catalogKind === "detail") {
+    items.push({ "@type": "ListItem", position: 2, name: applicationUi.en.nav, item: `${site}/sculptures/` });
+  }
+  if (page.catalogKind === "detail" && page.product.applicationId) {
+    const category = applicationCategories.find(item => item.id === page.product.applicationId);
+    items.push({ "@type":"ListItem", position:items.length+1, name:category.name, item:`${site}${category.path}` });
   }
   if (page.slug) {
     items.push({ "@type": "ListItem", position: items.length + 1, name: page.h1, item: urlFor(page) });
@@ -664,8 +680,8 @@ function pageSchema(page) {
   ];
 
   if (page.catalogKind === "index") {
-    graph[2].mainEntity = { "@id": `${urlFor(page)}#collection` };
-    graph.push(...sculptureSchemaNodes(page, site));
+    graph[2].mainEntity = { "@id": `${urlFor(page)}#applications` };
+    graph.push(applicationItemList(site), ...sculptureSchemaNodes(page, site));
   }
 
   if (page.slug === "projects") {
@@ -764,6 +780,7 @@ function pageSchema(page) {
 }
 
 function fallback(page) {
+  if (page.application && page.slug !== "resort-sculpture") return applicationFallback(page, esc);
   if (page.catalogKind) return sculptureFallback(page, esc);
   const images = imagesFor(page);
   const projectGuide = page.slug === "projects"
@@ -779,6 +796,7 @@ function fallback(page) {
     ? '<p><a href="/insights/large-hotel-atrium-sculpture-planning-guide/">Plan a large sculpture across a multi-level hotel atrium</a></p><p><a href="/projects/hotel-lobby-sculpture-engineering-case/">Review the hotel lobby sculpture engineering case</a></p><p><a href="/insights/hotel-arrival-sculpture-site-brief/">Prepare the hotel arrival sculpture site brief</a></p><p><a href="/insights/resort-entrance-sculpture-scale-guide/">Review the resort entrance sculpture scale guide</a></p>'
     : "";
   const evidence = ["process", "custom-sculpture"].includes(page.slug) ? workshopGalleryHtml() : page.slug === "" ? `
+      ${applicationCardsHtml(esc)}
       <section id="cases"><h2>${esc(hotelCases.en.title)}</h2><p>${esc(hotelCases.en.body)}</p><p>${esc(hotelCases.en.note)}</p>
         ${hotelCases.en.cards.map((card, index) => {
           const image = hotelCaseImages[index];
@@ -810,7 +828,7 @@ function fallback(page) {
       </section>`
     : "";
 
-  const hotelPlanning = page.slug === "resort-sculpture" ? `<section id="${esc(hospitalityPlanning.id)}">
+  const hotelPlanning = page.slug === "resort-sculpture" ? `${applicationEvidenceHtml(applicationCategories[0], esc)}<section id="${esc(hospitalityPlanning.id)}">
       <h2>${esc(hospitalityPlanning.title)}</h2><p>${esc(hospitalityPlanning.answer)}</p>
       <div class="seo-planning-table"><table>
         <thead><tr>${hospitalityPlanning.columns.map(column => `<th scope="col">${esc(column)}</th>`).join("")}</tr></thead>

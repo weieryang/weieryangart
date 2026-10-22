@@ -1,0 +1,14 @@
+.application-navigation { position:relative; }
+.application-navigation summary { display:flex; align-items:center; gap:6px; min-height:44px; list-style:none; cursor:pointer; color:var(--text-soft); font-size:12px; font-weight:600; }
+.application-navigation summary::-webkit-details-marker { display:none; }
+.application-navigation-links { position:absolute; inset-block-start:100%; inset-inline-start:0; width:320px; max-width:calc(100vw - 40px); padding:10px; display:grid; background:#141411; border:1px solid #4b493d; box-shadow:0 14px 38px #0008; z-index:60; }
+.application-navigation-links a { display:flex; align-items:center; min-height:44px; padding:10px 12px; color:var(--text-soft); font-size:13px; line-height:1.5; }
+.application-navigation-links a:hover { background:#292821; color:#fff; }
+.application-navigation summary:focus-visible,.application-navigation-links a:focus-visible,.mobile-application-links a:focus-visible { outline:2px solid #c69566; outline-offset:3px; }
+.mobile-application-links { display:grid; gap:2px; padding-block:12px; border-block:1px solid #39382f; }
+.mobile-application-links p { color:var(--text-soft); margin:0 0 4px; font-size:12px; }
+.mobile-application-links a { display:flex; align-items:center; min-height:44px; font-size:17px; line-height:1.45; }
+.collection-directions { padding-block:46px 60px; border-block-start:1px solid #39382f; }
+.site-shell > .application-browser:not(.application-browser-compact) { padding-block-start:calc(var(--header-height) + 48px); }
+.collection-directions h2 { font-family:var(--font-display); font-size:clamp(32px,4vw,58px); font-weight:400; line-height:1.1; }
+@media(max-width:1080px) { .mobile-menu nav { flex-shrink:0; } .mobile-menu-actions { flex-shrink:0; } }

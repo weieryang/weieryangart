@@ -1,3 +1,5 @@
+import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { applicationCardsHtml } from "./application-seo.mjs";
 import { sculptureCatalog, sculptureProducts } from "../src/sculptureCatalog.js";
 import { commissionEvidenceImage, studioIdentity } from "../src/commissionProof.js";
 
@@ -30,7 +32,7 @@ export function sculptureFallback(page, esc) {
   if (page.catalogKind === "index") {
     return `<main class="seo-fallback" data-seo-fallback="true">
       <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Custom sculpture collection</span></nav>
-      <h1>${esc(sculptureCatalog.h1)}</h1><p>${esc(sculptureCatalog.intro)}</p>
+      ${applicationCardsHtml(esc, "h1")}<h2>${esc(sculptureCatalog.h1)}</h2><p>${esc(sculptureCatalog.intro)}</p>
       <section class="seo-catalog-grid" aria-label="Custom sculpture directions">
         ${sculptureProducts.map((product, index) => `<article class="seo-catalog-card">
           <p>${esc(product.category)}</p><h2><a href="${esc(product.path)}">${esc(product.title)}</a></h2>
@@ -45,8 +47,9 @@ export function sculptureFallback(page, esc) {
   }
 
   const product = page.product;
+  const category = applicationCategories.find(item => item.id === product.applicationId);
   return `<main class="seo-fallback" data-seo-fallback="true">
-    <nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="${esc(sculptureCatalog.path)}">Custom sculpture collection</a> / <span>${esc(product.title)}</span></nav>
+    <nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="${esc(sculptureCatalog.path)}">Applications</a> / <a href="${category.path}">${esc(category.name)}</a> / <span>${esc(product.title)}</span></nav>
     <p>${esc(product.category)}</p><h1>${esc(product.title)}</h1><p>${esc(identity.body)}</p><p>${esc(product.intro)}</p>
     <p>${esc(product.disclosure)}</p>
     <div class="seo-catalog-gallery">${product.images.map((image, index) => imageMarkup(image, esc, index === 0)).join("")}</div>

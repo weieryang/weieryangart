@@ -19,6 +19,9 @@ const pageRoutes = [
   "materials",
   "faq",
   ...sculptureRoutes,
+  "retail-restaurant-sculpture",
+  "themed-art-installations",
+  "landscape-public-art",
 ];
 
 export default defineConfig({

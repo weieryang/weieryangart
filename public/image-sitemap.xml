@@ -81,7 +81,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/installed-project.webp</image:loc>
@@ -110,6 +110,16 @@
   <url>
     <loc>https://weieryangart.com/resort-sculpture/</loc>
     <image:image>
+      <image:loc>https://weieryangart.com/seo-media/hotel-lobby-whale-spatial-reference.webp</image:loc>
+      <image:caption>Authorized commercial-space reference: sculpture, water edge and visitor circulation.</image:caption>
+      <image:title>Reflective whale-form sculpture in a commercial interior with a water basin</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/hotel-atrium-sculpture-multilevel-reference.webp</image:loc>
+      <image:caption>Authorized commercial-atrium reference: vertical composition and cross-floor views.</image:caption>
+      <image:title>Vertical sculpture reference within a multi-level commercial atrium</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://weieryangart.com/seo-media/resort-entrance-canopy-sculpture-reference.webp</image:loc>
       <image:caption>Landscape references for canopy diameter, clear height, planting, paving, and project-programme review; project identity and supplier relationship are not asserted.</image:caption>
       <image:title>Two supplied landscape canopy sculpture references showing scale planting and construction context</image:title>
@@ -127,7 +137,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
   </url>
   <url>
@@ -135,7 +145,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -153,7 +163,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-swatch-strip.webp</image:loc>
@@ -181,7 +191,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
   </url>
   <url>
@@ -199,7 +209,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
   </url>
   <url>
@@ -296,7 +306,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-swatch-strip.webp</image:loc>
@@ -319,7 +329,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -331,8 +341,23 @@
     <loc>https://weieryangart.com/sculptures/</loc>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/hotel-lobby-whale-spatial-reference.webp</image:loc>
-      <image:caption>Commercial-space reference: complete view of the sculpture, water basin and surrounding circulation.</image:caption>
-      <image:title>Reflective whale-form sculpture, suspended spheres and water basin in a glazed commercial interior</image:title>
+      <image:caption>Authorized commercial-space reference: sculpture, water edge and visitor circulation.</image:caption>
+      <image:title>Reflective whale-form sculpture in a commercial interior with a water basin</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-metal-hands-overview.webp</image:loc>
+      <image:caption>WEIERYANG fabrication record: an overall view of the hand-form arrangement.</image:caption>
+      <image:title>Overall arrangement of hand-shaped sculptural forms during WEIERYANG fabrication</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-painted-portrait-overview.webp</image:loc>
+      <image:caption>WEIERYANG fabrication record: portrait form and painted colour areas.</image:caption>
+      <image:title>Painted portrait sculpture during WEIERYANG fabrication</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/middle-east-stainless-steel-landmark-installation.webp</image:loc>
+      <image:caption>Verified Middle East construction record: installation in progress.</image:caption>
+      <image:title>Flying-bird landmark sculpture during installation at a Middle East public site</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/hotel-atrium-sculpture-multilevel-reference.webp</image:loc>
@@ -343,11 +368,6 @@
       <image:loc>https://weieryangart.com/seo-media/hotel-arrival-metal-tree-reference.webp</image:loc>
       <image:caption>Tree-form reference: a complete view of the branching silhouette and its arrival-space context.</image:caption>
       <image:title>Gold-toned tree-form sculpture beside paving and a building under construction</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://weieryangart.com/seo-media/middle-east-stainless-steel-landmark-installation.webp</image:loc>
-      <image:caption>Verified Middle East construction record: on-site installation in progress.</image:caption>
-      <image:title>Bird-form stainless steel landmark during installation at a Middle East public site</image:title>
     </image:image>
   </url>
   <url>
@@ -410,6 +430,45 @@
       <image:loc>https://weieryangart.com/seo-media/stainless-steel-wing-slat-installation.webp</image:loc>
       <image:caption>Construction-phase record: alignment and installation of repeated wing elements.</image:caption>
       <image:title>Repeated stainless steel wing elements being aligned during landmark installation</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/retail-restaurant-sculpture/</loc>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-metal-hands-overview.webp</image:loc>
+      <image:caption>WEIERYANG fabrication record: an overall view of the hand-form arrangement.</image:caption>
+      <image:title>Overall arrangement of hand-shaped sculptural forms during WEIERYANG fabrication</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-metal-whale-overview.webp</image:loc>
+      <image:caption>WEIERYANG fabrication record: overall whale form and curved reflective surfaces.</image:caption>
+      <image:title>Reflective whale-form sculpture during WEIERYANG fabrication</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/themed-art-installations/</loc>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-painted-portrait-overview.webp</image:loc>
+      <image:caption>WEIERYANG fabrication record: portrait form and painted colour areas.</image:caption>
+      <image:title>Painted portrait sculpture during WEIERYANG fabrication</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/workshop-painted-portrait-surface.webp</image:loc>
+      <image:caption>WEIERYANG fabrication detail: painted colour transitions and surface detailing.</image:caption>
+      <image:title>Close view of painted surface details on a portrait sculpture during WEIERYANG fabrication</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://weieryangart.com/landscape-public-art/</loc>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/middle-east-stainless-steel-landmark-installation.webp</image:loc>
+      <image:caption>Verified Middle East construction record: installation in progress.</image:caption>
+      <image:title>Flying-bird landmark sculpture during installation at a Middle East public site</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://weieryangart.com/seo-media/large-sculpture-structural-assembly.webp</image:loc>
+      <image:caption>Verified construction-phase record: segmented structural assembly.</image:caption>
+      <image:title>Segmented structural assembly of the bird landmark during construction</image:title>
     </image:image>
   </url>
   <url>
@@ -488,7 +547,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/studio-material-desk.webp</image:loc>
@@ -580,7 +639,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -608,7 +667,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/stainless-steel-wing-slat-installation.webp</image:loc>
@@ -631,7 +690,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/stainless-steel-wing-slat-installation.webp</image:loc>
@@ -689,7 +748,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
   </url>
   <url>
@@ -702,7 +761,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -740,7 +799,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -806,7 +865,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/structural-engineering.webp</image:loc>
@@ -824,7 +883,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-swatch-strip.webp</image:loc>
@@ -857,7 +916,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/middle-east-stainless-steel-landmark-installation.webp</image:loc>
@@ -890,7 +949,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/stainless-steel-wing-slat-installation.webp</image:loc>
@@ -931,7 +990,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/fabrication-workshop.webp</image:loc>
@@ -949,7 +1008,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
   </url>
   <url>
@@ -957,7 +1016,7 @@
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-samples-dark.webp</image:loc>
       <image:caption>Illustrative material and finish study, not a certified sample or an agreed project specification.</image:caption>
-      <image:title>Dark material samples for bronze, stainless steel, black stone, and textured sculpture finishes</image:title>
+      <image:title>Illustrative study of bronze, stainless steel and dark stone finishes</image:title>
     </image:image>
     <image:image>
       <image:loc>https://weieryangart.com/seo-media/material-swatch-strip.webp</image:loc>
