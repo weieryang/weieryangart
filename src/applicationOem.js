@@ -1,3 +1,5 @@
+import { getApplicationKeywordContent } from './applicationKeywordContent.js';
+
 // OEM describes fabrication to approved drawings, not ownership of pictured designs.
 // Approval records below are items to agree or request, not records claimed to exist.
 const content = {
@@ -299,5 +301,7 @@ export const applicationOemUi = {
 export function getApplicationOem(id, language = 'en') {
   const lang = content[language] ? language : 'en';
   const item = content[lang][id];
-  return item ? { id, ...item, steps: item.steps.map(step => ({ ...step })), quotationScope: [...item.quotationScope], faq: item.faq.map(pair => [...pair]) } : null;
+  const buyer = getApplicationKeywordContent(id, lang);
+  return item ? { id, ...item, ...(buyer ? { intro: buyer.intro, evidenceLinks: buyer.evidenceLinks.map(pair => [...pair]) } : {}), steps: item.steps.map(step => ({ ...step })), quotationScope: [...item.quotationScope], faq: [...item.faq, ...(buyer?.faq || [])].map(pair => [...pair]) } : null;
 }
+

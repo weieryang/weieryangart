@@ -9,7 +9,7 @@ const categoryDefinitions = [
   {
     id: 'hospitality', path: '/resort-sculpture/',
     metaTitle: 'Hotel & Commercial Space Sculpture | WEIERYANG',
-    metaDescription: 'Custom and OEM sculpture for hotels and commercial spaces, made to approved client drawings. Review production photographs, finishes, approvals and delivery scope.',
+    metaDescription: 'Custom hotel and commercial sculpture. Review stainless steel fabrication requirements, approved drawings, finish samples and OEM quotation scope.',
     gallery: [
       { key: 'lobby', file: 'hotel-lobby-whale-spatial-reference.webp', width: 1080, height: 1440, evidenceType: 'reference' },
       { key: 'atrium', file: 'hotel-atrium-sculpture-multilevel-reference.webp', width: 1200, height: 1600, evidenceType: 'reference' },
@@ -19,7 +19,7 @@ const categoryDefinitions = [
   {
     id: 'retail', path: '/retail-restaurant-sculpture/',
     metaTitle: 'Retail & Restaurant Sculpture | WEIERYANG',
-    metaDescription: 'Custom and OEM sculpture for retail stores, restaurants and cafes. Review actual work, brand artwork, prototype approval, plinths and site-specific delivery needs.',
+    metaDescription: 'Custom sculpture for restaurants, cafes and retail displays. Review artwork, occupied space, sample approvals and OEM fabrication scope.',
     gallery: [
       { workshopId: 'handsOverview', evidenceType: 'fabrication' },
       { workshopId: 'whaleOverview', evidenceType: 'fabrication' },
@@ -29,7 +29,7 @@ const categoryDefinitions = [
   {
     id: 'themed', path: '/themed-art-installations/',
     metaTitle: 'Themed Attractions & Character Art Installations | WEIERYANG',
-    metaDescription: 'OEM and custom themed sculpture from approved artwork. Review actual fabrication, character views, colour and texture samples, rights and visitor-use requirements.',
+    metaDescription: 'Custom theme park sculptures and themed art installations from approved artwork. Review character approvals, lighting interfaces and OEM fabrication scope.',
     gallery: [
       { workshopId: 'portraitOverview', evidenceType: 'fabrication' },
       { workshopId: 'portraitSurface', evidenceType: 'fabrication' },
@@ -39,7 +39,7 @@ const categoryDefinitions = [
   {
     id: 'public', path: '/landscape-public-art/',
     metaTitle: 'Landscape Sculpture & Public Art | WEIERYANG',
-    metaDescription: 'Custom and OEM sculpture for public landscapes. Review actual work, construction evidence, drawing approvals, segments, foundations and local installation scope.',
+    metaDescription: 'Outdoor landscape sculptures and public art. Review landscape sculpture design, site drawings, fabrication interfaces and the OEM quotation scope.',
     gallery: [
       { key: 'bird', file: 'middle-east-stainless-steel-landmark-installation.webp', width: 2000, height: 1398, evidenceType: 'construction' },
       { key: 'assembly', file: 'large-sculpture-structural-assembly.webp', width: 2000, height: 1219, evidenceType: 'construction' },

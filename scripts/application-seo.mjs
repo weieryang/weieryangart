@@ -19,7 +19,7 @@ function picture(image, esc, eager = false, workLinks = false) {
 
 export function applicationOemHtml(category, esc) {
   const oem = category.oem, ui = applicationOemUi.en;
-  return `<section id="oem-${esc(category.id)}" class="seo-application-oem"><p>${esc(ui.eyebrow)}</p><h2>${esc(oem.heading)}</h2><p>${esc(oem.intro)}</p><ol>${oem.steps.map(step => `<li><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p></li>`).join("")}</ol><h3>${esc(oem.scopeHeading)}</h3><ul>${oem.quotationScope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><nav aria-label="OEM project resources"><a href="/custom-sculpture/">${esc(ui.process)}</a> · <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">${esc(ui.rfq)}</a> · <a href="/commission/">${esc(ui.brief)}</a></nav></section>`;
+  return `<section id="oem-${esc(category.id)}" class="seo-application-oem"><p>${esc(ui.eyebrow)}</p><h2>${esc(oem.heading)}</h2><p>${esc(oem.intro)}</p><ol>${oem.steps.map(step => `<li><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p></li>`).join("")}</ol><h3>${esc(oem.scopeHeading)}</h3><ul>${oem.quotationScope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><nav aria-label="OEM project resources">${(oem.evidenceLinks || []).map(([label,href]) => `<a href="${esc(href)}">${esc(label)}</a> · `).join("")}<a href="/custom-sculpture/">${esc(ui.process)}</a> · <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">${esc(ui.rfq)}</a> · <a href="/commission/">${esc(ui.brief)}</a></nav></section>`;
 }
 
 export function applicationCardsHtml(esc, heading = "h2") {

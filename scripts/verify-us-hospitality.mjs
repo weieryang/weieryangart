@@ -1,4 +1,5 @@
-import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { applicationCategories, applicationUi, getApplicationCategories } from "../src/applicationContent.js";
+import { getApplicationKeywordContent } from "../src/applicationKeywordContent.js";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -415,6 +416,35 @@ function verifyCategoryWorkLinks(html, category, language, context) {
 }
 for (const category of applicationCategories) verifyCategoryWorkLinks(documents.get(category.path), category, "en", "static category");
 
+function verifyKeywordBuyerAnswers(html, category, language, context) {
+  const buyer = getApplicationKeywordContent(category.id, language);
+  assert.ok(buyer, `Buyer content exists: ${language}: ${category.id}`);
+  assert.equal(buyer.faq.length, 1, `One distinct new procurement question: ${language}: ${category.id}`);
+  assert.equal(buyer.evidenceLinks.length, 2, `Two matching production studies: ${language}: ${category.id}`);
+  assert.deepEqual(buyer.evidenceLinks.map(([,href]) => href).sort(), getWorkArticles(language).filter(item => item.categoryId === category.id).map(item => item.path).sort(), `Evidence studies stay in their application: ${language}: ${category.id}`);
+  assert.equal(new Set(category.oem.faq.map(([question]) => question)).size, category.oem.faq.length, `No duplicate OEM questions: ${language}: ${category.id}`);
+  const readable = visibleWorkText(html);
+  for (const value of [buyer.intro, ...buyer.faq.flat(), ...buyer.evidenceLinks.map(([label]) => label)]) {
+    assert.ok(typeof value === "string" && value.trim(), `Nonempty buyer answer: ${language}: ${category.id}`);
+    assert.ok(readable.includes(value), `Buyer answer visible: ${context}: ${language}: ${category.id}: ${value}`);
+  }
+  const oemSection = html.match(new RegExp(`<section\\b[^>]*id="oem-${category.id}"[\\s\\S]*?<\\/section>`))?.[0];
+  assert.ok(oemSection, `OEM section exists: ${context}: ${category.id}`);
+  for (const [,href] of buyer.evidenceLinks) assert.ok(oemSection.includes(`href="${href}"`), `Evidence is linked inside its OEM brief: ${context}: ${href}`);
+  if (language !== "en") {
+    const english = getApplicationKeywordContent(category.id, "en");
+    assert.notEqual(buyer.intro, english.intro, `No English buyer intro fallback: ${language}: ${category.id}`);
+    assert.notEqual(buyer.faq[0][1], english.faq[0][1], `No English buyer answer fallback: ${language}: ${category.id}`);
+  }
+}
+for (const category of applicationCategories) {
+  const html = documents.get(category.path);
+  verifyKeywordBuyerAnswers(html, category, "en", "static category");
+  assert.equal(decode(html.match(/<meta name="description" content="([^"]+)"/)[1]), category.metaDescription, `Category description source: ${category.id}`);
+  const faq = schemaFor(category.path).find(node => node["@type"] === "FAQPage");
+  for (const [question,answer] of getApplicationKeywordContent(category.id, "en").faq) assert.ok(faq.mainEntity.some(item => item.name === question && item.acceptedAnswer.text === answer), `New buyer FAQ schema matches visible answer: ${category.id}`);
+}
+
 // Render the actual React components without exercising a live inquiry endpoint.
 const server = await createServer({ configFile: "vite.static.config.mjs", server: { middlewareMode: true, watch: null }, appType: "custom" });
 try {
@@ -437,6 +467,7 @@ try {
       }
       for (const image of application.gallery) assert.ok(decode(html).includes(image.alt) && decode(html).includes(image.caption), `Rendered image context: ${route}: ${image.file}`);
       verifyCategoryWorkLinks(html, application, "en", "rendered category");
+      verifyKeywordBuyerAnswers(html, application, "en", "rendered App category");
     }
     const content = routeSeoContent[route];
     if (content) {
@@ -493,6 +524,18 @@ try {
     }
   }
   assert.equal(localizedWorkRenders, 48, "Eight work articles rendered in all six languages");
+  const { ApplicationCategory, ApplicationEvidence } = await server.ssrLoadModule("/src/ApplicationSections.jsx");
+  let buyerRenders = 0;
+  for (const language of workLanguages) {
+    for (const category of getApplicationCategories(language)) {
+      const Component = category.id === "hospitality" ? ApplicationEvidence : ApplicationCategory;
+      const html = renderToStaticMarkup(React.createElement(Component, { id: category.id, language }));
+      verifyKeywordBuyerAnswers(html, category, language, "localized application");
+      if (language === "ar") assert.ok(html.includes('dir="rtl"'), `Arabic buyer answer direction: ${category.id}`);
+      buyerRenders++;
+    }
+  }
+  assert.equal(buyerRenders, 24, "Four buyer-answer applications rendered in six languages");
   const { HotelEngineeringCases } = await server.ssrLoadModule("/src/HotelEngineeringCases.jsx");
   const fallback = decode(fs.readFileSync(path.join(root, "index.html"), "utf8"));
   for (const [language, text] of Object.entries(hotelCases)) {
@@ -506,4 +549,4 @@ try {
   }
   assert.ok(fallback.includes(hotelCases.en.note));
 } finally { await server.close(); }
-console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
+console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; 24 localized keyword buyer-answer applications; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
