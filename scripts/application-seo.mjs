@@ -1,5 +1,6 @@
 import { applicationCategories, applicationUi } from "../src/applicationContent.js";
 import { applicationOemUi } from "../src/applicationOem.js";
+import { getWorkArticleForImage, workArticleUi } from "../src/workArticleData.js";
 
 export const applicationSeoPages = applicationCategories.filter(category => category.id !== "hospitality").map(category => ({
   slug: category.path.slice(1, -1), file: `${category.path.slice(1)}index.html`,
@@ -10,8 +11,10 @@ export const applicationSeoPages = applicationCategories.filter(category => cate
   application: category, serviceTypes: [category.name], lastmod: "2026-10-22", usePrimarySocialImage: true,
 }));
 
-function picture(image, esc, eager = false) {
-  return `<figure><img src="/seo-media/${esc(image.file)}" alt="${esc(image.alt)}" width="${image.width}" height="${image.height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} /><figcaption><strong>${esc(image.label)}</strong> — ${esc(image.caption)}</figcaption></figure>`;
+function picture(image, esc, eager = false, workLinks = false) {
+  const article = workLinks && getWorkArticleForImage(image.file);
+  const img = `<img src="/seo-media/${esc(image.file)}" alt="${esc(image.alt)}" width="${image.width}" height="${image.height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} />`;
+  return `<figure>${article ? `<a href="${article.path}" tabindex="-1" aria-hidden="true">${img}</a>` : img}<figcaption><strong>${esc(image.label)}</strong> — ${esc(image.caption)}${article ? `<p><a href="${article.path}">${esc(workArticleUi.en.read)}: ${esc(article.title)}</a></p>` : ""}</figcaption></figure>`;
 }
 
 export function applicationOemHtml(category, esc) {
@@ -26,7 +29,7 @@ export function applicationCardsHtml(esc, heading = "h2") {
 
 export function applicationEvidenceHtml(category, esc) {
   const ui = applicationUi.en;
-  return `<section class="seo-application-evidence"><h2>${esc(category.name)}</h2><p>${esc(category.intro)}</p><h3>${esc(ui.buyerHeading)}</h3><ul>${category.buyerNeeds.map(item => `<li>${esc(item)}</li>`).join("")}</ul><h3>${esc(ui.scopeHeading)}</h3><ul>${category.scope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><h3>${esc(ui.galleryHeading)}</h3><p>${esc(category.evidenceNote)}</p><div class="seo-catalog-grid">${category.gallery.map(image => picture(image, esc)).join("")}</div></section>${applicationOemHtml(category, esc)}`;
+  return `<section class="seo-application-evidence"><h2>${esc(category.name)}</h2><p>${esc(category.intro)}</p><h3>${esc(ui.buyerHeading)}</h3><ul>${category.buyerNeeds.map(item => `<li>${esc(item)}</li>`).join("")}</ul><h3>${esc(ui.scopeHeading)}</h3><ul>${category.scope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><h3>${esc(ui.galleryHeading)}</h3><p>${esc(category.evidenceNote)}</p><div class="seo-catalog-grid">${category.gallery.map(image => picture(image, esc, false, true)).join("")}</div></section>${applicationOemHtml(category, esc)}`;
 }
 
 export function applicationFallback(page, esc) {

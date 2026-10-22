@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { sculptureRoutes } from "./src/sculptureCatalog.js";
+import { workArticleRoutes } from "./src/workArticleData.js";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const pageRoutes = [
@@ -19,6 +20,7 @@ const pageRoutes = [
   "materials",
   "faq",
   ...sculptureRoutes,
+  ...workArticleRoutes,
   "retail-restaurant-sculpture",
   "themed-art-installations",
   "landscape-public-art",

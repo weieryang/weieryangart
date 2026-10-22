@@ -6,6 +6,8 @@ import { catalogUi } from "./sculptureCatalogCopy.js";
 import "./applicationNavigation.css";
 import { applicationCategories, applicationUi, getApplicationCategories } from "./applicationContent.js";
 import { ApplicationCards, ApplicationCategory, ApplicationEvidence } from "./ApplicationSections.jsx";
+import { WorkArticle } from "./WorkArticle.jsx";
+import { workArticleRoutes } from "./workArticleData.js";
 import { heroStatus } from "./hotelCases.js";
 import {
   ArrowRight,
@@ -1225,6 +1227,8 @@ export function App({ initialRoute }) {
 
   const page = route === "commission"
     ? <CommissionPage text={text} language={language} />
+    : workArticleRoutes.includes(route)
+      ? <WorkArticle slug={route} language={language} />
     : route === "sculptures"
       ? <SculptureCollection language={language} />
     : applicationCategories.some(category => category.id !== "hospitality" && category.path === `/${route}/`)

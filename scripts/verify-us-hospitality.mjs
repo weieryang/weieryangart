@@ -12,10 +12,15 @@ import { routeSeoContent } from "../src/seoContent.js";
 import { commissionEvidenceImage, commissionProof } from "../src/commissionProof.js";
 import { sculptureCatalog, sculptureProducts, sculptureRoutes } from "../src/sculptureCatalog.js";
 import { safeInterestRoute } from "../src/attribution.js";
+import { getWorkArticles, workArticleRoutes, workArticleUi, getWorkArticleForImage } from "../src/workArticleData.js";
+import { workArticleContentA } from "../src/workArticleContentA.js";
+import { workArticleContentB } from "../src/workArticleContentB.js";
 
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+assert.equal(urls.length, 53, "Canonical inventory: existing 45 plus eight production studies only");
+assert.equal(new Set(urls).size, 53, "No duplicate canonical sitemap URLs");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
 const documents = new Map();
@@ -268,15 +273,159 @@ for (const category of applicationCategories) {
   }
 }
 
+// New production studies describe the eight newly selected works only.  Direct
+// translation-source checks prevent getWorkArticle's defensive fallback from
+// silently turning a missing locale into English during SSR acceptance.
+const workLanguages = ["en", "zh", "ar", "fr", "es", "de"];
+const workContent = { ...workArticleContentA, ...workArticleContentB };
+const workArticles = getWorkArticles("en");
+assert.equal(Object.keys(workArticleContentA).length, 6, "Six A content subjects");
+assert.equal(Object.keys(workArticleContentB).length, 2, "Two B horse subjects");
+assert.equal(Object.keys(workContent).length, 8, "Exactly eight distinct new work subjects");
+assert.equal(workArticles.length, 8, "Eight English production studies");
+assert.equal(workArticleRoutes.length, 8, "Eight new article routes");
+assert.deepEqual([...new Set(workArticleRoutes)].sort(), workArticles.map(article => article.path.slice(1, -1)).sort());
+assert.deepEqual(Object.keys(workContent).sort(), workArticles.map(article => article.slug).sort());
+const newCategoryImageFiles = applicationCategories.flatMap(category => category.gallery.filter(image => image.file.startsWith("application-")).map(image => image.file));
+assert.equal(newCategoryImageFiles.length, 8, "Eight newly selected category images only");
+assert.equal(new Set(newCategoryImageFiles).size, 8, "Each new work has one distinct photo");
+assert.deepEqual(workArticles.flatMap(article => article.images.map(image => image.file)).sort(), [...newCategoryImageFiles].sort(), "Articles cover exactly the new image selection");
+const nonempty = (value, context) => assert.ok(typeof value === "string" && value.trim().length > 0, context);
+assert.deepEqual(Object.keys(workArticleUi).sort(), [...workLanguages].sort(), "All six work-article UI translations");
+for (const language of workLanguages) {
+  for (const [field, value] of Object.entries(workArticleUi[language])) nonempty(value, `Work UI ${field}: ${language}`);
+}
+for (const article of workArticles) {
+  assert.equal(getWorkArticleForImage(article.images[0].file)?.slug, article.slug, `New image resolves to its own article: ${article.slug}`);
+  const translations = workContent[article.slug];
+  assert.deepEqual(Object.keys(translations).sort(), [...workLanguages].sort(), `All six source translations: ${article.slug}`);
+  for (const language of workLanguages) {
+    const value = translations[language];
+    for (const field of ["title", "standfirst"]) nonempty(value[field], `Work ${field}: ${language}: ${article.slug}`);
+    assert.equal(value.sections.length, 3, `Work section count: ${language}: ${article.slug}`);
+    for (const section of value.sections) {
+      nonempty(section.heading, `Work section heading: ${language}: ${article.slug}`);
+      nonempty(section.body, `Work section body: ${language}: ${article.slug}`);
+    }
+    assert.equal(value.brief.length, 3, `Work brief count: ${language}: ${article.slug}`);
+    for (const item of value.brief) nonempty(item, `Work brief item: ${language}: ${article.slug}`);
+    assert.equal(value.faq.length, 2, `Work FAQ count: ${language}: ${article.slug}`);
+    assert.equal(new Set(value.faq.map(pair => pair[0])).size, 2, `Unique work FAQ: ${language}: ${article.slug}`);
+    for (const pair of value.faq) {
+      assert.equal(pair.length, 2, `Work FAQ pair: ${language}: ${article.slug}`);
+      pair.forEach(text => nonempty(text, `Work FAQ value: ${language}: ${article.slug}`));
+    }
+    if (language !== "en") {
+      assert.notEqual(value.title, translations.en.title, `No English title fallback: ${language}: ${article.slug}`);
+      assert.notEqual(value.standfirst, translations.en.standfirst, `No English intro fallback: ${language}: ${article.slug}`);
+      for (const [index, section] of value.sections.entries()) assert.notEqual(section.body, translations.en.sections[index].body, `No English body fallback: ${language}: ${article.slug}`);
+    }
+    const localized = getWorkArticles(language).find(item => item.slug === article.slug);
+    assert.ok(localized, `Localized work resolves: ${language}: ${article.slug}`);
+    for (const field of ["title", "standfirst", "sections", "brief", "faq"]) assert.deepEqual(localized[field], value[field], `Work/source locale mapping: ${field}: ${language}: ${article.slug}`);
+    for (const image of localized.images) {
+      for (const field of ["file", "alt", "caption", "label"]) nonempty(image[field], `Work image ${field}: ${language}: ${article.slug}`);
+      assert.equal(image.evidenceType, "fabrication", `New work evidence remains a production record: ${article.slug}`);
+    }
+  }
+  assert.ok(article.standfirst.length <= 180, `Work description length: ${article.slug}`);
+}
+const visibleWorkText = html => decode(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ""));
+function verifyWorkArticle(html, article, language, context) {
+  const ui = workArticleUi[language], readable = visibleWorkText(html);
+  const category = applicationCategories.find(item => item.id === article.categoryId);
+  for (const value of [article.title, article.standfirst, ...article.sections.flatMap(section => [section.heading, ...[].concat(section.body)]), ...article.brief, ...article.faq.flat(), ui.scopeNote]) {
+    assert.ok(readable.includes(value), `Work visible/source parity: ${context}: ${article.slug}: ${value}`);
+  }
+  assert.match(html, new RegExp(`<time\\b[^>]*datetime="${article.publishedOn}"`, "i"), `Article publication date, not fabrication date: ${context}: ${article.slug}`);
+  assert.ok(readable.includes(ui.publishedLabel), `Publication label: ${context}: ${article.slug}`);
+  for (const image of article.images) {
+    assert.ok(html.includes(`/seo-media/${image.file}`) && readable.includes(image.alt) && readable.includes(image.caption) && readable.includes(image.label), `Work image/source parity: ${context}: ${article.slug}`);
+  }
+  for (const href of [category.path, `${category.path}#oem-${category.id}`, "/commission/", "/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template"]) {
+    assert.ok(html.includes(`href="${href}"`), `Work project resource: ${context}: ${article.slug}: ${href}`);
+  }
+  const sibling = workArticles.find(item => item.categoryId === article.categoryId && item.slug !== article.slug);
+  assert.ok(sibling && html.includes(`href="${sibling.path}"`), `Same-category work continuation: ${context}: ${article.slug}`);
+}
+for (const article of workArticles) {
+  const html = documents.get(article.path), url = `${base}${article.path}`;
+  assert.ok(html, `Production study canonical in sitemap: ${article.path}`);
+  verifyWorkArticle(html, article, "en", "static article");
+  const nodes = schemaFor(article.path);
+  const articleNode = nodes.find(node => node["@id"] === `${url}#article`);
+  const pageNode = nodes.find(node => node["@id"] === `${url}#page`);
+  assert.equal(nodes.filter(node => node["@type"] === "Article").length, 1, `One Article: ${article.path}`);
+  assert.equal(articleNode?.["@type"], "Article");
+  assert.equal(pageNode?.["@type"], "WebPage");
+  assert.equal(pageNode.mainEntity?.["@id"], articleNode["@id"]);
+  assert.equal(articleNode.mainEntityOfPage?.["@id"], pageNode["@id"]);
+  assert.equal(articleNode.headline, article.title);
+  assert.equal(articleNode.description, article.standfirst);
+  assert.equal(articleNode.datePublished, "2026-10-22");
+  assert.equal(articleNode.dateModified, article.publishedOn);
+  assert.equal(articleNode.author?.["@id"], `${base}/#organization`);
+  assert.equal(articleNode.publisher?.["@id"], `${base}/#organization`);
+  assert.equal(articleNode.articleSection, applicationCategories.find(category => category.id === article.categoryId).name, `Article editorial category: ${article.path}`);
+  assert.deepEqual(articleNode.image.map(image => image["@id"]), article.images.map(image => `${base}/seo-media/${image.file}#image`));
+  const breadcrumb = nodes.find(node => node["@type"] === "BreadcrumbList");
+  const category = applicationCategories.find(item => item.id === article.categoryId);
+  assert.deepEqual(breadcrumb.itemListElement.map(item => [item.position, item.item]), [
+    [1, `${base}/`], [2, `${base}/sculptures/`], [3, `${base}${category.path}`], [4, url],
+  ], `Work four-level breadcrumb: ${article.path}`);
+  const faq = nodes.filter(node => node["@type"] === "FAQPage");
+  assert.equal(faq.length, 1, `One work FAQPage: ${article.path}`);
+  assert.deepEqual(faq[0].mainEntity.map(item => [item.name, item.acceptedAnswer.text]), article.faq);
+  for (const image of article.images) {
+    const imageNode = nodes.find(node => node["@id"] === `${base}/seo-media/${image.file}#image`);
+    assert.equal(imageNode?.["@type"], "ImageObject");
+    assert.equal(imageNode.contentUrl, `${base}/seo-media/${image.file}`);
+    assert.equal(imageNode.name, image.alt);
+    assert.equal(imageNode.caption, image.caption);
+    assert.equal(imageNode.width, image.width);
+    assert.equal(imageNode.height, image.height);
+  }
+  assert.ok(!nodes.some(node => ["Product", "Offer", "AggregateRating", "Review", "OEM", "OEMService"].includes(node["@type"])), `No invented commerce/OEM schema: ${article.path}`);
+  assert.ok(!/"(?:offers|price|priceCurrency|sku|aggregateRating|review)"\s*:/.test(JSON.stringify(nodes)), `No invented commerce properties: ${article.path}`);
+  const sitemapEntry = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<url>([\s\S]*?)<\/url>/g)].find(match => match[1].includes(`<loc>${url}</loc>`))?.[1];
+  assert.ok(sitemapEntry?.includes(`<lastmod>${article.publishedOn}</lastmod>`), `Work sitemap date: ${article.path}`);
+  const imageEntry = [...imageSitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].find(match => match[1].includes(`<loc>${url}</loc>`))?.[1];
+  assert.ok(imageEntry, `Work image sitemap page entry: ${article.path}`);
+  for (const image of article.images) {
+    assert.ok(imageEntry.includes(`<image:loc>${base}/seo-media/${image.file}</image:loc>`), `Work image sitemap coverage: ${article.path}: ${image.file}`);
+  }
+}
+function verifyCategoryWorkLinks(html, category, language, context) {
+  const figures = [...html.matchAll(/<figure\b[^>]*>([\s\S]*?)<\/figure>/g)].map(match => match[1]);
+  for (const image of category.gallery) {
+    const article = getWorkArticleForImage(image.file, language);
+    const imageFigures = figures.filter(figure => figure.includes(`/seo-media/${image.file}`));
+    assert.ok(imageFigures.length > 0, `Category image figure: ${context}: ${image.file}`);
+    if (image.file.startsWith("application-")) {
+      assert.ok(article, `New image owns one study: ${context}: ${image.file}`);
+      assert.equal(article.categoryId, category.id, `Image study category: ${image.file}`);
+      assert.ok(imageFigures.some(figure => figure.includes(`href="${article.path}"`) && decode(figure).includes(workArticleUi[language].read) && decode(figure).includes(article.title)), `New image's own visible article entrance: ${context}: ${image.file}`);
+    } else {
+      assert.equal(article, null, `Old image must not receive an unrequested new study: ${image.file}`);
+      for (const figure of imageFigures) {
+        for (const newArticle of workArticles) assert.ok(!figure.includes(`href="${newArticle.path}"`), `Old image not assigned new article: ${context}: ${image.file}`);
+      }
+    }
+  }
+}
+for (const category of applicationCategories) verifyCategoryWorkLinks(documents.get(category.path), category, "en", "static category");
+
 // Render the actual React components without exercising a live inquiry endpoint.
 const server = await createServer({ configFile: "vite.static.config.mjs", server: { middlewareMode: true, watch: null }, appType: "custom" });
 try {
   const { App } = await server.ssrLoadModule("/src/App.jsx");
-  for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1))]) {
+  for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1)), ...workArticleRoutes]) {
     const html = renderToStaticMarkup(React.createElement(App, { initialRoute: route }));
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `Rendered H1: ${route}`);
     assert.ok(html.includes('href="/privacy/"'), `Rendered privacy: ${route}`);
     if (route === "sculptures") verifyCollection(html, "rendered collection");
+    const workArticle = workArticles.find(article => article.path === `/${route}/`);
+    if (workArticle) verifyWorkArticle(html, workArticle, "en", "rendered App article");
     const sculpture = sculptureProducts.find(product => route === `sculptures/${product.slug}`);
     if (sculpture) verifySculpture(html, sculpture, "rendered detail");
     const application = applicationCategories.find(category => category.path === `/${route}/`);
@@ -287,6 +436,7 @@ try {
         assert.ok(decode(documents.get(`/${route}/`)).includes(value), `Static application parity: ${route}: ${value}`);
       }
       for (const image of application.gallery) assert.ok(decode(html).includes(image.alt) && decode(html).includes(image.caption), `Rendered image context: ${route}: ${image.file}`);
+      verifyCategoryWorkLinks(html, application, "en", "rendered category");
     }
     const content = routeSeoContent[route];
     if (content) {
@@ -331,6 +481,18 @@ try {
       assert.ok(!html.includes("Replace with approved project drawings"));
     }
   }
+  const { WorkArticle } = await server.ssrLoadModule("/src/WorkArticle.jsx");
+  let localizedWorkRenders = 0;
+  for (const language of workLanguages) {
+    for (const article of getWorkArticles(language)) {
+      const html = renderToStaticMarkup(React.createElement(WorkArticle, { slug: article.slug, language }));
+      assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `Localized article H1: ${language}: ${article.slug}`);
+      verifyWorkArticle(html, article, language, `localized WorkArticle ${language}`);
+      if (language === "ar") assert.ok(html.includes('dir="rtl"'), `Arabic article direction: ${article.slug}`);
+      localizedWorkRenders++;
+    }
+  }
+  assert.equal(localizedWorkRenders, 48, "Eight work articles rendered in all six languages");
   const { HotelEngineeringCases } = await server.ssrLoadModule("/src/HotelEngineeringCases.jsx");
   const fallback = decode(fs.readFileSync(path.join(root, "index.html"), "utf8"));
   for (const [language, text] of Object.entries(hotelCases)) {
@@ -344,4 +506,4 @@ try {
   }
   assert.ok(fallback.includes(hotelCases.en.note));
 } finally { await server.close(); }
-console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length} React routes rendered; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
+console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);

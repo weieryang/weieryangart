@@ -1,0 +1,66 @@
+/* Editorial work records keep their photographic evidence and buyer context together. */
+.work-article { padding-block: calc(var(--header-height) + 30px) 84px; }
+.work-article-breadcrumbs { color: var(--text-soft); font-size: 12px; line-height: 1.7; margin-bottom: 34px; }
+.work-article-breadcrumbs ol { display: flex; align-items: center; flex-wrap: wrap; gap: 0 10px; padding: 0; margin: 0; list-style: none; }
+.work-article-breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.work-article-breadcrumbs li + li::before { content: "/"; flex: 0 0 auto; color: var(--text-faint); }
+.work-article-breadcrumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+.work-article-breadcrumbs [aria-current] { color: var(--text); }
+.work-article-masthead { width: min(100%, 1040px); margin-inline: auto; }
+.work-article h1 { font-family: var(--body); font-size: clamp(37px, 4.7vw, 66px); font-weight: 500; line-height: 1.16; letter-spacing: -.025em; text-wrap: balance; margin-block: 20px 26px; overflow-wrap: anywhere; }
+.work-article-standfirst { max-width: 75ch; color: var(--text-soft); font-size: clamp(17px, 1.5vw, 20px); line-height: 1.85; margin-block: 0 24px; }
+.work-article-date { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; color: var(--text-soft); font-size: 12px; line-height: 1.8; margin-block: 0 38px; }
+.work-article-date > span { color: #d4b99f; }
+.work-article-cover { width: min(100%, 1100px); margin-inline: auto; margin-bottom: 60px; display: grid; justify-items: center; }
+.work-article-figure { width: min(100%, calc(740px * var(--work-image-ratio, 1.4))); min-width: 0; margin: 0; border: 1px solid var(--line); background: #151511; }
+.work-article-figure img { display: block; width: 100%; height: auto; max-height: 740px; object-fit: contain; }
+.work-article-figure figcaption { display: grid; gap: 8px; border-top: 1px solid var(--line); padding: 17px 22px; color: var(--text-soft); font-size: 12px; line-height: 1.85; overflow-wrap: anywhere; }
+.work-article-image-label { color: #d4b99f; font-size: 11px; letter-spacing: .02em; }
+.work-article-reading { width: min(100%, 74ch); margin-inline: auto; }
+.work-article h2 { font-family: var(--body); font-size: clamp(27px, 2.4vw, 35px); font-weight: 500; line-height: 1.3; letter-spacing: -.015em; margin-block: 0 23px; overflow-wrap: anywhere; }
+.work-article-section { margin-bottom: 48px; }
+.work-article-section p { color: var(--text-soft); font-size: 17px; line-height: 1.95; margin-block: 0 20px; overflow-wrap: anywhere; }
+.work-article-angles { display: grid; justify-items: center; gap: 32px; width: min(100%, 1000px); margin: 8px auto 60px; }
+.work-article-preparation, .work-article-faq, .work-article-resources, .work-article-related { border-top: 1px solid var(--line); padding-block: 38px 42px; }
+.work-article-preparation ul { padding-inline-start: 22px; margin-block: 0 25px; color: var(--text-soft); }
+.work-article-preparation li { padding-block: 10px; padding-inline-start: 5px; font-size: 16px; line-height: 1.85; }
+.work-article-scope-note { border-inline-start: 2px solid #8f6c50; padding-inline-start: 18px; color: var(--text-soft); font-size: 14px; line-height: 1.85; margin-block: 0 28px; }
+.work-article .hero-cta { min-height: 48px; max-width: 100%; white-space: normal; text-align: start; }
+.work-article-faq details { border-bottom: 1px solid var(--line); }
+.work-article-faq summary { min-height: 54px; padding-block: 18px; font-size: 16px; line-height: 1.7; cursor: pointer; overflow-wrap: anywhere; }
+.work-article-faq details p { margin-block: 0 24px; color: var(--text-soft); font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
+.work-article-resources nav { display: grid; gap: 10px; }
+.work-article-resources nav a { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; min-height: 44px; color: var(--text-soft); font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.work-article-resources nav a > span { color: var(--text); }
+.work-article-resources nav a > svg { margin-inline-start: auto; }
+.work-article-related nav { display: grid; gap: 0; }
+.work-article-related-link { display: grid; grid-template-columns: 104px minmax(0, 1fr) 20px; gap: 20px; align-items: center; min-height: 110px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.work-article-related-link > span:not(.work-article-related-image) { font-size: 17px; line-height: 1.6; overflow-wrap: anywhere; }
+.work-article-related-image { display: flex; align-items: center; justify-content: center; width: 104px; height: 104px; border: 1px solid var(--line); background: var(--bg-soft); }
+.work-article-related-image img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.work-article a:focus-visible, .work-article summary:focus-visible { outline: 2px solid #c18c6f; outline-offset: 5px; }
+.work-article a:hover { color: #e2b99a; }
+.work-article svg { flex: 0 0 auto; }
+.work-article[dir="rtl"] .hero-cta svg, .work-article[dir="rtl"] .work-article-resources svg, .work-article[dir="rtl"] .work-article-related svg { transform: scaleX(-1); }
+@media (max-width: 767px) {
+  .work-article { padding-block: calc(var(--header-height) + 22px) 48px; }
+  .work-article-breadcrumbs { font-size: 11px; margin-bottom: 24px; }
+  .work-article h1 { font-size: clamp(33px, 8.9vw, 44px); line-height: 1.18; margin-block: 16px 23px; }
+  .work-article-standfirst { font-size: 17px; line-height: 1.85; }
+  .work-article-date { margin-bottom: 28px; }
+  .work-article-cover { margin-bottom: 38px; }
+  .work-article-figure figcaption { padding: 14px 16px; }
+  .work-article h2 { font-size: 27px; line-height: 1.35; margin-bottom: 20px; }
+  .work-article-section { margin-bottom: 36px; }
+  .work-article-section p { font-size: 16px; line-height: 1.95; }
+  .work-article-angles { gap: 24px; margin-bottom: 40px; }
+  .work-article-preparation, .work-article-faq, .work-article-resources, .work-article-related { padding-block: 30px 34px; }
+  .work-article-related-link { grid-template-columns: 80px minmax(0, 1fr) 18px; gap: 14px; }
+  .work-article-related-image { width: 80px; height: 92px; }
+  .work-article-related-link > span:not(.work-article-related-image) { font-size: 15px; }
+}
+@media (max-width: 360px) {
+  .work-article-breadcrumbs ol { gap: 0 8px; }
+  .work-article-related-link { grid-template-columns: 64px minmax(0, 1fr) 18px; gap: 12px; }
+  .work-article-related-image { width: 64px; height: 80px; }
+}

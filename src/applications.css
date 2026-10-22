@@ -29,6 +29,10 @@
 .application-hero-copy > p:not(.hero-eyebrow) { max-width: 620px; color: var(--text-soft); font-size: 16px; line-height: 1.85; margin-bottom: 28px; }
 .application-figure { margin: 0; min-width: 0; background: #161613; border: 1px solid var(--line); }
 .application-figure img { display: block; width: 100%; height: 500px; object-fit: contain; }
+.application-figure-link { display: block; }
+.application-article-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--text); font-size: 13px; line-height: 1.7; }
+.application-article-link svg { flex: 0 0 auto; }
+[dir="rtl"] .application-article-link svg { transform: scaleX(-1); }
 .application-figure figcaption { display: grid; gap: 7px; padding: 16px 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.75; color: var(--text-soft); }
 .application-evidence-label { color: #d4b99f; font-size: 11px; }
 .application-decisions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 6vw, 86px); padding-block: 48px 64px; border-top: 1px solid var(--line); }

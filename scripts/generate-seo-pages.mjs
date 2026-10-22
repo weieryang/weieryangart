@@ -10,6 +10,7 @@ import { workshopEvidenceImages, getWorkshopEvidence, getWorkshopImage } from ".
 import { applicationCategories, applicationUi } from "../src/applicationContent.js";
 import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, applicationFallback, applicationItemList } from "./application-seo.mjs";
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
+import { workArticleSeoPages, workArticleFallback, workArticleSchema } from "./work-article-seo.mjs";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
@@ -512,7 +513,7 @@ const pages = [
   },
 ];
 
-pages.push(...sculptureSeoPages, ...applicationSeoPages);
+pages.push(...sculptureSeoPages, ...applicationSeoPages, ...workArticleSeoPages);
 
 // The React route, static fallback and structured data share their buyer copy.
 // Keep metadata here while avoiding separate FAQ and related-link variants.
@@ -593,11 +594,15 @@ function breadcrumb(page) {
   const items = [
     { "@type": "ListItem", position: 1, name: "Home", item: `${site}/` },
   ];
-  if (page.application || page.catalogKind === "detail") {
+  if (page.application || page.catalogKind === "detail" || page.workArticle) {
     items.push({ "@type": "ListItem", position: 2, name: applicationUi.en.nav, item: `${site}/sculptures/` });
   }
   if (page.catalogKind === "detail" && page.product.applicationId) {
     const category = applicationCategories.find(item => item.id === page.product.applicationId);
+    items.push({ "@type":"ListItem", position:items.length+1, name:category.name, item:`${site}${category.path}` });
+  }
+  if (page.workArticle) {
+    const category = applicationCategories.find(item => item.id === page.workArticle.categoryId);
     items.push({ "@type":"ListItem", position:items.length+1, name:category.name, item:`${site}${category.path}` });
   }
   if (page.slug) {
@@ -679,6 +684,11 @@ function pageSchema(page) {
     ...(page.slug ? [breadcrumb(page)] : []),
     ...imageObjects,
   ];
+
+  if (page.workArticle) {
+    graph[2].mainEntity = { "@id": `${urlFor(page)}#article` };
+    graph.push(workArticleSchema(page, site));
+  }
 
   if (page.catalogKind === "index") {
     graph[2].mainEntity = { "@id": `${urlFor(page)}#applications` };
@@ -781,6 +791,7 @@ function pageSchema(page) {
 }
 
 function fallback(page) {
+  if (page.workArticle) return workArticleFallback(page, esc);
   if (page.application && page.slug !== "resort-sculpture") return applicationFallback(page, esc);
   if (page.catalogKind) return sculptureFallback(page, esc);
   const images = imagesFor(page);

@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { applicationUi, getApplicationCategories } from "./applicationContent.js";
 import { ApplicationOemSection } from "./ApplicationOemSection.jsx";
+import { getWorkArticleForImage, workArticleUi } from "./workArticleData.js";
 import "./applications.css";
 
 function copyFor(language) {
@@ -21,10 +22,12 @@ function ApplicationImage({ image, priority = false, sizes = "(max-width: 767px)
   return <img src={src} srcSet={[...variants, `${src} ${image.width}w`].join(", ")} sizes={sizes} width={image.width} height={image.height} alt={image.alt} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} decoding="async" />;
 }
 
-function ApplicationFigure({ image, ui, priority = false, className = "" }) {
+function ApplicationFigure({ image, ui, priority = false, className = "", language = "en" }) {
+  const article = getWorkArticleForImage(image.file, language);
+  const articleUi = workArticleUi[language] || workArticleUi.en;
   return <figure className={`application-figure ${className}`.trim()}>
-    <ApplicationImage image={image} priority={priority} />
-    <figcaption><span className="application-evidence-label">{evidenceLabel(image, ui)}</span><span>{image.caption}</span></figcaption>
+    {article ? <a className="application-figure-link" href={article.path} tabIndex={-1} aria-hidden="true"><ApplicationImage image={image} priority={priority} /></a> : <ApplicationImage image={image} priority={priority} />}
+    <figcaption><span className="application-evidence-label">{evidenceLabel(image, ui)}</span><span>{image.caption}</span>{article && <a className="application-article-link" href={article.path}>{articleUi.read}: {article.title}<ArrowUpRight size={18} aria-hidden="true" /></a>}</figcaption>
   </figure>;
 }
 
@@ -65,7 +68,7 @@ export function ApplicationEvidence({ id, language = "en", omitFirstImage = fals
       <div><h2>{ui.buyerHeading}</h2><ul>{category.buyerNeeds.map(item => <li key={item}>{item}</li>)}</ul></div>
       <div><h2>{ui.scopeHeading}</h2><ul>{category.scope.map(item => <li key={item}>{item}</li>)}</ul></div>
     </section>
-    {images.length > 0 && <section className="application-gallery section-shell" aria-labelledby={`application-gallery-${id}`}><h2 id={`application-gallery-${id}`}>{ui.galleryHeading}</h2>{category.evidenceNote && <p className="application-evidence-note">{category.evidenceNote}</p>}<div className="application-gallery-grid">{images.map(image => <ApplicationFigure image={image} ui={ui} key={image.file} />)}</div></section>}
+    {images.length > 0 && <section className="application-gallery section-shell" aria-labelledby={`application-gallery-${id}`}><h2 id={`application-gallery-${id}`}>{ui.galleryHeading}</h2>{category.evidenceNote && <p className="application-evidence-note">{category.evidenceNote}</p>}<div className="application-gallery-grid">{images.map(image => <ApplicationFigure image={image} ui={ui} key={image.file} language={language} />)}</div></section>}
     <ApplicationOemSection oem={category.oem} language={language} />
     {id === "hospitality" && <section className="application-faq section-shell" aria-labelledby="application-oem-faq-hospitality"><h2 id="application-oem-faq-hospitality">{ui.faqHeading}</h2><div>{category.oem.faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></section>}
   </div>;
