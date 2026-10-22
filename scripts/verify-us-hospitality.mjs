@@ -140,7 +140,8 @@ for (const [route, content] of Object.entries(routeSeoContent)) {
   const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
   const faq = graph.filter(item => item["@type"] === "FAQPage");
   assert.equal(faq.length, 1, `Exactly one FAQPage: ${route}`);
-  assert.deepEqual(faq[0].mainEntity.map(item => [item.name, item.acceptedAnswer.text]), content.faq, `Static/schema FAQ source: ${route}`);
+  const expectedFaq = route === "resort-sculpture" ? [...content.faq, ...applicationCategories[0].oem.faq] : content.faq;
+  assert.deepEqual(faq[0].mainEntity.map(item => [item.name, item.acceptedAnswer.text]), expectedFaq, `Static/schema FAQ source: ${route}`);
   const readable = decode(html);
   for (const [question, answer] of content.faq) {
     assert.ok(readable.includes(question) && readable.includes(answer), `Static FAQ missing: ${route}: ${question}`);
@@ -152,7 +153,7 @@ for (const [route, content] of Object.entries(routeSeoContent)) {
 }
 const hotelHtml = fs.readFileSync(path.join(root, "resort-sculpture/index.html"), "utf8");
 const graph = JSON.parse(hotelHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
-assert.deepEqual(graph.find(item => item["@type"] === "FAQPage").mainEntity.map(item => [item.name, item.acceptedAnswer.text]), hospitalityService.faq);
+assert.deepEqual(graph.find(item => item["@type"] === "FAQPage").mainEntity.map(item => [item.name, item.acceptedAnswer.text]), [...hospitalityService.faq, ...applicationCategories[0].oem.faq]);
 assert.equal(graph.filter(item => item["@type"] === "Service").length, 1);
 assert.ok(graph.some(item => item["@type"] === "WebPage" && item.mainEntity?.["@id"]?.endsWith("#service")));
 assert.ok(copy.en.commission.options.projectTypes.includes("Hotel lobby / atrium"));
@@ -279,7 +280,14 @@ try {
     const sculpture = sculptureProducts.find(product => route === `sculptures/${product.slug}`);
     if (sculpture) verifySculpture(html, sculpture, "rendered detail");
     const application = applicationCategories.find(category => category.path === `/${route}/`);
-    if (application) for (const value of [application.name, application.intro, ...application.buyerNeeds, ...application.scope, application.evidenceNote]) assert.ok(decode(html).includes(value), `Rendered application parity: ${route}: ${value}`);
+    if (application) {
+      const oemText = [application.oem.heading, application.oem.intro, application.oem.scopeHeading, ...application.oem.steps.flatMap(step => [step.title, step.detail]), ...application.oem.quotationScope];
+      for (const value of [application.name, application.intro, ...application.buyerNeeds, ...application.scope, application.evidenceNote, ...oemText]) {
+        assert.ok(decode(html).includes(value), `Rendered application parity: ${route}: ${value}`);
+        assert.ok(decode(documents.get(`/${route}/`)).includes(value), `Static application parity: ${route}: ${value}`);
+      }
+      for (const image of application.gallery) assert.ok(decode(html).includes(image.alt) && decode(html).includes(image.caption), `Rendered image context: ${route}: ${image.file}`);
+    }
     const content = routeSeoContent[route];
     if (content) {
       const readable = decode(html);
@@ -301,7 +309,7 @@ try {
     if (route === "resort-sculpture") {
       verifyPlanning(html, "rendered hotel route");
       const readable = decode(html);
-      for (const [question, answer] of hospitalityService.faq) {
+      for (const [question, answer] of [...hospitalityService.faq, ...applicationCategories[0].oem.faq]) {
         assert.ok(readable.includes(question) && readable.includes(answer), `Visible FAQ mismatch: ${question}`);
       }
       for (const section of hospitalitySections) assert.ok(html.includes(`id="${section.id}"`), `Missing visible section: ${section.id}`);

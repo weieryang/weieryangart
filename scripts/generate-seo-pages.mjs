@@ -545,6 +545,7 @@ for (const page of pages) {
     page.application = category;
     page.title = category.metaTitle; page.description = category.metaDescription;
     page.images = [...category.gallery, ...imagesFor(page)].filter((image,index,images) => images.findIndex(item => item.file === image.file) === index);
+    page.faq = [...page.faq, ...category.oem.faq];
   }
 }
 // These pages do not display a FAQ in the React UI.

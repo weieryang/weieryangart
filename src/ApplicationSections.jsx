@@ -1,5 +1,6 @@
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { applicationUi, getApplicationCategories } from "./applicationContent.js";
+import { ApplicationOemSection } from "./ApplicationOemSection.jsx";
 import "./applications.css";
 
 function copyFor(language) {
@@ -65,6 +66,8 @@ export function ApplicationEvidence({ id, language = "en", omitFirstImage = fals
       <div><h2>{ui.scopeHeading}</h2><ul>{category.scope.map(item => <li key={item}>{item}</li>)}</ul></div>
     </section>
     {images.length > 0 && <section className="application-gallery section-shell" aria-labelledby={`application-gallery-${id}`}><h2 id={`application-gallery-${id}`}>{ui.galleryHeading}</h2>{category.evidenceNote && <p className="application-evidence-note">{category.evidenceNote}</p>}<div className="application-gallery-grid">{images.map(image => <ApplicationFigure image={image} ui={ui} key={image.file} />)}</div></section>}
+    <ApplicationOemSection oem={category.oem} language={language} />
+    {id === "hospitality" && <section className="application-faq section-shell" aria-labelledby="application-oem-faq-hospitality"><h2 id="application-oem-faq-hospitality">{ui.faqHeading}</h2><div>{category.oem.faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></section>}
   </div>;
 }
 
