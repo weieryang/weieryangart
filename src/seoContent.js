@@ -1,5 +1,6 @@
 import { hospitalityService } from "./hospitalityContent.js";
 import { studioIdentity } from "./commissionProof.js";
+import { getStainlessSculptureContent } from "./stainlessSculptureContent.js";
 
 const sharedFaq = [
   [
@@ -66,18 +67,7 @@ export const routeSeoContent = {
     related: [["Garden sculpture", "/garden-sculpture/"], ["Stone sculpture", "/stone-sculpture/"], ["Material comparison", "/insights/316l-stainless-steel-vs-bronze-vs-stone/"]],
     faq: sharedFaq,
   },
-  "stainless-steel-sculpture": {
-    eyebrow: "Stainless steel sculpture",
-    title: "Stainless steel sculpture with grade, reflection and structure decided early",
-    intro: "Stainless steel can look precise or harsh depending on grade, reflection, weld control and exposure. WEIERYANG develops brushed and controlled-reflection finishes with the internal structure and fabrication route considered from the start.",
-    groups: [
-      ["Best uses", ["Coastal and resort sites", "Permanent public exterior sculpture", "Modern garden and plaza commissions"]],
-      ["Technical checks", ["Stainless grade and exposure", "Welds, panels and internal structure", "Reflection, glare and surface direction"]],
-      ["Delivery evidence", ["Segment drawings", "Trial assembly and finish control", "Export-ready packing and lifting points"]],
-    ],
-    related: [["304 vs 316L grade guide", "/insights/304-vs-316l-stainless-steel-outdoor-sculpture/"], ["Coastal maintenance", "/insights/coastal-stainless-steel-sculpture-maintenance-checklist/"], ["Material comparison", "/insights/316l-stainless-steel-vs-bronze-vs-stone/"]],
-    faq: sharedFaq,
-  },
+  "stainless-steel-sculpture": getStainlessSculptureContent("en"),
   "stone-sculpture": {
     eyebrow: "Stone sculpture",
     title: "Stone sculpture and bases with mass, texture and weathering proof",

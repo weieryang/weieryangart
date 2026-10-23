@@ -44,6 +44,7 @@ import { inquiryFormCopy } from "./inquiryFormCopy.js";
 import { readAttribution, inquirySource, safeInterestRoute, analyticsAttribution, analyticsProjectType, inquiryAttributionFields, inquiryAttributionFieldNames } from "./attribution.js";
 import { trackConfirmedMetaLead } from "./metaLead.js";
 import { routeSeoContent } from "./seoContent.js";
+import { getStainlessSculptureContent } from "./stainlessSculptureContent.js";
 import { hospitalityEntry, hospitalityPlanning, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
 import { commissionEvidenceImage, commissionProof, studioIdentity } from "./commissionProof.js";
 import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
@@ -738,8 +739,10 @@ function HomePage({ text, language }) {
   );
 }
 
-function SecondaryPage({ route, text, language }) {
-  const seo = language === "en" ? routeSeoContent[route] : null;
+export function SecondaryPage({ route, text, language }) {
+  const seo = route === "stainless-steel-sculpture"
+    ? getStainlessSculptureContent(language)
+    : language === "en" ? routeSeoContent[route] : null;
   const materialStudy = (inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy;
   const title = seo?.title || text.routeNames[route] || text.routeNames.projects;
   const media = route === "process" ? getWorkshopImage("handsAssembly", language)
@@ -751,7 +754,7 @@ function SecondaryPage({ route, text, language }) {
     <>
       <section className={`secondary-hero${["process", "custom-sculpture"].includes(route) ? " has-workshop-media" : ""} section-shell`}>
         <div>
-          <p className="secondary-breadcrumb"><a href="/">Home</a><span>/</span>{text.routeNames[route] || text.routeNames.projects}</p>
+          <p className="secondary-breadcrumb"><a href="/">{seo?.ui?.home || "Home"}</a><span>/</span>{text.routeNames[route] || text.routeNames.projects}</p>
           <p className="hero-eyebrow">{seo?.eyebrow || text.secondary.eyebrow}</p>
           <h1>{title}</h1>
           <p>{seo?.intro || text.secondary.intro}</p>
@@ -767,8 +770,8 @@ function SecondaryPage({ route, text, language }) {
       {route === "resort-sculpture" && language === "en" ? <HospitalityPlanning /> : null}
       <section className="seo-route-content section-shell">
         <header>
-          <p className="hero-eyebrow">{route === "projects" ? "Verified project record" : "Decision guide"}</p>
-          <h2>{route === "projects" ? "What the construction photographs document" : seo ? "Site, material and delivery decisions" : text.secondary.checksTitle}</h2>
+          <p className="hero-eyebrow">{route === "projects" ? "Verified project record" : seo?.ui?.guide || "Decision guide"}</p>
+          <h2>{route === "projects" ? "What the construction photographs document" : seo?.ui?.decisions || (seo ? "Site, material and delivery decisions" : text.secondary.checksTitle)}</h2>
         </header>
         <div className="seo-route-groups">
           {groups.map(([itemTitle, items], index) => (
@@ -824,14 +827,14 @@ function SecondaryPage({ route, text, language }) {
       {seo ? (
         <section className="seo-route-footer section-shell">
           <div className="seo-related">
-            <p className="hero-eyebrow">Related routes</p>
-            <h2>Continue the project review</h2>
-            <nav aria-label="Related sculpture routes">
+            <p className="hero-eyebrow">{seo.ui?.related || "Related routes"}</p>
+            <h2>{seo.ui?.continue || "Continue the project review"}</h2>
+            <nav aria-label={seo.ui?.relatedAria || "Related sculpture routes"}>
               {seo.related.map(([label, href]) => <a key={href} href={href}>{label}<ArrowUpRight size={18} /></a>)}
             </nav>
           </div>
           <div className="seo-faq-visible">
-            <p className="hero-eyebrow">Frequently asked</p>
+            <p className="hero-eyebrow">{seo.ui?.faq || "Frequently asked"}</p>
             <dl>{seo.faq.map(([question, answer]) => <div key={question}><dt>{question}</dt><dd>{answer}</dd></div>)}</dl>
           </div>
         </section>

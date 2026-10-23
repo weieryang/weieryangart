@@ -10,6 +10,7 @@ import { hospitalityService, hospitalitySections, hospitalityPlanning } from "..
 import { copy } from "../src/content.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
 import { routeSeoContent } from "../src/seoContent.js";
+import { getStainlessSculptureContent } from "../src/stainlessSculptureContent.js";
 import { commissionEvidenceImage, commissionProof } from "../src/commissionProof.js";
 import { sculptureCatalog, sculptureProducts, sculptureRoutes } from "../src/sculptureCatalog.js";
 import { safeInterestRoute } from "../src/attribution.js";
@@ -448,7 +449,7 @@ for (const category of applicationCategories) {
 // Render the actual React components without exercising a live inquiry endpoint.
 const server = await createServer({ configFile: "vite.static.config.mjs", server: { middlewareMode: true, watch: null }, appType: "custom" });
 try {
-  const { App } = await server.ssrLoadModule("/src/App.jsx");
+  const { App, SecondaryPage } = await server.ssrLoadModule("/src/App.jsx");
   for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1)), ...workArticleRoutes]) {
     const html = renderToStaticMarkup(React.createElement(App, { initialRoute: route }));
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `Rendered H1: ${route}`);
@@ -536,6 +537,33 @@ try {
     }
   }
   assert.equal(buyerRenders, 24, "Four buyer-answer applications rendered in six languages");
+  const stainlessEnglish = getStainlessSculptureContent("en");
+  assert.equal(stainlessEnglish.title, "Stainless steel sculpture with grade, reflection and structure decided early", "Preserve stainless page H1");
+  assert.deepEqual(routeSeoContent["stainless-steel-sculpture"], stainlessEnglish, "Stainless static/React shared English source");
+  const stainlessPaths = [
+    "/insights/304-vs-316l-stainless-steel-outdoor-sculpture/",
+    "/insights/coastal-stainless-steel-sculpture-maintenance-checklist/",
+    "/insights/316l-stainless-steel-vs-bronze-vs-stone/",
+    "/insights/middle-east-stainless-steel-landmark-sculpture/",
+    "/insights/outdoor-sculpture-quotation-scope-checklist/",
+    "/commission/",
+  ];
+  for (const language of workLanguages) {
+    const content = getStainlessSculptureContent(language);
+    assert.equal(content.groups.length, 3, `Stainless procurement groups: ${language}`);
+    assert.equal(content.faq.length, 5, `Stainless material-specific questions: ${language}`);
+    assert.equal(new Set(content.faq.map(([q]) => q)).size, 5, `Distinct stainless questions: ${language}`);
+    assert.deepEqual(content.related.map(([,href]) => href), stainlessPaths, `Stainless guide/evidence/inquiry paths: ${language}`);
+    const readable = decode(renderToStaticMarkup(React.createElement(SecondaryPage, { route: "stainless-steel-sculpture", text: copy[language], language })));
+    for (const value of [content.eyebrow, content.title, content.intro, ...Object.values(content.ui), ...content.groups.flatMap(([heading,items]) => [heading,...items]), ...content.faq.flat(), ...content.related.flat()]) {
+      assert.equal(typeof value, "string");
+      assert.ok(value.trim() && readable.includes(value), `Visible stainless procurement content: ${language}: ${value}`);
+    }
+    if (language !== "en") {
+      assert.notEqual(content.faq[0][0], stainlessEnglish.faq[0][0], `No English stainless FAQ fallback: ${language}`);
+      assert.notEqual(content.groups[0][0], stainlessEnglish.groups[0][0], `No English stainless group fallback: ${language}`);
+    }
+  }
   const { HotelEngineeringCases } = await server.ssrLoadModule("/src/HotelEngineeringCases.jsx");
   const fallback = decode(fs.readFileSync(path.join(root, "index.html"), "utf8"));
   for (const [language, text] of Object.entries(hotelCases)) {
@@ -549,4 +577,4 @@ try {
   }
   assert.ok(fallback.includes(hotelCases.en.note));
 } finally { await server.close(); }
-console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; 24 localized keyword buyer-answer applications; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
+console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; 24 localized keyword buyer-answer applications; six localized stainless procurement renders; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
