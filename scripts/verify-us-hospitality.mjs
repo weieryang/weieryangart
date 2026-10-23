@@ -11,6 +11,7 @@ import { copy } from "../src/content.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
 import { routeSeoContent } from "../src/seoContent.js";
 import { getStainlessSculptureContent } from "../src/stainlessSculptureContent.js";
+import { getStoneSculptureContent } from "../src/stoneSculptureContent.js";
 import { commissionEvidenceImage, commissionProof } from "../src/commissionProof.js";
 import { sculptureCatalog, sculptureProducts, sculptureRoutes } from "../src/sculptureCatalog.js";
 import { safeInterestRoute } from "../src/attribution.js";
@@ -564,6 +565,30 @@ try {
       assert.notEqual(content.groups[0][0], stainlessEnglish.groups[0][0], `No English stainless group fallback: ${language}`);
     }
   }
+  const stoneEnglish = getStoneSculptureContent("en");
+  assert.equal(stoneEnglish.title, "Stone sculpture and bases with mass, texture and weathering proof", "Preserve stone page H1");
+  assert.deepEqual(routeSeoContent["stone-sculpture"], stoneEnglish, "Stone static/React shared English source");
+  const stonePaths = [
+    "/bronze-sculpture/", "/garden-sculpture/", "/materials/",
+    "/insights/316l-stainless-steel-vs-bronze-vs-stone/",
+    "/insights/outdoor-sculpture-quotation-scope-checklist/", "/commission/",
+  ];
+  for (const language of workLanguages) {
+    const content = getStoneSculptureContent(language);
+    assert.deepEqual(content.groups.map(([, items]) => items.length), [3, 3, 3], `Stone procurement input groups: ${language}`);
+    assert.equal(content.faq.length, 5, `Stone-specific buyer questions: ${language}`);
+    assert.equal(new Set(content.faq.map(([q]) => q)).size, 5, `Distinct stone questions: ${language}`);
+    assert.deepEqual(content.related.map(([, href]) => href), stonePaths, `Stone material/scope/inquiry paths: ${language}`);
+    const readable = decode(renderToStaticMarkup(React.createElement(SecondaryPage, { route: "stone-sculpture", text: copy[language], language })));
+    for (const value of [content.eyebrow, content.title, content.intro, ...Object.values(content.ui), ...content.groups.flatMap(([heading, items]) => [heading, ...items]), ...content.faq.flat(), ...content.related.flat()]) {
+      assert.equal(typeof value, "string");
+      assert.ok(value.trim() && readable.includes(value), `Visible stone procurement content: ${language}: ${value}`);
+    }
+    if (language !== "en") {
+      assert.notEqual(content.faq[0][0], stoneEnglish.faq[0][0], `No English stone FAQ fallback: ${language}`);
+      assert.notEqual(content.groups[0][0], stoneEnglish.groups[0][0], `No English stone group fallback: ${language}`);
+    }
+  }
   const { HotelEngineeringCases } = await server.ssrLoadModule("/src/HotelEngineeringCases.jsx");
   const fallback = decode(fs.readFileSync(path.join(root, "index.html"), "utf8"));
   for (const [language, text] of Object.entries(hotelCases)) {
@@ -577,4 +602,4 @@ try {
   }
   assert.ok(fallback.includes(hotelCases.en.note));
 } finally { await server.close(); }
-console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; 24 localized keyword buyer-answer applications; six localized stainless procurement renders; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);
+console.log(`PASS: ${urls.length} sitemap routes, all reachable in static HTML within ${Math.max(...depth.values())} clicks, no orphan pages; ${staticCount} article frames and ${imageCount} WebP image references; ${schemaCount} JSON-LD blocks; ${Object.keys(routeSeoContent).length + 2 + sculptureRoutes.length + applicationCategories.filter(category => category.id !== "hospitality").length + workArticleRoutes.length} React routes rendered; eight production studies and 48 localized article renders; 24 localized keyword buyer-answer applications; six localized stainless and six localized stone procurement renders; FAQ/static/schema parity, ${sculptureProducts.length} sculpture details, collection, related links and U.S. inquiry fields verified.`);

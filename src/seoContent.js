@@ -1,6 +1,7 @@
 import { hospitalityService } from "./hospitalityContent.js";
 import { studioIdentity } from "./commissionProof.js";
 import { getStainlessSculptureContent } from "./stainlessSculptureContent.js";
+import { getStoneSculptureContent } from "./stoneSculptureContent.js";
 
 const sharedFaq = [
   [
@@ -68,18 +69,7 @@ export const routeSeoContent = {
     faq: sharedFaq,
   },
   "stainless-steel-sculpture": getStainlessSculptureContent("en"),
-  "stone-sculpture": {
-    eyebrow: "Stone sculpture",
-    title: "Stone sculpture and bases with mass, texture and weathering proof",
-    intro: "Stone gives sculpture weight and landscape credibility, but also changes lifting access, foundation logic, drainage and long-term weathering. WEIERYANG develops carved stone and stone-metal combinations for permanent outdoor commissions.",
-    groups: [
-      ["Stone routes", ["Carved stone sculpture", "Stone bases for bronze or stainless work", "Black stone and bronze hybrid sculpture"]],
-      ["Site factors", ["Base condition and foundation", "Water exposure and drainage", "Texture, touch and maintenance"]],
-      ["Brief requirements", ["Desired stone tone or texture", "Access for lifting and installation", "Target scale and destination country"]],
-    ],
-    related: [["Bronze sculpture", "/bronze-sculpture/"], ["Garden sculpture", "/garden-sculpture/"], ["Materials", "/materials/"]],
-    faq: sharedFaq,
-  },
+  "stone-sculpture": getStoneSculptureContent("en"),
   "custom-sculpture": {
     eyebrow: "Custom sculpture",
     title: "Custom sculpture fabrication",

@@ -45,6 +45,7 @@ import { readAttribution, inquirySource, safeInterestRoute, analyticsAttribution
 import { trackConfirmedMetaLead } from "./metaLead.js";
 import { routeSeoContent } from "./seoContent.js";
 import { getStainlessSculptureContent } from "./stainlessSculptureContent.js";
+import { getStoneSculptureContent } from "./stoneSculptureContent.js";
 import { hospitalityEntry, hospitalityPlanning, hospitalitySections, privacyCopy } from "./hospitalityContent.js";
 import { commissionEvidenceImage, commissionProof, studioIdentity } from "./commissionProof.js";
 import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, productInquiryForm, inquiryEventContext } from "./productInquiry.js";
@@ -742,7 +743,8 @@ function HomePage({ text, language }) {
 export function SecondaryPage({ route, text, language }) {
   const seo = route === "stainless-steel-sculpture"
     ? getStainlessSculptureContent(language)
-    : language === "en" ? routeSeoContent[route] : null;
+    : route === "stone-sculpture" ? getStoneSculptureContent(language)
+      : language === "en" ? routeSeoContent[route] : null;
   const materialStudy = (inquiryIntakeCopy[language] || inquiryIntakeCopy.en).materialStudy;
   const title = seo?.title || text.routeNames[route] || text.routeNames.projects;
   const media = route === "process" ? getWorkshopImage("handsAssembly", language)
