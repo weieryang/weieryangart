@@ -365,8 +365,9 @@ for (const article of workArticles) {
   assert.equal(articleNode.mainEntityOfPage?.["@id"], pageNode["@id"]);
   assert.equal(articleNode.headline, article.title);
   assert.equal(articleNode.description, article.standfirst);
-  assert.equal(articleNode.datePublished, "2026-10-22");
-  assert.equal(articleNode.dateModified, article.publishedOn);
+  assert.equal(articleNode.datePublished, "2026-10-22T02:28:26Z", `Verified first public Pages deployment: ${article.path}`);
+  assert.equal(articleNode.dateModified, articleNode.datePublished, `No later editorial body change: ${article.path}`);
+  assert.equal(new Date(articleNode.datePublished).toISOString().slice(0, 10), article.publishedOn, `Preserve visible article date: ${article.path}`);
   assert.equal(articleNode.author?.["@id"], `${base}/#organization`);
   assert.equal(articleNode.publisher?.["@id"], `${base}/#organization`);
   assert.equal(articleNode.articleSection, applicationCategories.find(category => category.id === article.categoryId).name, `Article editorial category: ${article.path}`);

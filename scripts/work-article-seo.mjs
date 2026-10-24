@@ -2,6 +2,10 @@ import { getWorkArticles, workArticleUi } from "../src/workArticleData.js";
 import { applicationCategories } from "../src/applicationContent.js";
 
 const articles = getWorkArticles("en");
+// The first eight studies became public when their shared Pages deployment
+// completed (run 39711528365, Deploy to GitHub Pages, 2026-10-22T02:28:26Z).
+// Preserve their original calendar date; do not invent times for other dates.
+const verifiedPublicationDateTimes = { "2026-10-22": "2026-10-22T02:28:26Z" };
 export const workArticleSeoPages = articles.map(article => ({
   slug: article.path.slice(1, -1), file: `${article.path.slice(1)}index.html`,
   title: `${article.title} | WEIERYANG`, description: article.standfirst,
@@ -18,7 +22,8 @@ export function workArticleSchema(page, site) {
     mainEntityOfPage: { "@id": `${url}#page` },
     author: { "@id": `${site}/#organization` }, publisher: { "@id": `${site}/#organization` },
     image: article.images.map(image => ({ "@id": `${site}/seo-media/${image.file}#image` })),
-    datePublished: article.publishedOn, dateModified: page.lastmod, inLanguage: "en",
+    datePublished: verifiedPublicationDateTimes[article.publishedOn] || article.publishedOn,
+    dateModified: verifiedPublicationDateTimes[page.lastmod] || page.lastmod, inLanguage: "en",
     articleSection: applicationCategories.find(category => category.id === article.categoryId).name,
   };
 }
