@@ -107,6 +107,38 @@ assert.deepEqual(constructionReport.image.map(image => image["@id"]), [
   "stainless-steel-wing-slat-installation.webp",
 ].map(file => `${base}/seo-media/${file}#image`), "Construction report must not include commercial reference studies");
 
+// Procurement links in the static body must have real static destinations.
+// Header/footer navigation may intentionally target React-only sections, so it
+// is excluded here rather than mistaken for a missing body-content anchor.
+function verifyStaticBodyFragments(pages) {
+  const bodies = new Map([...pages].map(([route, html]) => {
+    const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+    assert.ok(main, `Static body for fragment review: ${route}`);
+    return [route, main.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "")];
+  }));
+  const targetIds = new Map([...bodies].map(([route, main]) => {
+    const counts = new Map();
+    for (const match of main.matchAll(/<[a-z][^>]*\sid\s*=\s*(["'])(.*?)\1[^>]*>/gi)) {
+      const id = decode(match[2]);
+      counts.set(id, (counts.get(id) || 0) + 1);
+    }
+    return [route, counts];
+  }));
+  let checked = 0;
+  for (const [route, main] of bodies) {
+    for (const match of main.matchAll(/<a\b[^>]*\shref\s*=\s*(["'])(.*?)\1[^>]*>/gi)) {
+      const target = new URL(decode(match[2]), `${base}${route}`);
+      if (target.origin !== base || !target.hash || !targetIds.has(target.pathname)) continue;
+      const id = decodeURIComponent(target.hash.slice(1));
+      assert.equal(targetIds.get(target.pathname).get(id), 1, `Static body fragment must identify one target: ${route} -> ${target.pathname}${target.hash}`);
+      checked++;
+    }
+  }
+  return checked;
+}
+const bodyFragmentCount = verifyStaticBodyFragments(documents);
+assert.ok(bodyFragmentCount > 0, "Static body fragment review must inspect real procurement links");
+
 // Follow plain HTML links from the homepage: a Sitemap entry alone cannot keep
 // a route from becoming an orphan when client-side navigation changes.
 const linkGraph = new Map();

@@ -828,7 +828,7 @@ function fallback(page) {
   const sections = page.sections
     .map(([heading, items]) => `
       <section>
-        <h2>${esc(heading)}</h2>
+        <h2${page.slug === "projects" && heading === "Landmark construction" ? ' id="project-evidence-title"' : ""}>${esc(heading)}</h2>
         <ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
       </section>`)
     .join("");
