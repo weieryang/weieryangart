@@ -552,6 +552,24 @@ for (const page of pages) {
 // These pages do not display a FAQ in the React UI.
 for (const page of pages.filter(page => ["", "commission"].includes(page.slug))) page.faq = [];
 
+// These edits align image identity with the visible page; other observation dates stay intact.
+const schemaIdentityGuideSlugs = new Set([
+  "coastal-stainless-steel-sculpture-maintenance-checklist",
+  "large-outdoor-sculpture-foundation-anchor-checklist",
+  "large-sculpture-export-packing-checklist",
+  "material-led-sculpture-review-2026",
+  "middle-east-stainless-steel-landmark-sculpture",
+  "overseas-sculpture-installation-checklist",
+  "resort-entrance-sculpture-scale-guide",
+  "water-feature-sculpture-material-checklist",
+]);
+for (const page of pages) {
+  if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
+}
+for (const article of preservedRoutes) {
+  if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
+}
+
 function esc(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -577,6 +595,12 @@ function imagesFor(page) {
   if (["process", "custom-sculpture"].includes(page.slug)) {
     const primary = getWorkshopImage(page.slug === "process" ? "handsAssembly" : "whaleOverview");
     return [primary, ...workshopEvidenceImages.filter(image => image.id !== primary.id)];
+  }
+  if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) {
+    // Keep the existing fallback construction gallery and expose the two images
+    // actually rendered by SecondaryPage, without changing the React experience.
+    return [...images, evidenceImages.structuralStudy, evidenceImages.materialSamples]
+      .filter((image, index, all) => all.findIndex(item => item.file === image.file) === index);
   }
   return images;
 }
@@ -612,7 +636,11 @@ function breadcrumb(page) {
 }
 
 function pageSchema(page) {
-  const images = imagesFor(page);
+  // Both normal React and static HTML show these studies. Fallback-only
+  // construction photographs do not represent the live secondary-page hero.
+  const images = ["public-art", "stainless-steel-sculpture"].includes(page.slug)
+    ? [evidenceImages.structuralStudy, evidenceImages.materialSamples]
+    : imagesFor(page);
   const imageObjects = images.map((image, index) => ({
     "@type": "ImageObject",
     "@id": `${imageUrl(image)}#image`,

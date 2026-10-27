@@ -113,6 +113,38 @@ assert.equal(costArticle.dateModified, costModified, "Cost guide modified date m
 assert.ok(costGuideHtml.includes(`<time datetime="${costModified}">`), "Cost guide edit date is visible");
 assert.match(costModified, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/, "Cost guide edit timestamp includes its timezone");
 assert.ok(Number.isFinite(Date.parse(costModified)), "Cost guide edit timestamp is valid");
+const illustrationGuides = {
+  "coastal-stainless-steel-sculpture-maintenance-checklist": ["material-samples-dark.webp", "studio-material-desk.webp", "structural-engineering.webp"],
+  "large-outdoor-sculpture-foundation-anchor-checklist": ["structural-engineering.webp", "studio-material-desk.webp", "material-samples-dark.webp"],
+  "large-sculpture-export-packing-checklist": ["structural-engineering.webp", "fabrication-workshop.webp"],
+  "material-led-sculpture-review-2026": ["design-development.webp", "material-samples-dark.webp", "fabrication-workshop.webp"],
+  "middle-east-stainless-steel-landmark-sculpture": ["material-samples-dark.webp"],
+  "overseas-sculpture-installation-checklist": ["studio-material-desk.webp", "material-samples-dark.webp"],
+  "resort-entrance-sculpture-scale-guide": ["material-samples-dark.webp", "structural-engineering.webp"],
+  "water-feature-sculpture-material-checklist": ["material-samples-dark.webp", "material-swatch-strip.webp", "structural-engineering.webp", "studio-material-desk.webp"],
+};
+for (const [slug, files] of Object.entries(illustrationGuides)) {
+  const html = documents.get(`/insights/${slug}/`);
+  const graph = schemaFor(`/insights/${slug}/`);
+  for (const file of files) {
+    const figures = [...html.matchAll(/<figure\b[^>]*>([\s\S]*?)<\/figure>/g)].map(match => match[1]).filter(figure => figure.includes(file));
+    assert.equal(figures.length, 1, `One reviewed illustrative figure: ${slug}/${file}`);
+    const alt = decode(figures[0].match(/<img\b[^>]*\balt="([^"]+)"/)[1]);
+    const caption = decode(figures[0].match(/<figcaption>([^<]+)<\/figcaption>/)[1]);
+    assert.match(alt, /^Illustrative\b/, `Guide illustration alt is accurate: ${slug}/${file}`);
+    assert.match(caption, /^Illustrative\b.*\bnot\b/i, `Guide illustration boundary is visible: ${slug}/${file}`);
+    const image = graph.find(node => node["@type"] === "ImageObject" && node.contentUrl === `${base}/seo-media/${file}`);
+    if (image) assert.equal(image.caption, caption, `Guide schema caption matches the visible identity: ${slug}/${file}`);
+  }
+}
+for (const route of ["/public-art/", "/stainless-steel-sculpture/"]) {
+  const graph = schemaFor(route);
+  const page = graph.find(node => node["@id"] === `${base}${route}#page`);
+  const expected = ["structural-engineering.webp", "material-samples-dark.webp"].map(file => `${base}/seo-media/${file}`);
+  assert.deepEqual(page.image, expected, `Secondary-page schema uses the rendered media: ${route}`);
+  assert.equal(page.primaryImageOfPage["@id"], `${expected[0]}#image`, `Secondary-page primary image matches its hero: ${route}`);
+  for (const file of expected) assert.ok(documents.get(route).includes(file.replace(base, "")), `Rendered study also exists in static HTML: ${file}`);
+}
 const homeSchema = schemaFor("/");
 assert.equal(homeSchema.filter(node => node["@type"] === "WebSite").length, 1);
 assert.equal(homeSchema.find(node => node["@id"] === `${base}/#page`)["@type"], "WebPage");
@@ -513,6 +545,9 @@ try {
   const { App, SecondaryPage } = await server.ssrLoadModule("/src/App.jsx");
   for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1)), ...workArticleRoutes]) {
     const html = renderToStaticMarkup(React.createElement(App, { initialRoute: route }));
+    if (["public-art", "stainless-steel-sculpture"].includes(route)) {
+      for (const file of ["structural-engineering.webp", "material-samples-dark.webp"]) assert.ok(html.includes(file), `Schema media must remain in the React page: ${route}/${file}`);
+    }
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `Rendered H1: ${route}`);
     assert.ok(html.includes('href="/privacy/"'), `Rendered privacy: ${route}`);
     if (route === "sculptures") verifyCollection(html, "rendered collection");
