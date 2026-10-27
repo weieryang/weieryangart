@@ -86,6 +86,33 @@ for (const url of urls) {
 
 // A website, its homepage and a fabrication procedure are distinct entities.
 const schemaFor = route => JSON.parse(documents.get(route).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+// Reused explanatory artwork must not become workshop or engineering proof
+// when an independently maintained buyer guide reuses the same image.
+const costGuideRoute = "/insights/large-outdoor-sculpture-cost-guide/";
+const costGuideHtml = documents.get(costGuideRoute);
+const costGuideGraph = schemaFor(costGuideRoute);
+const costIllustrationFiles = ["studio-material-desk.webp", "material-samples-dark.webp", "structural-engineering.webp", "fabrication-workshop.webp"];
+for (const file of costIllustrationFiles) {
+  const figures = [...costGuideHtml.matchAll(/<figure\b[^>]*>([\s\S]*?)<\/figure>/g)]
+    .map(match => match[1]).filter(figure => figure.includes(`src="/seo-media/${file}"`));
+  assert.equal(figures.length, 1, `Cost guide has one explanatory figure: ${file}`);
+  const alt = decode(figures[0].match(/<img\b[^>]*\balt="([^"]+)"/)[1]);
+  const caption = decode(figures[0].match(/<figcaption>([^<]+)<\/figcaption>/)[1]);
+  assert.match(alt, /^Illustrative\b/, `Cost figure alt states illustration provenance: ${file}`);
+  assert.match(caption, /^Illustrative\b.*\bnot\b/, `Cost figure caption states the evidence boundary: ${file}`);
+  const image = costGuideGraph.find(node => node["@type"] === "ImageObject" && node.contentUrl === `${base}/seo-media/${file}`);
+  assert.equal(image?.caption, caption, `Cost image schema matches its visible provenance: ${file}`);
+}
+for (const file of ["large-sculpture-structural-assembly.webp", "middle-east-stainless-steel-landmark-installation.webp"]) {
+  const image = costGuideGraph.find(node => node["@type"] === "ImageObject" && node.contentUrl === `${base}/seo-media/${file}`);
+  assert.match(image?.caption || "", /^Verified\b/, `Real construction evidence remains distinct: ${file}`);
+}
+const costArticle = costGuideGraph.find(node => [].concat(node["@type"]).includes("Article"));
+const costModified = costGuideHtml.match(/<meta property="article:modified_time" content="([^"]+)"/)[1];
+assert.equal(costArticle.dateModified, costModified, "Cost guide modified date matches social metadata");
+assert.ok(costGuideHtml.includes(`<time datetime="${costModified}">`), "Cost guide edit date is visible");
+assert.match(costModified, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/, "Cost guide edit timestamp includes its timezone");
+assert.ok(Number.isFinite(Date.parse(costModified)), "Cost guide edit timestamp is valid");
 const homeSchema = schemaFor("/");
 assert.equal(homeSchema.filter(node => node["@type"] === "WebSite").length, 1);
 assert.equal(homeSchema.find(node => node["@id"] === `${base}/#page`)["@type"], "WebPage");
