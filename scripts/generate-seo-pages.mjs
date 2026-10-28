@@ -8,6 +8,7 @@ import { staticHeader, staticFooter } from "./static-frame.mjs";
 import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
 import { workshopEvidenceImages, getWorkshopEvidence, getWorkshopImage } from "../src/workshopEvidence.js";
 import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { getApplicationMedia } from "../src/applicationMedia.js";
 import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, applicationFallback, applicationItemList } from "./application-seo.mjs";
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
 import { workArticleSeoPages, workArticleFallback, workArticleSchema } from "./work-article-seo.mjs";
@@ -282,14 +283,14 @@ const preservedRoutes = [
   { url: `${site}/insights/large-hotel-atrium-sculpture-planning-guide/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelAtriumPlanningOverview", "hotelAtriumMultilevelReference", "hotelAtriumUpperLevelView", "hotelAtriumBaseClearance", "hotelAtriumCrossLevelSightline"] },
   { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-10-08", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-09-30", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
+  { url: `${site}/insights/`, lastmod: "2026-10-28", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-10-27", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
   { url: `${site}/insights/large-outdoor-sculpture-foundation-anchor-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "studioDesk", "materialSamples"] },
-  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-16", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
+  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-28", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: "2026-10-13", priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
@@ -301,6 +302,10 @@ const preservedRoutes = [
   { url: `${site}/insights/how-to-commission-custom-outdoor-sculpture/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["conceptSketch", "materialSamples"] },
   { url: `${site}/insights/316l-stainless-steel-vs-bronze-vs-stone/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["materialSamples", "materialSwatchStrip"] },
   { url: `${site}/insights/landscape-sculpture-quote-brief/`, lastmod: "2026-10-16", priority: "0.78", imageKeys: ["studioDesk", "structuralStudy"] },
+  { url: `${site}/insights/custom-outdoor-abstract-sculpture-approval-checklist/`, lastmod: "2026-10-28", priority: "0.78", images: [
+    getApplicationMedia("hospitality").find(image => image.id === "goldAbstract"),
+    getApplicationMedia("retail").find(image => image.id === "warmAbstract"),
+  ] },
 ];
 
 const pages = [
@@ -1156,10 +1161,10 @@ const imageSitemapEntries = [
     images: imagesFor(page),
   })),
   ...preservedRoutes
-    .filter((route) => route.imageKeys?.length)
+    .filter((route) => route.images?.length || route.imageKeys?.length)
     .map((route) => ({
       url: route.url,
-      images: route.imageKeys.map((key) => evidenceImages[key]),
+      images: route.images || route.imageKeys.map((key) => evidenceImages[key]),
     })),
 ];
 

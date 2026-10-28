@@ -22,8 +22,8 @@ import { workArticleContentB } from "../src/workArticleContentB.js";
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
-assert.equal(urls.length, 53, "Canonical inventory: existing 45 plus eight production studies only");
-assert.equal(new Set(urls).size, 53, "No duplicate canonical sitemap URLs");
+assert.equal(urls.length, 54, "Canonical inventory: existing 53 plus one distinct OEM approval guide");
+assert.equal(new Set(urls).size, 54, "No duplicate canonical sitemap URLs");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
 const documents = new Map();
@@ -86,6 +86,32 @@ for (const url of urls) {
 
 // A website, its homepage and a fabrication procedure are distinct entities.
 const schemaFor = route => JSON.parse(documents.get(route).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+const approvalRoute = "/insights/custom-outdoor-abstract-sculpture-approval-checklist/";
+const approvalHtml = documents.get(approvalRoute);
+assert.ok(approvalHtml, "One discoverable OEM approval guide exists");
+const approvalGraph = schemaFor(approvalRoute);
+const approvalArticle = approvalGraph.find(node => [].concat(node["@type"]).includes("Article"));
+assert.ok(decode(approvalHtml).includes(approvalArticle.headline), "OEM headline is visible");
+assert.ok(approvalHtml.includes("Fictional teaching example"), "Teaching record is explicitly fictional");
+assert.ok(approvalHtml.includes("no material grade or outdoor suitability is established"), "Real photographs retain their factual boundary");
+for (const question of approvalGraph.find(node => node["@type"] === "FAQPage").mainEntity) {
+  assert.ok(decode(approvalHtml).includes(question.name), "OEM FAQ question is visible");
+  assert.ok(decode(approvalHtml).includes(question.acceptedAnswer.text), "OEM FAQ answer matches visible content");
+}
+assert.equal(approvalArticle.datePublished, approvalArticle.dateModified, "New guide starts with one release timestamp");
+assert.ok(approvalHtml.includes(`<time datetime="${approvalArticle.datePublished}">`), "New release date is visible");
+const approvalDownload = "/downloads/sculpture-oem-review-register.csv";
+assert.ok(approvalHtml.includes(`href="${approvalDownload}" download=`), "Register is an ordinary downloadable file");
+const registerLines = fs.readFileSync(path.join(root, approvalDownload), "utf8").trimEnd().split(/\r?\n/);
+assert.equal(registerLines.length, 2, "Register contains only a header and one blank row");
+assert.equal(registerLines[0].split(",").length, 13, "Register exposes thirteen decision fields");
+assert.deepEqual(registerLines[1].split(","), Array(13).fill(""), "No fictional approvals or customer data are prefilled");
+for (const route of ["/insights/", "/insights/outdoor-sculpture-quotation-scope-checklist/"]) assert.ok(documents.get(route).includes(`href="${approvalRoute}"`), `Contextual inbound link: ${route}`);
+assert.ok(approvalHtml.includes('href="/commission/?route=custom-sculpture"'), "Guide reuses the original inquiry route");
+for (const image of approvalGraph.filter(node => node["@type"] === "ImageObject")) {
+  assert.ok(decode(approvalHtml).includes(image.caption), "Real media caption matches the guide schema");
+  assert.ok(approvalHtml.includes(image.contentUrl.replace(base, "")), "Schema image is visible");
+}
 // Reused explanatory artwork must not become workshop or engineering proof
 // when an independently maintained buyer guide reuses the same image.
 const costGuideRoute = "/insights/large-outdoor-sculpture-cost-guide/";
