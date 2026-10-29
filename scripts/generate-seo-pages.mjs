@@ -283,7 +283,7 @@ const preservedRoutes = [
   { url: `${site}/insights/large-hotel-atrium-sculpture-planning-guide/`, lastmod: "2026-09-30", priority: "0.91", imageKeys: ["hotelAtriumPlanningOverview", "hotelAtriumMultilevelReference", "hotelAtriumUpperLevelView", "hotelAtriumBaseClearance", "hotelAtriumCrossLevelSightline"] },
   { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
   { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-10-08", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
-  { url: `${site}/insights/`, lastmod: "2026-10-28", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
+  { url: `${site}/insights/`, lastmod: "2026-10-29", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
   { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-10-27", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
@@ -300,9 +300,13 @@ const preservedRoutes = [
   { url: `${site}/insights/middle-east-stainless-steel-landmark-sculpture/`, lastmod: today, priority: "0.88", imageKeys: ["middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "birdSculpture"] },
   { url: `${site}/insights/material-led-sculpture-review-2026/`, lastmod: today, priority: "0.8", imageKeys: ["designDevelopment", "materialSamples", "fabricationWorkshop"] },
   { url: `${site}/insights/how-to-commission-custom-outdoor-sculpture/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["conceptSketch", "materialSamples"] },
-  { url: `${site}/insights/316l-stainless-steel-vs-bronze-vs-stone/`, lastmod: "2026-07-01", priority: "0.78", imageKeys: ["materialSamples", "materialSwatchStrip"] },
+  { url: `${site}/insights/316l-stainless-steel-vs-bronze-vs-stone/`, lastmod: "2026-10-29", priority: "0.78", imageKeys: ["materialSamples", "materialSwatchStrip"] },
   { url: `${site}/insights/landscape-sculpture-quote-brief/`, lastmod: "2026-10-16", priority: "0.78", imageKeys: ["studioDesk", "structuralStudy"] },
   { url: `${site}/insights/custom-outdoor-abstract-sculpture-approval-checklist/`, lastmod: "2026-10-28", priority: "0.78", images: [
+    getApplicationMedia("hospitality").find(image => image.id === "goldAbstract"),
+    getApplicationMedia("retail").find(image => image.id === "warmAbstract"),
+  ] },
+  { url: `${site}/insights/brass-vs-bronze-sculpture-oem-quote/`, lastmod: "2026-10-29", priority: "0.78", images: [
     getApplicationMedia("hospitality").find(image => image.id === "goldAbstract"),
     getApplicationMedia("retail").find(image => image.id === "warmAbstract"),
   ] },

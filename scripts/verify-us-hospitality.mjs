@@ -22,8 +22,8 @@ import { workArticleContentB } from "../src/workArticleContentB.js";
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
-assert.equal(urls.length, 54, "Canonical inventory: existing 53 plus one distinct OEM approval guide");
-assert.equal(new Set(urls).size, 54, "No duplicate canonical sitemap URLs");
+assert.equal(urls.length, 55, "Canonical inventory: existing 54 plus one distinct material-and-finish guide");
+assert.equal(new Set(urls).size, 55, "No duplicate canonical sitemap URLs");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
 const documents = new Map();
@@ -86,6 +86,37 @@ for (const url of urls) {
 
 // A website, its homepage and a fabrication procedure are distinct entities.
 const schemaFor = route => JSON.parse(documents.get(route).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+const materialBriefRoute = "/insights/brass-vs-bronze-sculpture-oem-quote/";
+const materialBriefHtml = documents.get(materialBriefRoute);
+assert.ok(materialBriefHtml, "Material naming has a distinct procurement guide");
+const materialBriefGraph = schemaFor(materialBriefRoute);
+const materialBriefArticle = materialBriefGraph.find(node => [].concat(node["@type"]).includes("Article"));
+assert.ok(decode(materialBriefHtml).includes(materialBriefArticle.headline), "Material brief headline is visible");
+assert.equal(materialBriefArticle.datePublished, materialBriefArticle.dateModified, "New material brief uses one release timestamp");
+assert.ok(materialBriefHtml.includes(`<time datetime="${materialBriefArticle.datePublished}">`), "Material brief publication date is visible");
+assert.ok(decode(materialBriefHtml).includes("Fictional teaching example — not a WEIERYANG quotation"), "Demonstration is never presented as a real supplier quotation");
+for (const phrase of ["The substrate, alloy designation and surface process are not established", "The colour does not verify bronze"]) assert.ok(materialBriefHtml.includes(phrase), "Photographs do not imply an alloy");
+for (const question of materialBriefGraph.find(node => node["@type"] === "FAQPage").mainEntity) {
+  assert.ok(decode(materialBriefHtml).includes(question.name), "Material FAQ question is visible");
+  assert.ok(decode(materialBriefHtml).includes(question.acceptedAnswer.text), "Material FAQ answer matches visible content");
+}
+const materialDownload = "/downloads/sculpture-material-finish-brief.txt";
+const materialBlank = fs.readFileSync(path.join(root, materialDownload), "utf8");
+assert.ok(materialBriefHtml.includes(`href="${materialDownload}" download=`), "Material brief is a native download");
+const blankBlocks = materialBlank.split(/\r?\n\r?\n/).filter(block => block.includes("Supplier proposed with supporting record:"));
+assert.equal(blankBlocks.length, 8, "Material brief has eight blank request blocks");
+for (const block of blankBlocks) {
+  assert.match(block, /\nRequested: \nSupplier proposed with supporting record: \nConfirmed or open: Open$/, "Download contains no preselected material or supplier record");
+  assert.ok(decode(materialBriefHtml).includes(block.split("\n")[0]), "Every downloadable field is explained visibly");
+}
+assert.equal((materialBriefHtml.match(/class="brief-field"/g) || []).length, 8, "Visible material comparison covers the same eight fields");
+assert.ok(!/<form\b/i.test(materialBriefHtml), "Article introduces no parallel inquiry form");
+assert.ok(materialBriefHtml.includes('href="/commission/?route=custom-sculpture"'), "Material guide retains the established inquiry route");
+for (const route of ["/insights/", "/insights/316l-stainless-steel-vs-bronze-vs-stone/"]) assert.ok(documents.get(route).includes(`href="${materialBriefRoute}"`), `Material guide inbound path: ${route}`);
+for (const image of materialBriefGraph.filter(node => node["@type"] === "ImageObject")) {
+  assert.ok(decode(materialBriefHtml).includes(image.caption), "Material image caption matches its schema");
+  assert.ok(materialBriefHtml.includes(image.contentUrl.replace(base, "")), "Material image is visible");
+}
 const approvalRoute = "/insights/custom-outdoor-abstract-sculpture-approval-checklist/";
 const approvalHtml = documents.get(approvalRoute);
 assert.ok(approvalHtml, "One discoverable OEM approval guide exists");
