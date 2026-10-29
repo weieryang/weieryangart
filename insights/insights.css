@@ -240,7 +240,7 @@ body .wy-check li {
 .wy-top-inner{width:min(1180px,calc(100% - 48px));min-height:72px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .wy-brand{color:var(--ink-strong);font-size:14px;font-weight:900;letter-spacing:.2em;text-decoration:none}
 .wy-nav{display:flex;flex-wrap:wrap;gap:6px}
-.wy-nav a{min-height:38px;display:inline-flex;align-items:center;padding:0 12px;color:var(--muted);font-size:12px;font-weight:800;text-decoration:none}
+.wy-nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:var(--muted);font-size:12px;font-weight:800;text-decoration:none}
 .wy-breadcrumb{display:flex;gap:8px;align-items:center;margin:4px 0 22px;color:#827e76;font-size:12px}
 .wy-breadcrumb a{color:#b7b2a9;text-decoration:none}
 body .wy-article{padding:0;border:1px solid var(--line);background:rgb(17 17 15 / 80%)}
@@ -313,7 +313,7 @@ body .wy-note{margin-top:42px;border:1px solid #51372e;background:#17100d;paddin
 .wy-footer-inner{width:min(1180px,calc(100% - 48px));margin:0 auto;padding:42px 0;display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:28px}
 .wy-footer h2{margin:0;color:#f0ece3;font-size:18px}
 .wy-footer p,.wy-footer a{color:#918c83;font-size:13px;line-height:1.7}
-.wy-footer a{display:block;margin-top:7px;text-decoration:none}
+.wy-footer a{display:flex;align-items:center;min-height:44px;margin-top:3px;text-decoration:none}
 .wy-footer a:hover{color:#e9a088}
 .wy-language-label{padding:10px 8px;color:#aaa59c;font-size:11px}
 .wy-nav{flex-wrap:wrap}
