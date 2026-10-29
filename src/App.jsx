@@ -53,6 +53,7 @@ import { productInquiryCopy } from "./productInquiryCopy.js";
 import { customerRoleIds, fullFormVariant, inquiryIntakeCopy, projectFormJumpCopy } from "./inquiryIntake.js";
 import { WorkshopEvidence } from "./WorkshopEvidence.jsx";
 import { getWorkshopImage } from "./workshopEvidence.js";
+import { projectWhatsappHref } from "./projectContact.js";
 
 
 function assetUrl(asset) {
@@ -193,7 +194,7 @@ function ApplicationNavigation({ language, mobile = false, onNavigate }) {
   </details>;
 }
 
-function SiteHeader({ language, setLanguage, text }) {
+function SiteHeader({ language, setLanguage, text, route = "" }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuKeyboard, setMenuKeyboard] = useState(false);
   const menuRef = useRef(null);
@@ -274,7 +275,7 @@ function SiteHeader({ language, setLanguage, text }) {
         <a className="header-contact" href={`mailto:${businessContact.email}`}>
           {text.nav.contact}
         </a>
-        <a className="whatsapp-button" href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">
+        <a className="whatsapp-button" href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">
           <WhatsappLogo size={19} weight="fill" aria-hidden="true" />
           <span>WhatsApp</span>
         </a>
@@ -282,6 +283,10 @@ function SiteHeader({ language, setLanguage, text }) {
           {text.nav.brief}
         </a>
       </div>
+      <a className="mobile-header-brief" href="/commission/" aria-label={text.nav.brief} title={text.nav.brief}>
+        <FileArrowUp size={18} aria-hidden="true" />
+        <span>{({ en: "Brief", zh: "询价", ar: "طلب", fr: "Projet", es: "Proyecto", de: "Anfrage" })[language] || "Brief"}</span>
+      </a>
       <button ref={menuButtonRef} className="menu-button" type="button" onClick={event => { setMenuKeyboard(event.detail === 0); setMenuOpen(true); }} aria-expanded={menuOpen} aria-controls="mobile-menu">
         <List size={25} aria-hidden="true" />
         <span>{text.nav.menu}</span>
@@ -304,7 +309,7 @@ function SiteHeader({ language, setLanguage, text }) {
         <div className="mobile-menu-actions">
           <LanguageSelect language={language} setLanguage={setLanguage} />
           <a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a>
-          <a href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">WhatsApp</a>
+          <a href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">WhatsApp</a>
           <a className="brief-button" href="/commission/">{text.nav.brief}</a>
         </div>
       </div>
@@ -728,12 +733,12 @@ function HomePage({ text, language }) {
     <>
       <Hero text={text} language={language} />
       <AssuranceStrip items={text.assurance} />
+      <WorkshopEvidence language={language} compact />
       <HospitalityEntry language={language} />
       <HotelEngineeringCases language={language} />
       <ApplicationCards language={language} compact />
       <ProjectRoutes text={text} />
       <StudioMethod text={text} />
-      <WorkshopEvidence language={language} compact />
       <InsightsPreview text={text} language={language} />
       <QualificationBand text={text} />
     </>
@@ -1179,7 +1184,7 @@ function CommissionPage({ text, language }) {
   );
 }
 
-function SiteFooter({ text, language }) {
+function SiteFooter({ text, language, route = "" }) {
   const routeLinks = ["garden-sculpture", "resort-sculpture", "public-art", "custom-sculpture"];
   const materialLinks = ["bronze-sculpture", "stainless-steel-sculpture", "stone-sculpture", "materials"];
   return (
@@ -1193,7 +1198,7 @@ function SiteFooter({ text, language }) {
         <div><h3>{(applicationUi[language] || applicationUi.en).nav}</h3><a href="/sculptures/">{(applicationUi[language] || applicationUi.en).allApplications}</a>{getApplicationCategories(language).map(category => <a key={category.id} href={category.path}>{category.name}</a>)}<a href="/custom-sculpture/">{text.routeNames["custom-sculpture"]}</a></div>
         <div><h3>{text.footer.materials}</h3>{materialLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
         <div><h3>{text.footer.studio}</h3><a href="/custom-outdoor-sculpture-supplier/">Supplier route</a><a href="/process/">{text.nav.process}</a><a href="/projects/">{text.nav.projects}</a><a href="/faq/">{text.routeNames.faq}</a><a href="/insights/">Insights</a></div>
-        <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={whatsappHref("Hello WEIERYANG, I would like to discuss a sculpture project.")} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
+        <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
       </div>
       <div className="footer-base"><span>© {new Date().getFullYear()} {text.footer.rights}</span><a href="/privacy/" hrefLang="en">Privacy &amp; project information (EN)</a><span>{businessContact.email}</span></div>
     </footer>
@@ -1246,9 +1251,9 @@ export function App({ initialRoute }) {
 
   return (
     <main className="site-shell" id="top">
-      <SiteHeader language={language} setLanguage={setLanguage} text={text} />
+      <SiteHeader language={language} setLanguage={setLanguage} text={text} route={route} />
       {page}
-      <SiteFooter text={text} language={language} />
+      <SiteFooter text={text} language={language} route={route} />
     </main>
   );
 }

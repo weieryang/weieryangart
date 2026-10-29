@@ -10,12 +10,12 @@
   var open = false;
   var listeners = [];
   var copy = {
-    en: { title: "Advertising measurement is optional", body: "Allow Google Ads to measure visits and confirmed inquiries. Personalized ads stay off. Existing website analytics follows our privacy notice.", allow: "Allow measurement", reject: "Keep Ads off", later: "Later", settings: "Ads privacy settings", privacy: "Privacy notice", on: "Ads measurement is allowed.", off: "Ads measurement is off.", unsaved: "This choice could not be saved. It applies to this page only; you may be asked again on your next page." },
-    zh: { title: "广告效果测量由你选择", body: "可允许 Google Ads 测量访问与已确认提交的询盘。个性化广告保持关闭，原有网站分析按隐私说明继续使用。", allow: "允许效果测量", reject: "保持广告测量关闭", later: "稍后决定", settings: "广告隐私设置", privacy: "隐私说明", on: "已允许广告效果测量。", off: "广告效果测量已关闭。", unsaved: "此选择无法保存，仅在当前页面生效。进入下一页时可能需要重新选择。" },
-    ar: { title: "قياس الإعلانات اختياري", body: "اسمح لـ Google Ads بقياس الزيارات والاستفسارات المؤكدة. تبقى الإعلانات المخصصة معطلة. يستمر تحليل الموقع الحالي وفق إشعار الخصوصية.", allow: "السماح بالقياس", reject: "إبقاء القياس معطلاً", later: "لاحقاً", settings: "خصوصية الإعلانات", privacy: "إشعار الخصوصية", on: "قياس الإعلانات مسموح.", off: "قياس الإعلانات معطل.", unsaved: "تعذر حفظ هذا الاختيار. يسري على هذه الصفحة فقط، وقد يُطلب منك الاختيار مجدداً في الصفحة التالية." },
-    fr: { title: "La mesure publicitaire est facultative", body: "Autorisez Google Ads à mesurer les visites et les demandes confirmées. Les publicités personnalisées restent désactivées. L’analyse actuelle du site suit notre notice de confidentialité.", allow: "Autoriser la mesure", reject: "Garder la mesure désactivée", later: "Plus tard", settings: "Confidentialité publicitaire", privacy: "Notice de confidentialité", on: "La mesure publicitaire est autorisée.", off: "La mesure publicitaire est désactivée.", unsaved: "Ce choix n’a pas pu être enregistré. Il vaut uniquement pour cette page ; une nouvelle demande peut apparaître à la page suivante." },
-    es: { title: "La medición publicitaria es opcional", body: "Permita que Google Ads mida las visitas y las consultas confirmadas. Los anuncios personalizados siguen desactivados. La analítica actual del sitio sigue nuestro aviso de privacidad.", allow: "Permitir la medición", reject: "Mantener la medición desactivada", later: "Más tarde", settings: "Privacidad publicitaria", privacy: "Aviso de privacidad", on: "La medición publicitaria está permitida.", off: "La medición publicitaria está desactivada.", unsaved: "No se pudo guardar esta elección. Solo se aplica a esta página; puede que se le vuelva a preguntar en la siguiente." },
-    de: { title: "Werbemessung ist freiwillig", body: "Erlauben Sie Google Ads, Besuche und bestätigte Anfragen zu messen. Personalisierte Werbung bleibt aus. Die bestehende Websiteanalyse folgt unserem Datenschutzhinweis.", allow: "Messung erlauben", reject: "Werbemessung ausgeschaltet lassen", later: "Später", settings: "Werbe-Datenschutzeinstellungen", privacy: "Datenschutzhinweis", on: "Werbemessung ist erlaubt.", off: "Werbemessung ist ausgeschaltet.", unsaved: "Diese Auswahl konnte nicht gespeichert werden. Sie gilt nur für diese Seite; auf der nächsten Seite werden Sie möglicherweise erneut gefragt." }
+    en: { title: "Advertising measurement is optional", body: "Allow Google Ads to measure visits and confirmed inquiries. Personalized ads stay off. Existing website analytics follows our privacy notice.", allow: "Allow measurement", reject: "Keep Ads off", later: "Later", settings: "Ads privacy settings", settingsOff: "Ads measurement off · Settings", settingsOn: "Ads measurement on · Settings", privacy: "Privacy notice", on: "Ads measurement is allowed.", off: "Ads measurement is off.", unsaved: "This choice could not be saved. It applies to this page only; you may be asked again on your next page." },
+    zh: { title: "广告效果测量由你选择", body: "可允许 Google Ads 测量访问与已确认提交的询盘。个性化广告保持关闭，原有网站分析按隐私说明继续使用。", allow: "允许效果测量", reject: "保持广告测量关闭", later: "稍后决定", settings: "广告隐私设置", settingsOff: "广告测量关闭 · 设置", settingsOn: "广告测量开启 · 设置", privacy: "隐私说明", on: "已允许广告效果测量。", off: "广告效果测量已关闭。", unsaved: "此选择无法保存，仅在当前页面生效。进入下一页时可能需要重新选择。" },
+    ar: { title: "قياس الإعلانات اختياري", body: "اسمح لـ Google Ads بقياس الزيارات والاستفسارات المؤكدة. تبقى الإعلانات المخصصة معطلة. يستمر تحليل الموقع الحالي وفق إشعار الخصوصية.", allow: "السماح بالقياس", reject: "إبقاء القياس معطلاً", later: "لاحقاً", settings: "خصوصية الإعلانات", settingsOff: "قياس الإعلانات معطل · الإعدادات", settingsOn: "قياس الإعلانات مفعل · الإعدادات", privacy: "إشعار الخصوصية", on: "قياس الإعلانات مسموح.", off: "قياس الإعلانات معطل.", unsaved: "تعذر حفظ هذا الاختيار. يسري على هذه الصفحة فقط، وقد يُطلب منك الاختيار مجدداً في الصفحة التالية." },
+    fr: { title: "La mesure publicitaire est facultative", body: "Autorisez Google Ads à mesurer les visites et les demandes confirmées. Les publicités personnalisées restent désactivées. L’analyse actuelle du site suit notre notice de confidentialité.", allow: "Autoriser la mesure", reject: "Garder la mesure désactivée", later: "Plus tard", settings: "Confidentialité publicitaire", settingsOff: "Mesure publicitaire désactivée · Réglages", settingsOn: "Mesure publicitaire activée · Réglages", privacy: "Notice de confidentialité", on: "La mesure publicitaire est autorisée.", off: "La mesure publicitaire est désactivée.", unsaved: "Ce choix n’a pas pu être enregistré. Il vaut uniquement pour cette page ; une nouvelle demande peut apparaître à la page suivante." },
+    es: { title: "La medición publicitaria es opcional", body: "Permita que Google Ads mida las visitas y las consultas confirmadas. Los anuncios personalizados siguen desactivados. La analítica actual del sitio sigue nuestro aviso de privacidad.", allow: "Permitir la medición", reject: "Mantener la medición desactivada", later: "Más tarde", settings: "Privacidad publicitaria", settingsOff: "Medición publicitaria desactivada · Ajustes", settingsOn: "Medición publicitaria activada · Ajustes", privacy: "Aviso de privacidad", on: "La medición publicitaria está permitida.", off: "La medición publicitaria está desactivada.", unsaved: "No se pudo guardar esta elección. Solo se aplica a esta página; puede que se le vuelva a preguntar en la siguiente." },
+    de: { title: "Werbemessung ist freiwillig", body: "Erlauben Sie Google Ads, Besuche und bestätigte Anfragen zu messen. Personalisierte Werbung bleibt aus. Die bestehende Websiteanalyse folgt unserem Datenschutzhinweis.", allow: "Messung erlauben", reject: "Werbemessung ausgeschaltet lassen", later: "Später", settings: "Werbe-Datenschutzeinstellungen", settingsOff: "Werbemessung aus · Einstellungen", settingsOn: "Werbemessung an · Einstellungen", privacy: "Datenschutzhinweis", on: "Werbemessung ist erlaubt.", off: "Werbemessung ist ausgeschaltet.", unsaved: "Diese Auswahl konnte nicht gespeichert werden. Sie gilt nur für diese Seite; auf der nächsten Seite werden Sie möglicherweise erneut gefragt." }
   };
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
@@ -51,11 +51,6 @@
     return Object.prototype.hasOwnProperty.call(copy, lang) ? lang : "en";
   }
   function labels() { return copy[language()]; }
-  function spacing() {
-    if (!document.body || !settings) return;
-    var height = open && panel ? panel.getBoundingClientRect().height : settings.getBoundingClientRect().height;
-    document.body.style.setProperty("--wy-ads-consent-space", Math.ceil(height) + 32 + "px");
-  }
   function setOpen(next, restoreFocus) {
     open = next === true;
     if (panel) panel.hidden = !open;
@@ -64,7 +59,6 @@
       settings.setAttribute("aria-expanded", String(open));
       if (restoreFocus && !open) settings.focus();
     }
-    spacing();
   }
   function render() {
     if (!panel || !settings) return;
@@ -82,8 +76,7 @@
     var status = panel.querySelector("[data-wy-ads-status]");
     status.textContent = choice === null ? "" : (choice ? text.on : text.off) + (!saved ? " " + text.unsaved : "");
     status.hidden = !status.textContent;
-    settings.textContent = text.settings;
-    spacing();
+    settings.textContent = choice === true ? text.settingsOn : text.settingsOff;
   }
   function choose(allowed) {
     if (allowed !== true && allowed !== false) return snapshot();
@@ -119,9 +112,10 @@
     panel.querySelector("[data-wy-ads-later]").addEventListener("click", function () { setOpen(false, true); });
     document.body.appendChild(panel);
     document.body.appendChild(settings);
-    document.body.classList.add("wy-ads-consent-present");
     render();
-    setOpen(choice === null);
+    // Unknown consent remains denied. The full optional panel opens only when
+    // requested, so it cannot automatically cover a buyer's project entry.
+    setOpen(false);
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && open) setOpen(false, true);
     });
@@ -130,8 +124,6 @@
       if (open && event.target && event.target.closest && event.target.closest("form")) setOpen(false);
     });
     if (typeof MutationObserver !== "undefined") new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["lang", "dir"] });
-    if (typeof ResizeObserver !== "undefined") new ResizeObserver(spacing).observe(panel);
-    window.addEventListener("resize", spacing);
   }
   window.wyAdsConsent = Object.freeze({
     getState: snapshot,

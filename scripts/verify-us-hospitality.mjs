@@ -18,12 +18,14 @@ import { safeInterestRoute } from "../src/attribution.js";
 import { getWorkArticles, workArticleRoutes, workArticleUi, getWorkArticleForImage } from "../src/workArticleData.js";
 import { workArticleContentA } from "../src/workArticleContentA.js";
 import { workArticleContentB } from "../src/workArticleContentB.js";
+import { projectContactPaths } from "../src/projectContact.js";
 
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
 assert.equal(urls.length, 55, "Canonical inventory: existing 54 plus one distinct material-and-finish guide");
 assert.equal(new Set(urls).size, 55, "No duplicate canonical sitemap URLs");
+assert.deepEqual([...projectContactPaths].sort(), urls.map(url => new URL(url).pathname).sort(), "General contact context only uses the current public inventory");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
 const documents = new Map();
@@ -34,6 +36,13 @@ for (const url of urls) {
   assert.ok(fs.existsSync(file), `Missing page: ${route}`);
   const html = fs.readFileSync(file, "utf8");
   documents.set(route, html);
+  const generalContacts = [...html.matchAll(/href="(https:\/\/wa\.me\/8613317178019[^"]*)"/g)];
+  assert.ok(generalContacts.length, `Static page has an optional WhatsApp contact: ${route}`);
+  for (const match of generalContacts) {
+    const target = new URL(decode(match[1]));
+    assert.ok(target.searchParams.get("text")?.includes(url), `General contact carries this public canonical page: ${route}`);
+    assert.deepEqual([...target.searchParams.keys()], ["text"], "Contact link does not carry advertising or buyer URL queries");
+  }
   assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, `H1 count: ${route}`);
   assert.match(html, /<title>[^<]+<\/title>/, `Title: ${route}`);
   assert.match(html, /<meta name="description" content="[^"]+"/, `Description: ${route}`);
@@ -86,6 +95,8 @@ for (const url of urls) {
 
 // A website, its homepage and a fabrication procedure are distinct entities.
 const schemaFor = route => JSON.parse(documents.get(route).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+const homepageProof = documents.get("/");
+assert.ok(homepageProof.indexOf('id="workshop-preview"') < homepageProof.indexOf('id="cases"'), "Static home leads with actual fabrication before commercial references");
 const materialBriefRoute = "/insights/brass-vs-bronze-sculpture-oem-quote/";
 const materialBriefHtml = documents.get(materialBriefRoute);
 assert.ok(materialBriefHtml, "Material naming has a distinct procurement guide");
@@ -602,6 +613,12 @@ try {
   const { App, SecondaryPage } = await server.ssrLoadModule("/src/App.jsx");
   for (const route of ["", "commission", ...Object.keys(routeSeoContent), ...sculptureRoutes, ...applicationCategories.filter(category => category.id !== "hospitality").map(category => category.path.slice(1,-1)), ...workArticleRoutes]) {
     const html = renderToStaticMarkup(React.createElement(App, { initialRoute: route }));
+    const expectedPublicContact = `${base}/${route ? route + "/" : ""}`;
+    const generalContacts = [...html.matchAll(/href="(https:\/\/wa\.me\/8613317178019[^"]*)"/g)]
+      .map(match => new URL(decode(match[1])).searchParams.get("text") || "");
+    assert.equal(generalContacts.filter(message => message.endsWith(expectedPublicContact)).length, 3, `Header, mobile menu and footer use the public route: ${route}`);
+    assert.ok(html.includes('class="mobile-header-brief"') && html.includes('aria-label="Start a Private Brief"'), "Sticky mobile header keeps a labelled project entry");
+    if (!route) assert.ok(html.indexOf('id="workshop-preview"') < html.indexOf('id="cases"'), "Visible home leads with the same actual production evidence as static HTML");
     if (["public-art", "stainless-steel-sculpture"].includes(route)) {
       for (const file of ["structural-engineering.webp", "material-samples-dark.webp"]) assert.ok(html.includes(file), `Schema media must remain in the React page: ${route}/${file}`);
     }

@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
+import { projectWhatsappHref } from "../src/projectContact.js";
 
 const root = path.resolve("dist");
 import { staticHeader as header, staticFooter as footer } from "./static-frame.mjs";
@@ -27,7 +28,7 @@ async function responsiveAttributes(src) {
   return attributes;
 }
 
-let pages = 0, images = 0;
+let pages = 0, images = 0, contactLinks = 0;
 for (const file of await htmlFiles(root)) {
   let html = await fs.readFile(file, "utf8");
   if (html.includes('class="wy-top"')) {
@@ -37,6 +38,16 @@ for (const file of await htmlFiles(root)) {
       : html.replace("</body>", `${footer}\n</body>`);
     pages++;
   }
+  // General contact drafts carry only registered public page information.
+  // Existing follow-up links with their own text are intentionally preserved.
+  const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
+  const title = (html.match(/<title>([^<]+)<\/title>/i)?.[1] || "")
+    .replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#39;", "'");
+  const contact = projectWhatsappHref(canonical || "/", title);
+  html = html.replace(/href=("|')https:\/\/wa\.me\/8613317178019\1/g, () => {
+    contactLinks++;
+    return `href="${contact}"`;
+  });
   // Only first-party WebP images, preserving every original and its framing.
   for (const match of [...html.matchAll(/<img\b[^>]*\bsrc="((?:(?:\.\.?\/)+|\/)seo-media\/[a-z0-9-]+\.webp)"[^>]*>/gi)]) {
     if (/\bsrcset=/.test(match[0])) continue;
@@ -52,4 +63,4 @@ for (const file of await htmlFiles(root)) {
   }
   await fs.writeFile(file, html);
 }
-console.log(`Shared navigation/footer on ${pages} static pages; responsive WebP attributes on ${images} images (${variants.size} unique sources).`);
+console.log(`Shared navigation/footer on ${pages} static pages; responsive WebP attributes on ${images} images (${variants.size} unique sources); public context on ${contactLinks} general WhatsApp links.`);

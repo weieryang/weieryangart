@@ -575,6 +575,7 @@ const schemaIdentityGuideSlugs = new Set([
 for (const page of pages) {
   if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
 }
+for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const article of preservedRoutes) {
   if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
 }
@@ -900,8 +901,8 @@ function fallback(page) {
       ${page.slug === "commission" ? `<p>${esc(studioIdentity.en.body)}</p>` : ""}
       <p>${esc(page.intro)}</p>
       ${hotelPlanning}
-      ${evidence}
       ${page.slug === "" ? workshopGalleryHtml({ compact: true }) : ""}
+      ${evidence}
       ${sections}
       ${projectGuide}
       ${stainlessGradeGuide}
@@ -969,6 +970,9 @@ function fallbackCss() {
 
       .seo-static-frame .wy-nav a,
       .seo-static-frame .wy-footer a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
         color: #e39a7e;
         line-height: 1.7;
       }
@@ -986,7 +990,7 @@ function fallbackCss() {
 
       .seo-static-frame .wy-footer h2 { font-size: 18px; }
       .seo-static-frame .wy-footer p { color: #b7b3aa; line-height: 1.7; }
-      .seo-static-frame .wy-footer a { display: block; }
+      .seo-static-frame .wy-footer a { display: flex; }
 
       .seo-planning-table { overflow-x: auto; }
       .seo-planning-table table { width: 100%; min-width: 640px; border-collapse: collapse; }
@@ -1146,7 +1150,7 @@ const sitemapEntries = [
     priority: priorityFor(page),
   })),
   ...preservedRoutes,
-  { url: `${site}/privacy/`, lastmod: "2026-10-14", priority: "0.2" },
+  { url: `${site}/privacy/`, lastmod: "2026-10-29", priority: "0.2" },
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
