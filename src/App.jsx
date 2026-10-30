@@ -54,6 +54,7 @@ import { customerRoleIds, fullFormVariant, inquiryIntakeCopy, projectFormJumpCop
 import { WorkshopEvidence } from "./WorkshopEvidence.jsx";
 import { getWorkshopImage } from "./workshopEvidence.js";
 import { projectWhatsappHref } from "./projectContact.js";
+import { syncStructuredDataVisibility } from "./structuredDataVisibility.js";
 
 
 function assetUrl(asset) {
@@ -1222,6 +1223,11 @@ export function App({ initialRoute }) {
     document.documentElement.dir = option.dir;
     document.body.dataset.language = language;
   }, [language, option.dir, option.htmlLang]);
+
+  useEffect(() => {
+    const schemaState = syncStructuredDataVisibility(document, route, language);
+    return schemaState.restore;
+  }, [route, language]);
 
   useEffect(() => {
     if (!window.location.hash) return undefined;

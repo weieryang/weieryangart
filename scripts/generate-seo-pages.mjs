@@ -580,6 +580,25 @@ for (const article of preservedRoutes) {
   if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
 }
 
+// This guide separates supplied references, illustrations and public-site construction.
+// Keep its image discovery metadata aligned without changing shared image descriptions.
+const entranceIdentityGuide = preservedRoutes.find(article => article.url.endsWith("/resort-entrance-sculpture-scale-guide/"));
+entranceIdentityGuide.lastmod = "2026-10-29";
+entranceIdentityGuide.images = entranceIdentityGuide.imageKeys.map(key => {
+  const image = evidenceImages[key];
+  if (key === "middleEastLandmarkInstallation") return {
+    ...image,
+    alt: "Verified Middle East public-site flying-bird landmark during crane-assisted construction",
+    caption: "Verified construction-phase record from a Middle East public-site landmark: crane access, alignment and site coordination. It is not a completed resort commission.",
+  };
+  if (key === "installedProject") return {
+    ...image,
+    alt: "Illustrative outdoor sculpture placement study showing landscape framing and viewing distance",
+    caption: "Illustrative placement study for reviewing landscape framing and viewing distance. It is not a verified completed project.",
+  };
+  return image;
+});
+
 function esc(value) {
   return String(value)
     .replaceAll("&", "&amp;")
