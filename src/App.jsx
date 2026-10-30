@@ -52,6 +52,7 @@ import { productInquiryContext, productInquiryDraftKey, productInquiryDraft, pro
 import { productInquiryCopy } from "./productInquiryCopy.js";
 import { customerRoleIds, fullFormVariant, inquiryIntakeCopy, projectFormJumpCopy } from "./inquiryIntake.js";
 import { WorkshopEvidence } from "./WorkshopEvidence.jsx";
+import { FabricationEvidence } from "./FabricationEvidence.jsx";
 import { getWorkshopImage } from "./workshopEvidence.js";
 import { projectWhatsappHref } from "./projectContact.js";
 import { syncStructuredDataVisibility } from "./structuredDataVisibility.js";
@@ -773,6 +774,7 @@ export function SecondaryPage({ route, text, language }) {
           <figcaption>{media?.caption || (route === "projects" ? text.cases.verified : text.secondary.imageLabel)}</figcaption>
         </figure>
       </section>
+      {route === "process" ? <FabricationEvidence language={language} /> : null}
       {["process", "custom-sculpture"].includes(route) ? <WorkshopEvidence language={language} /> : null}
       {route === "resort-sculpture" ? <ApplicationEvidence id="hospitality" language={language} /> : null}
       {route === "resort-sculpture" && language === "en" ? <HospitalityPlanning /> : null}

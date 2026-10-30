@@ -1,0 +1,72 @@
+WEIERYANG — Sculpture fabrication & packing photo request
+Source: https://weieryangart.com/process/#oem-fabrication-records
+
+BLANK BUYER REQUEST
+Use this shot list to request photographs and supporting records against a defined object, drawing revision and project-specific question. Select only applicable stages. Leave unknown items blank and agree them with the project team.
+This is not a drawing approval, inspection certificate, acceptance record, supplier quotation or record of completed work. Downloading does not submit an inquiry.
+
+PROJECT REFERENCES
+Project / artwork reference: 
+Current drawing / revision: 
+Units for measurement views: 
+Requested file format / identification method: 
+Project contact / role: 
+
+1. OVERALL FORM AND IDENTIFICATION
+Choose overall and detail views that identify the work or component. Specify which object label or drawing reference should accompany the image.
+Include in this request: 
+Artwork / component and drawing revision: 
+Required views / record method: 
+Project team's criterion or question: 
+Received-file / record reference: 
+Supporting document requested / reference: 
+Reviewer / date: 
+Unresolved item / next question: 
+
+2. SURFACE OR SAMPLE COMPARISON
+Choose representative surface areas, the sample or reference to compare, and the lighting context to record. State whether a physical sample or separate finish document is also required.
+Include in this request: 
+Artwork / component and drawing revision: 
+Required views / record method: 
+Project team's criterion or question: 
+Received-file / record reference: 
+Supporting document requested / reference: 
+Reviewer / date: 
+Unresolved item / next question: 
+
+3. DIMENSIONS OR TRIAL FIT
+Choose the dimension locations or assembly interfaces to record, any scale reference and units, and the supporting measurement or trial-fit record. A photograph is not itself a measurement report.
+Include in this request: 
+Artwork / component and drawing revision: 
+Required views / record method: 
+Project team's criterion or question: 
+Received-file / record reference: 
+Supporting document requested / reference: 
+Reviewer / date: 
+Unresolved item / next question: 
+
+4. CONDITION, PROTECTION AND PACKING
+Choose condition views before covering, protection and packing arrangement views before closing, and the closed package and identifier views relevant to your scope. Agree packing methods and handling documents separately.
+Include in this request: 
+Artwork / component and drawing revision: 
+Required views / record method: 
+Project team's criterion or question: 
+Received-file / record reference: 
+Supporting document requested / reference: 
+Reviewer / date: 
+Unresolved item / next question: 
+
+5. ARRIVAL CONDITION
+If included in your agreed scope, choose package and work-condition views at receipt, identification and unresolved-condition records. Agree the receiving process separately.
+Include in this request: 
+Artwork / component and drawing revision: 
+Required views / record method: 
+Project team's criterion or question: 
+Received-file / record reference: 
+Supporting document requested / reference: 
+Reviewer / date: 
+Unresolved item / next question: 
+
+USING THIS REQUEST
+Copy relevant items into your project brief, or save them as a PDF using your editor for the existing attachment form. The website form does not accept TXT files. Nothing is sent automatically.
+Photographs alone do not confirm alloy grade, concealed structure or acceptance. Agree supporting documents and reviewers separately.

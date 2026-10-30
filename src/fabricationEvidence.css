@@ -1,0 +1,47 @@
+.fabrication-evidence {
+  padding-block: 64px;
+  border-block-start: 1px solid var(--line, #34332d);
+  color: var(--text, #f0eee8);
+  scroll-margin-block-start: calc(var(--header-height, 78px) + 24px);
+}
+.fabrication-evidence-heading { max-width: 900px; margin-block-end: 38px; }
+.fabrication-evidence-eyebrow { color: #c39c7c; font-size: 11px; letter-spacing: .12em; line-height: 1.6; }
+.fabrication-evidence h2 { margin-block: 12px 20px; font-family: var(--font-display, sans-serif); font-size: clamp(32px, 4vw, 54px); font-weight: 500; line-height: 1.08; overflow-wrap: anywhere; }
+.fabrication-evidence p { color: var(--text-soft, #b7b3aa); font-size: 15px; line-height: 1.75; }
+.fabrication-evidence-records > h3, .fabrication-evidence-download h3 { margin: 0 0 18px; font-size: 22px; font-weight: 500; line-height: 1.35; }
+.fabrication-evidence-record { border-block-start: 1px solid var(--line, #34332d); padding-block: 22px 24px; }
+.fabrication-evidence-record > header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-block-end: 14px; }
+.fabrication-evidence-record h4 { margin: 0; font-size: 18px; font-weight: 500; line-height: 1.4; }
+.fabrication-evidence-record-link { display: inline-flex; align-items: center; flex-shrink: 0; min-height: 44px; color: #d9b394; font-size: 13px; line-height: 1.5; }
+.fabrication-evidence-record dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin: 0; }
+.fabrication-evidence-record dl > div { min-width: 0; }
+.fabrication-evidence-record dt { margin-block-end: 8px; color: #d9b394; font-size: 12px; font-weight: 600; line-height: 1.5; }
+.fabrication-evidence-record dd { margin: 0; color: var(--text-soft, #b7b3aa); font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+.fabrication-evidence-boundary { margin-block: 0 28px; padding-block-start: 18px; border-block-start: 1px solid var(--line, #34332d); }
+.fabrication-evidence-download { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 30px; padding: 26px; border: 1px solid var(--line, #34332d); background: var(--bg-soft, #11110f); }
+.fabrication-evidence-download p { margin-block: 12px 0; font-size: 14px; }
+.fabrication-evidence-download .fabrication-evidence-handoff { color: var(--text, #f0eee8); }
+.fabrication-evidence-download-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 48px; padding: 14px 18px; background: #a0452a; color: #fff; font-size: 14px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.fabrication-evidence-download .fabrication-evidence-download-note { color: var(--text-soft, #b7b3aa); font-size: 12px; line-height: 1.65; }
+.fabrication-evidence-related { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-block-start: 18px; }
+.fabrication-evidence-related a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: #d9b394; font-size: 14px; line-height: 1.5; }
+.fabrication-evidence a:hover { color: #fff; }
+.fabrication-evidence-download-link:hover { background: #b04b2c; }
+.fabrication-evidence a:focus-visible { outline: 2px solid #e6b98b; outline-offset: 4px; }
+.fabrication-evidence[dir="rtl"] .fabrication-evidence-eyebrow { letter-spacing: 0; }
+.fabrication-evidence[dir="rtl"] h2 { font-family: inherit; line-height: 1.4; font-size: clamp(28px, 3.5vw, 44px); }
+.fabrication-evidence[dir="rtl"] h3, .fabrication-evidence[dir="rtl"] h4 { line-height: 1.6; }
+@media (max-width: 700px) {
+  .fabrication-evidence { padding-block: 44px; }
+  .fabrication-evidence-heading { margin-block-end: 28px; }
+  .fabrication-evidence-record > header { align-items: flex-start; }
+  .fabrication-evidence-record dl { grid-template-columns: 1fr; gap: 16px; }
+  .fabrication-evidence-record dt { margin-block-end: 4px; }
+  .fabrication-evidence-record dd { font-size: 15px; }
+  .fabrication-evidence-download { grid-template-columns: 1fr; gap: 22px; padding: 20px; }
+  .fabrication-evidence-record-link { flex-shrink: 1; text-align: end; }
+}
+@media (max-width: 380px) {
+  .fabrication-evidence-record > header { display: block; }
+  .fabrication-evidence-record-link { margin-block-start: 4px; text-align: start; }
+}

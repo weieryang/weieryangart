@@ -11,6 +11,7 @@ import { applicationCategories, applicationUi } from "../src/applicationContent.
 import { getApplicationMedia } from "../src/applicationMedia.js";
 import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, applicationFallback, applicationItemList } from "./application-seo.mjs";
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
+import { fabricationEvidenceHtml } from "../src/fabricationEvidence.js";
 import { workArticleSeoPages, workArticleFallback, workArticleSchema } from "./work-article-seo.mjs";
 
 const site = "https://weieryangart.com";
@@ -293,7 +294,7 @@ const preservedRoutes = [
   { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-10-28", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
-  { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: "2026-10-13", priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
+  { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: "2026-10-30", priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
   { url: `${site}/insights/water-feature-sculpture-material-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["birdSculpture", "materialSamples", "materialSwatchStrip", "structuralStudy", "studioDesk"] },
   { url: `${site}/insights/overseas-sculpture-installation-checklist/`, lastmod: today, priority: "0.86", imageKeys: ["largeStructuralAssembly", "studioDesk", "materialSamples", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/hotel-arrival-sculpture-site-brief/`, lastmod: "2026-10-08", priority: "0.86", imageKeys: ["hotelArrivalSiteContext", "hotelArrivalPedestrianFlow", "middleEastLandmarkInstallation", "materialSamples", "stainlessWingSlatInstallation"] },
@@ -576,6 +577,7 @@ for (const page of pages) {
   if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
 }
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
+for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
 for (const article of preservedRoutes) {
   if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
 }
@@ -921,7 +923,7 @@ function fallback(page) {
       <p>${esc(page.intro)}</p>
       ${hotelPlanning}
       ${page.slug === "" ? workshopGalleryHtml({ compact: true }) : ""}
-      ${evidence}
+      ${page.slug === "process" ? fabricationEvidenceHtml(esc) + "\n      " : ""}${evidence}
       ${sections}
       ${projectGuide}
       ${stainlessGradeGuide}
