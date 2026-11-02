@@ -149,25 +149,279 @@ export const workshopEvidenceCopy = {
   },
 };
 
-export const workshopEvidenceImages = imageGeometry.map((image, index) => ({
-  ...image, src: `/seo-media/${image.file}`, ...workshopEvidenceCopy.en.images[index],
+// The operator identified these photographs as their factory records on 2026-11-02.
+// They document the visible workshop and work in progress; no area, capacity,
+// equipment specification, material grade, inspection result or completion is inferred.
+const factoryImageGeometry = [
+  {
+    "id": "factoryOverview",
+    "file": "factory-workshop-overview.webp",
+    "width": 1600,
+    "height": 1200
+  },
+  {
+    "id": "sheetMetalWorkstation",
+    "file": "factory-sheet-metal-workstation.webp",
+    "width": 1600,
+    "height": 1200
+  },
+  {
+    "id": "curvedComponents",
+    "file": "factory-curved-metal-components.webp",
+    "width": 1600,
+    "height": 1200
+  },
+  {
+    "id": "reflectiveForm",
+    "file": "factory-reflective-form-detail.webp",
+    "width": 1600,
+    "height": 900
+  }
+];
+const factoryGroupImageIds = [["factoryOverview", "sheetMetalWorkstation"], ["curvedComponents", "reflectiveForm"]];
+const factoryGroupIds = ["factory-workshop", "factory-metalwork"];
+const allImageGeometry = [...imageGeometry, ...factoryImageGeometry];
+const factoryEvidenceCopy = {
+  "en": {
+    "title": "Inside the workshop: space, metalwork and sculptural detail.",
+    "body": "These photographs show the WEIERYANG workshop, sheet-metal workstations, curved components and a reflective form in progress. The fabrication records below continue with sculptural assembly and painted detail.",
+    "compactTitle": "A closer look inside our workshop.",
+    "compactBody": "View the workshop, curved metal components and a reflective form in progress. Bring your drawings, finish direction and project scope into the discussion.",
+    "compactAction": "Explore the workshop and fabrication records",
+    "groups": [
+      {
+        "title": "Inside the workshop.",
+        "body": "The overall view and sheet-metal workstation photograph show the workshop layout, material handling and work surfaces."
+      },
+      {
+        "title": "Curved components and reflective form.",
+        "body": "Compare the rows of curved components with the reflective abstract form to discuss shape, openings and visible surface transitions for a new commission."
+      }
+    ],
+    "images": [
+      {
+        "alt": "Overview of the WEIERYANG workshop with worktables, sheet metal and equipment",
+        "caption": "WEIERYANG workshop record: worktables, sheet metal and equipment along the workshop aisle."
+      },
+      {
+        "alt": "Sheet-metal workstations and a worker handling a metal sheet in the WEIERYANG workshop",
+        "caption": "WEIERYANG workshop record: sheet-metal workstations and material handling."
+      },
+      {
+        "alt": "Rows of curved metal components on worktables in the WEIERYANG workshop",
+        "caption": "WEIERYANG fabrication record: curved metal components arranged on worktables."
+      },
+      {
+        "alt": "Reflective abstract form with curved openings during WEIERYANG fabrication",
+        "caption": "WEIERYANG fabrication record: reflective surfaces and openings on an abstract form in progress."
+      }
+    ]
+  },
+  "zh": {
+    "title": "走进车间，看加工与造型细节。",
+    "body": "这些照片展示威尔阳车间、板材加工工位、弧形构件与制作中的反光造型。下方既有制作记录继续呈现雕塑组装和涂饰细节。",
+    "compactTitle": "走进我们的制作车间。",
+    "compactBody": "从车间环境，看到弧形金属构件与制作中的反光造型。结合您的图纸、饰面方向和项目范围展开讨论。",
+    "compactAction": "查看车间与制作记录",
+    "groups": [
+      {
+        "title": "车间内部的工作场景。",
+        "body": "车间全景与板材工位照片展示工作区布局、材料搬放和操作台面。"
+      },
+      {
+        "title": "弧形构件与反光造型。",
+        "body": "对照成排弧形构件与反光抽象造型，讨论新项目的形体、孔洞和可见表面过渡。"
+      }
+    ],
+    "images": [
+      {
+        "alt": "威尔阳车间全景，可见操作台、金属板材与设备",
+        "caption": "威尔阳车间记录：通道两侧的操作台、金属板材与设备。"
+      },
+      {
+        "alt": "威尔阳车间的板材加工工位，工作人员正在搬放金属板材",
+        "caption": "威尔阳车间记录：板材加工工位与材料搬放。"
+      },
+      {
+        "alt": "威尔阳车间操作台上成排放置的弧形金属构件",
+        "caption": "威尔阳实际制作记录：操作台上排列的弧形金属构件。"
+      },
+      {
+        "alt": "威尔阳制作中的反光抽象造型，可见弧形孔洞与曲面",
+        "caption": "威尔阳实际制作记录：制作中抽象造型的反光曲面与孔洞。"
+      }
+    ]
+  },
+  "ar": {
+    "title": "داخل الورشة: مساحة العمل والمكونات المعدنية وتفاصيل النحت.",
+    "body": "تُظهر هذه الصور ورشة WEIERYANG ومحطات العمل على الصفائح المعدنية ومكونات منحنية وشكلاً عاكساً قيد التصنيع. وتستكمل سجلات التصنيع أدناه عرض التجميع النحتي وتفاصيل الطلاء.",
+    "compactTitle": "نظرة أقرب داخل ورشتنا.",
+    "compactBody": "شاهد الورشة والمكونات المعدنية المنحنية وشكلاً عاكساً قيد التصنيع. ناقش رسوماتك واتجاه التشطيب ونطاق مشروعك بالاستناد إلى هذه السجلات.",
+    "compactAction": "استكشف الورشة وسجلات التصنيع",
+    "groups": [
+      {
+        "title": "داخل الورشة.",
+        "body": "تُظهر الصورة العامة وصورة محطات الصفائح المعدنية توزيع مساحة العمل ومناولة المواد وأسطح العمل."
+      },
+      {
+        "title": "مكونات منحنية وشكل عاكس.",
+        "body": "قارن صفوف المكونات المنحنية بالشكل التجريدي العاكس لمناقشة الشكل والفتحات وانتقالات السطح الظاهرة لمشروع جديد."
+      }
+    ],
+    "images": [
+      {
+        "alt": "منظر عام لورشة WEIERYANG مع طاولات عمل وصفائح معدنية ومعدات",
+        "caption": "سجل ورشة WEIERYANG: طاولات العمل والصفائح المعدنية والمعدات على جانبي ممر الورشة."
+      },
+      {
+        "alt": "محطات عمل للصفائح المعدنية وعامل يناول صفيحة معدنية في ورشة WEIERYANG",
+        "caption": "سجل ورشة WEIERYANG: محطات عمل الصفائح المعدنية ومناولة المواد."
+      },
+      {
+        "alt": "صفوف من المكونات المعدنية المنحنية على طاولات العمل في ورشة WEIERYANG",
+        "caption": "سجل تصنيع WEIERYANG: مكونات معدنية منحنية مرتبة على طاولات العمل."
+      },
+      {
+        "alt": "شكل تجريدي عاكس ذو فتحات منحنية أثناء تصنيع WEIERYANG",
+        "caption": "سجل تصنيع WEIERYANG: أسطح عاكسة وفتحات في شكل تجريدي قيد التصنيع."
+      }
+    ]
+  },
+  "fr": {
+    "title": "Dans l’atelier : espace de travail, métal et détails sculptés.",
+    "body": "Ces photographies montrent l’atelier WEIERYANG, les postes de travail de la tôle, des éléments courbes et une forme réfléchissante en cours de fabrication. Les dossiers ci-dessous présentent ensuite l’assemblage sculptural et les détails peints.",
+    "compactTitle": "Un regard au cœur de notre atelier.",
+    "compactBody": "Découvrez l’atelier, des éléments métalliques courbes et une forme réfléchissante en cours de fabrication. Appuyez-vous sur ces images pour discuter de vos plans, de la finition et du périmètre de votre projet.",
+    "compactAction": "Voir l’atelier et les dossiers de fabrication",
+    "groups": [
+      {
+        "title": "À l’intérieur de l’atelier.",
+        "body": "La vue d’ensemble et la photographie des postes de travail de la tôle montrent l’organisation de l’atelier, la manutention et les surfaces de travail."
+      },
+      {
+        "title": "Éléments courbes et forme réfléchissante.",
+        "body": "Comparez les rangées d’éléments courbes à la forme abstraite réfléchissante pour discuter du volume, des ouvertures et des transitions de surface visibles pour une nouvelle commande."
+      }
+    ],
+    "images": [
+      {
+        "alt": "Vue d’ensemble de l’atelier WEIERYANG avec tables de travail, tôles et équipements",
+        "caption": "Atelier WEIERYANG documenté : tables de travail, tôles et équipements le long de l’allée."
+      },
+      {
+        "alt": "Postes de travail de la tôle et opérateur manipulant une tôle dans l’atelier WEIERYANG",
+        "caption": "Atelier WEIERYANG documenté : postes de travail de la tôle et manutention des matériaux."
+      },
+      {
+        "alt": "Rangées d’éléments métalliques courbes sur des tables dans l’atelier WEIERYANG",
+        "caption": "Fabrication WEIERYANG : éléments métalliques courbes disposés sur les tables de travail."
+      },
+      {
+        "alt": "Forme abstraite réfléchissante aux ouvertures courbes pendant la fabrication WEIERYANG",
+        "caption": "Fabrication WEIERYANG : surfaces réfléchissantes et ouvertures d’une forme abstraite en cours de réalisation."
+      }
+    ]
+  },
+  "es": {
+    "title": "Dentro del taller: espacio de trabajo, metal y detalle escultórico.",
+    "body": "Estas fotografías muestran el taller de WEIERYANG, puestos de trabajo de chapa, componentes curvos y una forma reflectante en fabricación. Los registros siguientes continúan con el montaje escultórico y los detalles pintados.",
+    "compactTitle": "Una mirada al interior de nuestro taller.",
+    "compactBody": "Observe el taller, los componentes metálicos curvos y una forma reflectante en fabricación. Utilice estos registros para hablar de sus planos, el acabado y el alcance de su proyecto.",
+    "compactAction": "Ver el taller y los registros de fabricación",
+    "groups": [
+      {
+        "title": "En el interior del taller.",
+        "body": "La vista general y la fotografía de los puestos de chapa muestran la distribución del taller, la manipulación de materiales y las superficies de trabajo."
+      },
+      {
+        "title": "Componentes curvos y forma reflectante.",
+        "body": "Compare las filas de componentes curvos con la forma abstracta reflectante para hablar del volumen, las aberturas y las transiciones de superficie visibles en un nuevo encargo."
+      }
+    ],
+    "images": [
+      {
+        "alt": "Vista general del taller de WEIERYANG con mesas de trabajo, chapa y equipos",
+        "caption": "Registro del taller WEIERYANG: mesas de trabajo, chapa y equipos a lo largo del pasillo."
+      },
+      {
+        "alt": "Puestos de trabajo de chapa y un trabajador manipulando una lámina metálica en el taller de WEIERYANG",
+        "caption": "Registro del taller WEIERYANG: puestos de chapa y manipulación de materiales."
+      },
+      {
+        "alt": "Filas de componentes metálicos curvos sobre mesas de trabajo en el taller de WEIERYANG",
+        "caption": "Registro de fabricación WEIERYANG: componentes metálicos curvos dispuestos sobre mesas de trabajo."
+      },
+      {
+        "alt": "Forma abstracta reflectante con aberturas curvas durante la fabricación de WEIERYANG",
+        "caption": "Registro de fabricación WEIERYANG: superficies reflectantes y aberturas de una forma abstracta en fabricación."
+      }
+    ]
+  },
+  "de": {
+    "title": "Einblick in die Werkstatt: Arbeitsplätze, Metallteile und skulpturale Details.",
+    "body": "Diese Fotos zeigen die WEIERYANG-Werkstatt, Arbeitsplätze für Metallbleche, gebogene Bauteile und eine reflektierende Form während der Fertigung. Die folgenden Aufnahmen dokumentieren anschließend die Montage skulpturaler Formen und bemalte Details.",
+    "compactTitle": "Ein näherer Blick in unsere Werkstatt.",
+    "compactBody": "Sehen Sie die Werkstatt, gebogene Metallteile und eine reflektierende Form während der Fertigung. Nutzen Sie die Aufnahmen, um Ihre Zeichnungen, Oberflächenvorstellungen und den Projektumfang zu besprechen.",
+    "compactAction": "Werkstatt und Fertigungsdokumentation ansehen",
+    "groups": [
+      {
+        "title": "Im Inneren der Werkstatt.",
+        "body": "Die Gesamtansicht und das Foto der Blecharbeitsplätze zeigen die Werkstattaufteilung, den Materialumschlag und die Arbeitsflächen."
+      },
+      {
+        "title": "Gebogene Bauteile und reflektierende Form.",
+        "body": "Vergleichen Sie die Reihen gebogener Bauteile mit der reflektierenden abstrakten Form, um Form, Öffnungen und sichtbare Oberflächenübergänge für einen neuen Auftrag zu besprechen."
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gesamtansicht der WEIERYANG-Werkstatt mit Arbeitstischen, Metallblechen und Geräten",
+        "caption": "WEIERYANG-Werkstattaufnahme: Arbeitstische, Metallbleche und Geräte entlang des Werkstattgangs."
+      },
+      {
+        "alt": "Arbeitsplätze für Metallbleche und eine Person mit einem Blech in der WEIERYANG-Werkstatt",
+        "caption": "WEIERYANG-Werkstattaufnahme: Blecharbeitsplätze und Materialhandhabung."
+      },
+      {
+        "alt": "Reihen gebogener Metallteile auf Arbeitstischen in der WEIERYANG-Werkstatt",
+        "caption": "WEIERYANG-Fertigungsdokumentation: auf Arbeitstischen angeordnete gebogene Metallteile."
+      },
+      {
+        "alt": "Reflektierende abstrakte Form mit geschwungenen Öffnungen während der WEIERYANG-Fertigung",
+        "caption": "WEIERYANG-Fertigungsdokumentation: reflektierende Flächen und Öffnungen einer abstrakten Form während der Fertigung."
+      }
+    ]
+  }
+};
+
+export const workshopEvidenceImages = allImageGeometry.map((image, index) => ({
+  ...image, src: `/seo-media/${image.file}`,
+  ...(index < imageGeometry.length ? workshopEvidenceCopy.en.images[index] : factoryEvidenceCopy.en.images[index - imageGeometry.length]),
 }));
 
 export function getWorkshopImage(id, language = "en") {
-  const index = imageGeometry.findIndex(image => image.id === id);
+  const index = allImageGeometry.findIndex(image => image.id === id);
   if (index < 0) return undefined;
   const copy = workshopEvidenceCopy[language] || workshopEvidenceCopy.en;
-  return { ...workshopEvidenceImages[index], ...copy.images[index] };
+  const factoryCopy = factoryEvidenceCopy[language] || factoryEvidenceCopy.en;
+  const localCopy = index < imageGeometry.length ? copy.images[index] : factoryCopy.images[index - imageGeometry.length];
+  return { ...workshopEvidenceImages[index], ...localCopy };
 }
 
 export function getWorkshopEvidence(language = "en") {
   const copy = workshopEvidenceCopy[language] || workshopEvidenceCopy.en;
-  const images = imageGeometry.map(image => getWorkshopImage(image.id, language));
+  const factoryCopy = factoryEvidenceCopy[language] || factoryEvidenceCopy.en;
+  const images = allImageGeometry.map(image => getWorkshopImage(image.id, language));
   return {
     ...copy, id: "workshop-records", images,
-    groups: groupImageIds.map((ids, index) => ({ ...copy.groups[index], id: `workshop-group-${index + 1}`, images: ids.map(id => getWorkshopImage(id, language)) })),
-    compactImages: [images[0], images[2], images[4]],
-    actionHref: "/commission/?route=process", compactHref: "/process/#workshop-records",
+    title: factoryCopy.title, body: factoryCopy.body,
+    compactTitle: factoryCopy.compactTitle, compactBody: factoryCopy.compactBody, compactAction: factoryCopy.compactAction,
+    groups: [
+      ...factoryGroupImageIds.map((ids, index) => ({ ...factoryCopy.groups[index], id: factoryGroupIds[index], images: ids.map(id => getWorkshopImage(id, language)) })),
+      ...groupImageIds.map((ids, index) => ({ ...copy.groups[index], id: `workshop-group-${index + 1}`, images: ids.map(id => getWorkshopImage(id, language)) })),
+    ],
+    compactImages: ["factoryOverview", "curvedComponents", "reflectiveForm"].map(id => getWorkshopImage(id, language)),
+    actionHref: "/commission/?route=process", compactHref: "/process/#factory-workshop",
   };
 }
 

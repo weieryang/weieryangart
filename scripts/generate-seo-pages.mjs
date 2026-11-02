@@ -578,6 +578,7 @@ for (const page of pages) {
 }
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
+for (const page of pages) if (["", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-11-02";
 for (const article of preservedRoutes) {
   if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
 }
