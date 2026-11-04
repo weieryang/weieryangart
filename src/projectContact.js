@@ -30,6 +30,10 @@ export const projectContactPaths = Object.freeze([
   "/insights/316l-stainless-steel-vs-bronze-vs-stone/", "/insights/landscape-sculpture-quote-brief/",
   "/insights/custom-outdoor-abstract-sculpture-approval-checklist/",
   "/insights/brass-vs-bronze-sculpture-oem-quote/", "/privacy/",
+  "/insights/oem-mascot-sculpture-2d-to-3d-brief/",
+  "/insights/restaurant-retail-sculpture-oem-multi-location/",
+  "/insights/sculpture-oem-prototypes-finish-samples-first-piece/",
+  "/insights/custom-metal-wall-sculpture-site-fixing-brief/",
 ]);
 
 const publicPaths = new Set(projectContactPaths);

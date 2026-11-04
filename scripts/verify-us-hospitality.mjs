@@ -23,8 +23,8 @@ import { projectContactPaths } from "../src/projectContact.js";
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
-assert.equal(urls.length, 55, "Canonical inventory: existing 54 plus one distinct material-and-finish guide");
-assert.equal(new Set(urls).size, 55, "No duplicate canonical sitemap URLs");
+assert.equal(urls.length, 59, "Canonical inventory: existing 55 plus four distinct OEM buyer guides");
+assert.equal(new Set(urls).size, 59, "No duplicate canonical sitemap URLs");
 assert.deepEqual([...projectContactPaths].sort(), urls.map(url => new URL(url).pathname).sort(), "General contact context only uses the current public inventory");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
@@ -140,8 +140,9 @@ for (const question of approvalGraph.find(node => node["@type"] === "FAQPage").m
   assert.ok(decode(approvalHtml).includes(question.name), "OEM FAQ question is visible");
   assert.ok(decode(approvalHtml).includes(question.acceptedAnswer.text), "OEM FAQ answer matches visible content");
 }
-assert.equal(approvalArticle.datePublished, approvalArticle.dateModified, "New guide starts with one release timestamp");
-assert.ok(approvalHtml.includes(`<time datetime="${approvalArticle.datePublished}">`), "New release date is visible");
+assert.equal(approvalArticle.datePublished, "2026-10-28T07:12:02Z", "Approval guide keeps its original publication date");
+assert.ok(new Date(approvalArticle.dateModified) > new Date(approvalArticle.datePublished), "New contextual resources have a later actual modification date");
+for (const date of [approvalArticle.datePublished, approvalArticle.dateModified]) assert.ok(approvalHtml.includes(`<time datetime="${date}">`), "Publication and modification dates are visible");
 const approvalDownload = "/downloads/sculpture-oem-review-register.csv";
 assert.ok(approvalHtml.includes(`href="${approvalDownload}" download=`), "Register is an ordinary downloadable file");
 const registerLines = fs.readFileSync(path.join(root, approvalDownload), "utf8").trimEnd().split(/\r?\n/);
