@@ -34,6 +34,7 @@ export const projectContactPaths = Object.freeze([
   "/insights/restaurant-retail-sculpture-oem-multi-location/",
   "/insights/sculpture-oem-prototypes-finish-samples-first-piece/",
   "/insights/custom-metal-wall-sculpture-site-fixing-brief/",
+  "/insights/metal-flower-sculpture-oem-brief/",
 ]);
 
 const publicPaths = new Set(projectContactPaths);
