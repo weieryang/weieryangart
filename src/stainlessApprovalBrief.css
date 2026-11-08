@@ -1,0 +1,41 @@
+.stainless-approval { padding-block: 70px; scroll-margin-top: 170px; }
+.stainless-approval header { max-width: 900px; }
+.stainless-approval h2 { margin-block: 18px; font-size: clamp(38px, 4.2vw, 66px); line-height: 1.08; overflow-wrap: anywhere; hyphens: auto; }
+.stainless-approval header > p:last-child,
+.stainless-approval-record > p { color: var(--text-soft); line-height: 1.7; }
+.stainless-approval table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-block: 34px; font-size: 14px; line-height: 1.65; }
+.stainless-approval th,
+.stainless-approval td { text-align: start; vertical-align: top; padding: 20px; border: 1px solid var(--line); overflow-wrap: anywhere; }
+.stainless-approval thead th { background: var(--bg-soft); color: var(--text); font-weight: 600; }
+.stainless-approval thead th:first-child { width: 23%; }
+.stainless-approval tbody th { color: var(--text); font-weight: 600; }
+.stainless-approval td { color: var(--text-soft); }
+.stainless-approval-record { padding: 28px; border: 1px solid var(--line); background: var(--bg-soft); }
+.stainless-approval-record h3 { font-size: clamp(25px, 2.4vw, 34px); line-height: 1.25; overflow-wrap: anywhere; hyphens: auto; }
+.stainless-approval-record ul { padding: 0; margin-block: 22px; list-style: none; }
+.stainless-approval-record li { margin-block: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.stainless-approval-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-block: 26px; }
+.stainless-approval-links a { display: flex; justify-content: space-between; gap: 16px; align-items: center; min-height: 48px; padding: 14px 16px; border: 1px solid var(--line); font-size: 14px; line-height: 1.5; }
+.stainless-approval a:focus-visible { outline: 2px solid #e7b697; outline-offset: 3px; }
+.stainless-approval-references,
+.stainless-approval-boundary { color: var(--text-soft); font-size: 12px; line-height: 1.75; }
+.stainless-approval-references a { text-decoration: underline; text-underline-offset: 3px; }
+.stainless-approval-boundary { margin-top: 10px; }
+@media (max-width: 820px) {
+  .stainless-material-hero > div { min-width: 0; }
+  .stainless-material-hero .secondary-breadcrumb { flex-wrap: wrap; }
+  .stainless-approval { padding-block: 45px; }
+  .stainless-approval table,
+  .stainless-approval tbody,
+  .stainless-approval tr,
+  .stainless-approval th,
+  .stainless-approval td { display: block; width: 100%; }
+  .stainless-approval thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .stainless-approval tbody tr { margin-bottom: 16px; border: 1px solid var(--line); }
+  .stainless-approval tbody th,
+  .stainless-approval td { border: 0; padding: 14px 18px; }
+  .stainless-approval tbody th { background: var(--bg-soft); font-size: 17px; }
+  .stainless-approval td::before { content: attr(data-label); display: block; color: var(--text); font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .stainless-approval-record { padding: 22px 18px; }
+  .stainless-approval-links { grid-template-columns: 1fr; }
+}

@@ -13,6 +13,7 @@ import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, app
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
 import { fabricationEvidenceHtml } from "../src/fabricationEvidence.js";
 import { workArticleSeoPages, workArticleFallback, workArticleSchema } from "./work-article-seo.mjs";
+import { stainlessApprovalBriefHtml } from "../src/stainlessApprovalBrief.js";
 
 const site = "https://weieryangart.com";
 const script = "/src/main.jsx";
@@ -581,6 +582,7 @@ const schemaIdentityGuideSlugs = new Set([
 for (const page of pages) {
   if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
 }
+for (const page of pages) if (page.slug === "stainless-steel-sculpture") page.lastmod = "2026-11-08";
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
 for (const page of pages) if (["", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-11-02";
@@ -932,7 +934,7 @@ function fallback(page) {
       ${hotelPlanning}
       ${page.slug === "" ? workshopGalleryHtml({ compact: true }) : ""}
       ${page.slug === "process" ? fabricationEvidenceHtml(esc) + "\n      " : ""}${evidence}
-      ${sections}
+      ${sections}${page.slug === "stainless-steel-sculpture" ? "\n      " + stainlessApprovalBriefHtml(esc) : ""}
       ${projectGuide}
       ${stainlessGradeGuide}
       ${resortPlanningGuides}

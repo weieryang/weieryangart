@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useHeroPlayer } from "./useHeroPlayer.js";
 import { HotelEngineeringCases } from "./HotelEngineeringCases.jsx";
+import { StainlessApprovalBrief } from "./StainlessApprovalBrief.jsx";
 import { SculptureCollection, SculptureCollectionPreview, SculptureDetail } from "./SculptureCatalog.jsx";
 import { catalogUi } from "./sculptureCatalogCopy.js";
 import "./applicationNavigation.css";
@@ -761,7 +762,7 @@ export function SecondaryPage({ route, text, language }) {
   const groups = seo?.groups || text.secondary.checks.map(([itemTitle, body]) => [itemTitle, [body]]);
   return (
     <>
-      <section className={`secondary-hero${["process", "custom-sculpture"].includes(route) ? " has-workshop-media" : ""} section-shell`}>
+      <section className={`secondary-hero${["process", "custom-sculpture"].includes(route) ? " has-workshop-media" : ""}${route === "stainless-steel-sculpture" ? " stainless-material-hero" : ""} section-shell`}>
         <div>
           <p className="secondary-breadcrumb"><a href="/">{seo?.ui?.home || "Home"}</a><span>/</span>{text.routeNames[route] || text.routeNames.projects}</p>
           <p className="hero-eyebrow">{seo?.eyebrow || text.secondary.eyebrow}</p>
@@ -794,6 +795,7 @@ export function SecondaryPage({ route, text, language }) {
         </div>
       </section>
       {route === "resort-sculpture" && language === "en" ? <HospitalityDetails /> : null}
+      {route === "stainless-steel-sculpture" ? <StainlessApprovalBrief language={language} /> : null}
       {route === "projects" ? (
         <section className="project-case-feature section-shell" aria-labelledby="hotel-case-title">
           <figure>
