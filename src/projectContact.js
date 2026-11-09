@@ -25,6 +25,7 @@ export const projectContactPaths = Object.freeze([
   "/insights/large-sculpture-export-packing-checklist/",
   "/insights/large-stainless-steel-sculpture-fabrication-checklist/",
   "/insights/water-feature-sculpture-material-checklist/",
+  "/insights/custom-metal-tree-sculpture-oem-brief/",
   "/insights/water-feature-sculpture-oem-scope/", "/insights/overseas-sculpture-installation-checklist/",
   "/insights/hotel-arrival-sculpture-site-brief/", "/insights/middle-east-stainless-steel-landmark-sculpture/",
   "/insights/material-led-sculpture-review-2026/", "/insights/how-to-commission-custom-outdoor-sculpture/",
