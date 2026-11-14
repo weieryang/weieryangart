@@ -37,6 +37,7 @@ export const analyticsProductSlugs = Object.freeze([
 ]);
 const interestRoutes = new Set([
   "1", "2", "3", "4", "garden-sculpture", "public-art", "resort-sculpture",
+  "retail-restaurant-sculpture", "themed-art-installations", "landscape-public-art",
   "water-feature-sculpture", "bronze-sculpture", "stainless-steel-sculpture",
   "stone-sculpture", "custom-sculpture", "projects", "process", "materials", "faq",
   "cost-guide", "hotel-lobby-engineering-case", "us-hotel-procurement",
