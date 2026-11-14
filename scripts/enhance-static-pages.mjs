@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { projectWhatsappHref } from "../src/projectContact.js";
 
 const root = path.resolve("dist");
-import { staticHeader as header, staticFooter as footer } from "./static-frame.mjs";
+import { staticProjectFrame } from "./static-frame.mjs";
 
 async function htmlFiles(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -31,7 +31,10 @@ async function responsiveAttributes(src) {
 let pages = 0, images = 0, contactLinks = 0;
 for (const file of await htmlFiles(root)) {
   let html = await fs.readFile(file, "utf8");
+  const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
   if (html.includes('class="wy-top"')) {
+    const pathname = canonical && new URL(canonical, "https://weieryangart.com").pathname;
+    const { header, footer } = staticProjectFrame(pathname);
     html = html.replace(/<header\b[^>]*class="wy-top"[^>]*>[\s\S]*?<\/header>/, header);
     html = /<footer\b[^>]*class="wy-footer"/.test(html)
       ? html.replace(/<footer\b[^>]*class="wy-footer"[^>]*>[\s\S]*?<\/footer>/, footer)
@@ -40,7 +43,6 @@ for (const file of await htmlFiles(root)) {
   }
   // General contact drafts carry only registered public page information.
   // Existing follow-up links with their own text are intentionally preserved.
-  const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
   const title = (html.match(/<title>([^<]+)<\/title>/i)?.[1] || "")
     .replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#39;", "'");
   const contact = projectWhatsappHref(canonical || "/", title);

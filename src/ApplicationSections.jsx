@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
-import { applicationUi, getApplicationCategories } from "./applicationContent.js";
+import { applicationBriefHref, applicationUi, getApplicationCategories } from "./applicationContent.js";
 import { ApplicationOemSection } from "./ApplicationOemSection.jsx";
 import { getWorkArticleForImage, workArticleUi } from "./workArticleData.js";
 import "./applications.css";
@@ -69,7 +69,7 @@ export function ApplicationEvidence({ id, language = "en", omitFirstImage = fals
       <div><h2>{ui.scopeHeading}</h2><ul>{category.scope.map(item => <li key={item}>{item}</li>)}</ul></div>
     </section>
     {images.length > 0 && <section className="application-gallery section-shell" aria-labelledby={`application-gallery-${id}`}><h2 id={`application-gallery-${id}`}>{ui.galleryHeading}</h2>{category.evidenceNote && <p className="application-evidence-note">{category.evidenceNote}</p>}<div className="application-gallery-grid">{images.map(image => <ApplicationFigure image={image} ui={ui} key={image.file} language={language} />)}</div></section>}
-    <ApplicationOemSection oem={category.oem} language={language} />
+    <ApplicationOemSection oem={category.oem} briefHref={applicationBriefHref(category.path)} language={language} />
     {id === "hospitality" && <section className="application-faq section-shell" aria-labelledby="application-oem-faq-hospitality"><h2 id="application-oem-faq-hospitality">{ui.faqHeading}</h2><div>{category.oem.faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></section>}
   </div>;
 }
@@ -79,16 +79,17 @@ export function ApplicationCategory({ id, language = "en" }) {
   if (!category) return null;
   const ui = copyFor(language);
   const categories = getApplicationCategories(language);
+  const briefHref = applicationBriefHref(category.path);
   const homeLabel = ui.home || ({ en: "Home", zh: "首页", ar: "الرئيسية", fr: "Accueil", es: "Inicio", de: "Startseite" }[language] || "Home");
   return <div className="application-page" dir={language === "ar" ? "rtl" : undefined}>
     <section className="application-hero section-shell" aria-labelledby={`application-heading-${id}`}>
-      <div className="application-hero-copy"><nav className="application-breadcrumbs" aria-label={ui.nav}><ol><li><a href="/">{homeLabel}</a></li><li><a href="/sculptures/">{ui.allApplications}</a></li><li aria-current="page">{category.name}</li></ol></nav><p className="hero-eyebrow">{ui.eyebrow}</p><h1 id={`application-heading-${id}`}>{category.name}</h1><p>{category.intro}</p><a className="hero-cta" href="/commission/">{ui.briefAction}<ArrowRight size={20} aria-hidden="true" /></a></div>
+      <div className="application-hero-copy"><nav className="application-breadcrumbs" aria-label={ui.nav}><ol><li><a href="/">{homeLabel}</a></li><li><a href="/sculptures/">{ui.allApplications}</a></li><li aria-current="page">{category.name}</li></ol></nav><p className="hero-eyebrow">{ui.eyebrow}</p><h1 id={`application-heading-${id}`}>{category.name}</h1><p>{category.intro}</p><a className="hero-cta" href={briefHref}>{ui.briefAction}<ArrowRight size={20} aria-hidden="true" /></a></div>
       <ApplicationFigure image={category.gallery[0]} ui={ui} priority className="application-hero-figure" />
     </section>
     <ApplicationEvidence id={id} language={language} omitFirstImage showIntro={false} />
     <section className="application-faq section-shell" aria-labelledby={`application-faq-${id}`}><h2 id={`application-faq-${id}`}>{ui.faqHeading}</h2><div>{category.faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></section>
     <section className="application-related section-shell" aria-labelledby={`application-related-${id}`}><h2 id={`application-related-${id}`}>{ui.relatedHeading}</h2><nav aria-label={ui.relatedHeading}>{category.related.map(([label, path]) => <a href={path} key={path}>{label}<ArrowUpRight size={18} aria-hidden="true" /></a>)}</nav></section>
-    <section className="application-brief section-shell" aria-labelledby={`application-brief-${id}`}><div><p className="hero-eyebrow">WEIERYANG</p><h2 id={`application-brief-${id}`}>{ui.briefHeading}</h2></div><div><p>{ui.briefBody}</p><a className="hero-cta" href="/commission/">{ui.briefAction}<ArrowRight size={20} aria-hidden="true" /></a></div></section>
+    <section className="application-brief section-shell" aria-labelledby={`application-brief-${id}`}><div><p className="hero-eyebrow">WEIERYANG</p><h2 id={`application-brief-${id}`}>{ui.briefHeading}</h2></div><div><p>{ui.briefBody}</p><a className="hero-cta" href={briefHref}>{ui.briefAction}<ArrowRight size={20} aria-hidden="true" /></a></div></section>
     <section className="application-other section-shell" aria-labelledby={`application-other-${id}`}><h2 id={`application-other-${id}`}>{ui.otherApplications}</h2><nav aria-label={ui.otherApplications}>{categories.filter(item => item.id !== id).map(item => <a href={item.path} key={item.id}>{item.name}<ArrowUpRight size={20} aria-hidden="true" /></a>)}</nav></section>
   </div>;
 }

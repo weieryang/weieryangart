@@ -5,7 +5,7 @@ import { StainlessApprovalBrief } from "./StainlessApprovalBrief.jsx";
 import { SculptureCollection, SculptureCollectionPreview, SculptureDetail } from "./SculptureCatalog.jsx";
 import { catalogUi } from "./sculptureCatalogCopy.js";
 import "./applicationNavigation.css";
-import { applicationCategories, applicationUi, getApplicationCategories } from "./applicationContent.js";
+import { applicationBriefHref, applicationCategories, applicationUi, getApplicationCategories } from "./applicationContent.js";
 import { ApplicationCards, ApplicationCategory, ApplicationEvidence } from "./ApplicationSections.jsx";
 import { WorkArticle } from "./WorkArticle.jsx";
 import { workArticleRoutes } from "./workArticleData.js";
@@ -198,6 +198,7 @@ function ApplicationNavigation({ language, mobile = false, onNavigate }) {
 }
 
 function SiteHeader({ language, setLanguage, text, route = "" }) {
+  const briefHref = applicationBriefHref(`/${route}/`);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuKeyboard, setMenuKeyboard] = useState(false);
   const menuRef = useRef(null);
@@ -282,11 +283,11 @@ function SiteHeader({ language, setLanguage, text, route = "" }) {
           <WhatsappLogo size={19} weight="fill" aria-hidden="true" />
           <span>WhatsApp</span>
         </a>
-        <a className="brief-button" href="/commission/">
+        <a className="brief-button" href={briefHref}>
           {text.nav.brief}
         </a>
       </div>
-      <a className="mobile-header-brief" href="/commission/" aria-label={text.nav.brief} title={text.nav.brief}>
+      <a className="mobile-header-brief" href={briefHref} aria-label={text.nav.brief} title={text.nav.brief}>
         <FileArrowUp size={18} aria-hidden="true" />
         <span>{({ en: "Brief", zh: "询价", ar: "طلب", fr: "Projet", es: "Proyecto", de: "Anfrage" })[language] || "Brief"}</span>
       </a>
@@ -313,7 +314,7 @@ function SiteHeader({ language, setLanguage, text, route = "" }) {
           <LanguageSelect language={language} setLanguage={setLanguage} />
           <a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a>
           <a href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">WhatsApp</a>
-          <a className="brief-button" href="/commission/">{text.nav.brief}</a>
+          <a className="brief-button" href={briefHref}>{text.nav.brief}</a>
         </div>
       </div>
     </header>
@@ -640,7 +641,7 @@ function EvidenceSection({ text }) {
   );
 }
 
-function QualificationBand({ text }) {
+function QualificationBand({ text, briefHref = "/commission/" }) {
   return (
     <section className="qualification-band section-shell">
       <div>
@@ -648,7 +649,7 @@ function QualificationBand({ text }) {
         <p>{text.qualify.body}</p>
       </div>
       <div>
-        <a className="hero-cta" href="/commission/">{text.qualify.brief}<ArrowRight size={21} /></a>
+        <a className="hero-cta" href={briefHref}>{text.qualify.brief}<ArrowRight size={21} /></a>
         <a className="text-link" href={`mailto:${businessContact.email}`}>{text.qualify.contact}</a>
       </div>
     </section>
@@ -851,7 +852,7 @@ export function SecondaryPage({ route, text, language }) {
           </div>
         </section>
       ) : null}
-      <QualificationBand text={text} />
+      <QualificationBand text={text} briefHref={applicationBriefHref(`/${route}/`)} />
     </>
   );
 }
@@ -1190,6 +1191,7 @@ function CommissionPage({ text, language }) {
 }
 
 function SiteFooter({ text, language, route = "" }) {
+  const briefHref = applicationBriefHref(`/${route}/`);
   const routeLinks = ["garden-sculpture", "resort-sculpture", "public-art", "custom-sculpture"];
   const materialLinks = ["bronze-sculpture", "stainless-steel-sculpture", "stone-sculpture", "materials"];
   return (
@@ -1203,7 +1205,7 @@ function SiteFooter({ text, language, route = "" }) {
         <div><h3>{(applicationUi[language] || applicationUi.en).nav}</h3><a href="/sculptures/">{(applicationUi[language] || applicationUi.en).allApplications}</a>{getApplicationCategories(language).map(category => <a key={category.id} href={category.path}>{category.name}</a>)}<a href="/custom-sculpture/">{text.routeNames["custom-sculpture"]}</a></div>
         <div><h3>{text.footer.materials}</h3>{materialLinks.map((route) => <a key={route} href={`/${route}/`}>{text.routeNames[route]}</a>)}</div>
         <div><h3>{text.footer.studio}</h3><a href="/custom-outdoor-sculpture-supplier/">Supplier route</a><a href="/process/">{text.nav.process}</a><a href="/projects/">{text.nav.projects}</a><a href="/faq/">{text.routeNames.faq}</a><a href="/insights/">Insights</a></div>
-        <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">WhatsApp</a><a href="/commission/">{text.footer.private}</a><span>weieryangart.com</span></div>
+        <div><h3>{text.footer.contact}</h3><a href={`mailto:${businessContact.email}`}>{text.nav.contact}</a><a href={projectWhatsappHref(route)} target="_blank" rel="noreferrer">WhatsApp</a><a href={briefHref}>{text.footer.private}</a><span>weieryangart.com</span></div>
       </div>
       <div className="footer-base"><span>© {new Date().getFullYear()} {text.footer.rights}</span><a href="/privacy/" hrefLang="en">Privacy &amp; project information (EN)</a><span>{businessContact.email}</span></div>
     </footer>

@@ -1,4 +1,4 @@
-import { applicationCategories } from "../src/applicationContent.js";
+import { applicationBriefHref, applicationCategories } from "../src/applicationContent.js";
 const applicationLinks = applicationCategories.map(category => `<a href="${category.path}">${category.name.replaceAll("&", "&amp;")}</a>`).join("");
 // Shared English navigation for article pages and the no-JavaScript app fallback.
 export const staticHeader = `<header class="wy-top"><div class="wy-top-inner"><a class="wy-brand" href="/" aria-label="WEIERYANG home">WEIERYANG</a><nav class="wy-nav" aria-label="Main navigation"><details class="wy-applications"><summary>Applications</summary><div><a href="/sculptures/">All applications</a>${applicationLinks}</div></details><a href="/projects/">Projects &amp; studies</a><a href="/materials/">Materials</a><a href="/process/">Process</a><a href="/insights/">Insights</a><a href="mailto:tangkelian@weieryang.com">Contact Us</a><a href="/commission/?route=resort-sculpture">Project brief</a><span class="wy-language-label" lang="en" title="This guide is in English. Other interface languages are available on the studio homepage.">EN</span></nav></div><style id="weieryang-application-navigation-style">.wy-applications{position:relative}.wy-applications summary{cursor:pointer;list-style:none;min-height:44px;display:flex;align-items:center;gap:6px}.wy-applications summary:after{content:"▾"}.wy-applications summary::-webkit-details-marker{display:none}.wy-applications>div{position:absolute;inset-inline-start:0;top:100%;width:310px;max-width:calc(100vw - 36px);padding:10px;background:#141411;border:1px solid #4b493d;box-shadow:0 12px 30px #0008;z-index:70;display:grid;gap:2px}.wy-applications>div a{padding:10px 12px;min-height:44px;box-sizing:border-box;display:flex;align-items:center;line-height:1.5}.wy-applications a:hover{background:#292821}.wy-applications summary:focus-visible,.wy-applications a:focus-visible{outline:2px solid #c69566;outline-offset:2px}</style></header>`;
@@ -9,3 +9,12 @@ export const staticFooter = `<footer class="wy-footer"><div class="wy-footer-inn
 <div><h2>Project entry</h2><a href="/custom-outdoor-sculpture-supplier/#us-procurement">U.S. procurement checklist</a><a href="/commission/">Request a project review</a><a href="mailto:tangkelian@weieryang.com">Contact Us — email</a><a href="https://wa.me/8613317178019" rel="noreferrer" target="_blank">WhatsApp (optional)</a><a href="/privacy/">Privacy &amp; project information</a><p>weieryangart.com</p></div>
 </div></footer>`;
 
+
+export function staticProjectFrame(pathname) {
+  const briefHref = applicationBriefHref(pathname);
+  if (briefHref === "/commission/") return { header: staticHeader, footer: staticFooter };
+  return {
+    header: staticHeader.replace('href="/commission/?route=resort-sculpture"', `href="${briefHref}"`),
+    footer: staticFooter.replace('href="/commission/"', `href="${briefHref}"`),
+  };
+}

@@ -1,4 +1,4 @@
-import { applicationCategories, applicationUi, getApplicationCategories } from "../src/applicationContent.js";
+import { applicationBriefHref, applicationCategories, applicationUi, getApplicationCategories } from "../src/applicationContent.js";
 import { getApplicationKeywordContent } from "../src/applicationKeywordContent.js";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -424,6 +424,12 @@ assert.deepEqual(applicationList.itemListElement.map(item => item.url), applicat
 for (const category of applicationCategories) {
   const html = documents.get(category.path);
   assert.ok(html, `Application in sitemap: ${category.path}`);
+  const route = category.path.slice(1, -1);
+  const brief = `/commission/?route=${route}`;
+  assert.equal(applicationBriefHref(category.path), brief);
+  assert.equal(safeInterestRoute(route), route);
+  const staticBriefs = [...html.matchAll(/href="(\/commission\/[^"]*)"/g)].map(match => match[1]);
+  assert.ok(staticBriefs.length >= 5 && staticBriefs.every(href => href === brief), `All static inquiry links keep the application: ${category.path}`);
   const readable = decode(html);
   for (const value of [category.name, category.intro, category.evidenceNote, ...category.buyerNeeds, ...category.scope]) assert.ok(readable.includes(value), `Application visible facts: ${category.path}: ${value}`);
   for (const image of category.gallery) {
@@ -703,6 +709,8 @@ try {
       const Component = category.id === "hospitality" ? ApplicationEvidence : ApplicationCategory;
       const html = renderToStaticMarkup(React.createElement(Component, { id: category.id, language }));
       verifyKeywordBuyerAnswers(html, category, language, "localized application");
+      const brief = applicationBriefHref(category.path);
+      assert.equal(html.split(`href="${brief}"`).length - 1, category.id === "hospitality" ? 1 : 3, `Localized inquiry links: ${category.path} ${language}`);
       if (language === "ar") assert.ok(html.includes('dir="rtl"'), `Arabic buyer answer direction: ${category.id}`);
       buyerRenders++;
     }

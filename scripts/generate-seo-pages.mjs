@@ -4,10 +4,10 @@ import { hospitalitySections, hospitalityEntry, hospitalityPlanning } from "../s
 import { routeSeoContent } from "../src/seoContent.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
 import { commissionEvidenceImage, commissionProof, studioIdentity } from "../src/commissionProof.js";
-import { staticHeader, staticFooter } from "./static-frame.mjs";
+import { staticProjectFrame } from "./static-frame.mjs";
 import { sculptureSeoPages, sculptureFallback, sculptureSchemaNodes } from "./sculpture-seo.mjs";
 import { workshopEvidenceImages, getWorkshopEvidence, getWorkshopImage } from "../src/workshopEvidence.js";
-import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { applicationBriefHref, applicationCategories, applicationUi } from "../src/applicationContent.js";
 import { getApplicationMedia } from "../src/applicationMedia.js";
 import { applicationSeoPages, applicationCardsHtml, applicationEvidenceHtml, applicationFallback, applicationItemList } from "./application-seo.mjs";
 import { workshopGalleryHtml } from "./workshop-seo.mjs";
@@ -584,6 +584,7 @@ for (const page of pages) {
   if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
 }
 for (const page of pages) if (page.slug === "stainless-steel-sculpture") page.lastmod = "2026-11-08";
+for (const page of pages) if (applicationBriefHref(`/${page.slug}/`) !== "/commission/") page.lastmod = "2026-11-14";
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
 for (const page of pages) if (["", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-11-02";
@@ -948,7 +949,7 @@ function fallback(page) {
       <section>
         <h2>Start a private sculpture brief</h2>
         <p>Send drawings, site photos, scale, material direction, destination country, and schedule to begin a serious review.</p>
-        <p><a href="/commission/">Open the commission brief</a></p>
+        <p><a href="${applicationBriefHref(`/${page.slug}/`)}">Open the commission brief</a></p>
       </section>
     </main>`;
 }
@@ -1156,6 +1157,7 @@ ${pageSchema(page).split("\n").map((line) => `      ${line}`).join("\n")}
 
 for (const page of pages) {
   const target = path.join(process.cwd(), page.file);
+  const { header, footer } = staticProjectFrame(new URL(urlFor(page)).pathname);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(
     target,
@@ -1163,9 +1165,9 @@ for (const page of pages) {
   <body style="margin:0;background:#0b0b09;color:#f0eee8">
     <div id="root">
       <div class="seo-static-frame">
-        ${staticHeader}
+        ${header}
         ${fallback(page)}
-        ${staticFooter}
+        ${footer}
       </div>
     </div>
     <script type="module" src="${script}"></script>

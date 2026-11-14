@@ -367,3 +367,8 @@ export function getApplication(path, language = 'en') {
   return getApplicationCategories(language).find(category => category.path === path);
 }
 export const applicationRoutes = categoryDefinitions.slice(1).map(category => category.path.replace(/^\/+|\/+$/g, ''));
+
+export function applicationBriefHref(path) {
+  const category = categoryDefinitions.find(item => item.path === path);
+  return category ? `/commission/?route=${category.path.slice(1, -1)}` : "/commission/";
+}

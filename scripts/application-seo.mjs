@@ -1,4 +1,4 @@
-import { applicationCategories, applicationUi } from "../src/applicationContent.js";
+import { applicationBriefHref, applicationCategories, applicationUi } from "../src/applicationContent.js";
 import { applicationOemUi } from "../src/applicationOem.js";
 import { getWorkArticleForImage, workArticleUi } from "../src/workArticleData.js";
 
@@ -19,7 +19,7 @@ function picture(image, esc, eager = false, workLinks = false) {
 
 export function applicationOemHtml(category, esc) {
   const oem = category.oem, ui = applicationOemUi.en;
-  return `<section id="oem-${esc(category.id)}" class="seo-application-oem"><p>${esc(ui.eyebrow)}</p><h2>${esc(oem.heading)}</h2><p>${esc(oem.intro)}</p><ol>${oem.steps.map(step => `<li><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p></li>`).join("")}</ol><h3>${esc(oem.scopeHeading)}</h3><ul>${oem.quotationScope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><nav aria-label="OEM project resources">${(oem.evidenceLinks || []).map(([label,href]) => `<a href="${esc(href)}">${esc(label)}</a> · `).join("")}<a href="/custom-sculpture/">${esc(ui.process)}</a> · <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">${esc(ui.rfq)}</a> · <a href="/commission/">${esc(ui.brief)}</a></nav></section>`;
+  return `<section id="oem-${esc(category.id)}" class="seo-application-oem"><p>${esc(ui.eyebrow)}</p><h2>${esc(oem.heading)}</h2><p>${esc(oem.intro)}</p><ol>${oem.steps.map(step => `<li><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p></li>`).join("")}</ol><h3>${esc(oem.scopeHeading)}</h3><ul>${oem.quotationScope.map(item => `<li>${esc(item)}</li>`).join("")}</ul><nav aria-label="OEM project resources">${(oem.evidenceLinks || []).map(([label,href]) => `<a href="${esc(href)}">${esc(label)}</a> · `).join("")}<a href="/custom-sculpture/">${esc(ui.process)}</a> · <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">${esc(ui.rfq)}</a> · <a href="${applicationBriefHref(category.path)}">${esc(ui.brief)}</a></nav></section>`;
 }
 
 export function applicationCardsHtml(esc, heading = "h2") {
@@ -34,7 +34,7 @@ export function applicationEvidenceHtml(category, esc) {
 
 export function applicationFallback(page, esc) {
   const category = page.application, ui = applicationUi.en;
-  return `<main class="seo-fallback" data-seo-fallback="true"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/sculptures/">${esc(ui.nav)}</a> / <span>${esc(category.name)}</span></nav><h1>${esc(category.name)}</h1><p>${esc(category.intro)}</p>${applicationEvidenceHtml(category, esc)}<section><h2>${esc(ui.faqHeading)}</h2>${category.faq.map(([q,a]) => `<article><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("")}</section><nav aria-label="${esc(ui.relatedHeading)}"><h2>${esc(ui.relatedHeading)}</h2>${category.related.map(([label,href]) => `<p><a href="${href}">${esc(label)}</a></p>`).join("")}</nav><section><h2>${esc(ui.briefHeading)}</h2><p>${esc(ui.briefBody)}</p><a href="/commission/">${esc(ui.briefAction)}</a></section>${applicationCardsHtml(esc)}</main>`;
+  return `<main class="seo-fallback" data-seo-fallback="true"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/sculptures/">${esc(ui.nav)}</a> / <span>${esc(category.name)}</span></nav><h1>${esc(category.name)}</h1><p>${esc(category.intro)}</p><p><a href="${applicationBriefHref(category.path)}">${esc(ui.briefAction)}</a></p>${applicationEvidenceHtml(category, esc)}<section><h2>${esc(ui.faqHeading)}</h2>${category.faq.map(([q,a]) => `<article><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("")}</section><nav aria-label="${esc(ui.relatedHeading)}"><h2>${esc(ui.relatedHeading)}</h2>${category.related.map(([label,href]) => `<p><a href="${href}">${esc(label)}</a></p>`).join("")}</nav><section><h2>${esc(ui.briefHeading)}</h2><p>${esc(ui.briefBody)}</p><a href="${applicationBriefHref(category.path)}">${esc(ui.briefAction)}</a></section>${applicationCardsHtml(esc)}</main>`;
 }
 
 export function applicationItemList(site) {

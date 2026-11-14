@@ -3,7 +3,7 @@ import { applicationOemUi } from './applicationOem.js';
 import './applicationOem.css';
 
 // FAQs are rendered once by the category page and mirrored in its existing JSON-LD.
-export function ApplicationOemSection({ oem, language = 'en' }) {
+export function ApplicationOemSection({ oem, briefHref, language = 'en' }) {
   if (!oem) return null;
   const ui = applicationOemUi[language] || applicationOemUi.en;
   return <section className="application-oem section-shell" id={`oem-${oem.id}`} aria-labelledby={`oem-heading-${oem.id}`} dir={language === 'ar' ? 'rtl' : undefined}>
@@ -14,7 +14,7 @@ export function ApplicationOemSection({ oem, language = 'en' }) {
       {oem.evidenceLinks?.map(([label, href]) => <a href={href} key={href}>{label}<ArrowUpRight size={18} aria-hidden="true" /></a>)}
       <a href="/custom-sculpture/">{ui.process}<ArrowUpRight size={18} aria-hidden="true" /></a>
       <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">{ui.rfq}<ArrowUpRight size={18} aria-hidden="true" /></a>
-      <a href="/commission/">{ui.brief}<ArrowUpRight size={18} aria-hidden="true" /></a>
+      <a href={briefHref}>{ui.brief}<ArrowUpRight size={18} aria-hidden="true" /></a>
     </nav>
   </section>;
 }
