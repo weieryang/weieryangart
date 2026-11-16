@@ -28,6 +28,7 @@ export const projectContactPaths = Object.freeze([
   "/insights/custom-metal-tree-sculpture-oem-brief/",
   "/insights/custom-metal-animal-sculpture-oem-brief/",
   "/insights/outdoor-bronze-sculpture-care-oem-handover/",
+  "/insights/suspended-sculpture-ceiling-interface-oem-brief/",
   "/insights/water-feature-sculpture-oem-scope/", "/insights/overseas-sculpture-installation-checklist/",
   "/insights/hotel-arrival-sculpture-site-brief/", "/insights/middle-east-stainless-steel-landmark-sculpture/",
   "/insights/material-led-sculpture-review-2026/", "/insights/how-to-commission-custom-outdoor-sculpture/",
