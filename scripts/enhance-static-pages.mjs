@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { projectWhatsappHref } from "../src/projectContact.js";
+import { withContactRail } from "./contact-rail.mjs";
 
 const root = path.resolve("dist");
 import { staticProjectFrame } from "./static-frame.mjs";
@@ -63,6 +64,6 @@ for (const file of await htmlFiles(root)) {
     html = html.replace(match[0], match[0].replace(/\s*\/?>$/, ` ${attributes} />`));
     images++;
   }
-  await fs.writeFile(file, html);
+  await fs.writeFile(file, withContactRail(html));
 }
 console.log(`Shared navigation/footer on ${pages} static pages; responsive WebP attributes on ${images} images (${variants.size} unique sources); public context on ${contactLinks} general WhatsApp links.`);

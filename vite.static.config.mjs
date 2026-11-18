@@ -45,5 +45,15 @@ export default defineConfig({
       clientFiles: ["./src/main.jsx"],
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: "studio-contact-preview",
+      apply: "serve",
+      async transformIndexHtml(html) {
+        const { withContactRail } = await import("./scripts/contact-rail.mjs");
+        return withContactRail(html);
+      },
+    },
+  ],
 });
