@@ -18,10 +18,11 @@ const icons = Object.fromEntries(Object.entries({
 }))]));
 
 const email = "mailto:" + businessContact.email;
-const phone = "tel:+8613317178019";
-const phoneLabel = "+86 133 1717 8019";
-const cssTag = '<link rel="stylesheet" href="/contact-rail.css" data-wy-rail-asset>';
-const scriptTag = '<script defer src="/contact-rail.js" data-wy-rail-asset></script>';
+const studioMobile = "13317178019";
+const phone = "tel:+86" + studioMobile;
+const phoneLabel = "+86 " + studioMobile.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1 $2 $3");
+const cssTag = '<link rel="stylesheet" href="/contact-rail.css?v=2" data-wy-rail-asset>';
+const scriptTag = '<script defer src="/contact-rail.js?v=2" data-wy-rail-asset></script>';
 
 function inquiryDestination(html, pathname) {
   // Use the buyer-facing brief in the page body, before the generic site footer.
@@ -34,17 +35,31 @@ function inquiryDestination(html, pathname) {
   return "/commission/";
 }
 
-function action(key, href, label, detail = "", extra = "") {
-  return '<a class="wy-contact-action" data-channel="' + key + '" href="' + href + '"' + extra + '>' +
-    '<span class="wy-contact-icon">' + icons[key] + '</span>' +
+function iconLabel(key, label, detail = "") {
+  return '<span class="wy-contact-icon">' + icons[key] + '</span>' +
     '<span class="wy-contact-label"><span data-contact-text="' + key + '">' + label + '</span>' +
-    (detail ? '<small>' + detail + '</small>' : '') + '</span></a>';
+    (detail ? '<small>' + detail + '</small>' : '') + '</span>';
 }
 
+function action(key, href, label, detail = "", extra = "") {
+  return '<a class="wy-contact-action" data-channel="' + key + '" href="' + href + '"' + extra + '>' +
+    iconLabel(key, label, detail) + '</a>';
+}
+
+const wechat = '<details class="wy-wechat"><summary class="wy-contact-action" data-channel="wechat">' +
+  iconLabel("wechat", "WeChat") + '</summary><div class="wy-wechat-panel">' +
+  '<label for="wy-wechat-number" data-contact-text="find">Search this number in WeChat</label>' +
+  '<input id="wy-wechat-number" type="text" dir="ltr" readonly inputmode="none" value="' + studioMobile + '">' +
+  '<button type="button" data-wy-copy hidden data-contact-text="copy">Copy number</button>' +
+  '<span role="status" class="wy-wechat-status"></span></div></details>';
+
 export function withContactRail(html) {
-  if (html.includes('id="wy-contact-rail"')) return html;
   const canonical = html.match(/<link\b[^>]*\brel="canonical"[^>]*\bhref="(https:\/\/weieryangart\.com\/[^"?#]*)"/i);
   if (!canonical || !html.includes("</body>")) return html;
+  // Refresh a previously generated rail without changing the site's other markup.
+  html = html.replace(/<nav id="wy-contact-rail"[^>]*>[\s\S]*?<\/nav>\n?/, "")
+    .replace(/<link\b[^>]*\bdata-wy-rail-asset>\n?/, "")
+    .replace(/<script\b[^>]*\bdata-wy-rail-asset><\/script>\n?/, "");
   const pathname = new URL(canonical[1]).pathname;
   const target = pathname === "/commission/" ? "project-details" : analyticsProductSlug(pathname) ? "product-inquiry" : "";
   const localForm = target ? ' data-form-target="' + target + '"' : "";
@@ -53,7 +68,7 @@ export function withContactRail(html) {
     action("email", email, "Email the studio", businessContact.email),
     action("phone", phone, "Call the studio", phoneLabel),
     action("whatsapp", projectWhatsappHref(pathname), "WhatsApp", "", ' target="_blank" rel="noopener noreferrer"'),
-    action("wechat", email + "?subject=WeChat%20contact%20request", "Ask for WeChat by email"),
+    wechat,
   ];
   const rail = '<nav id="wy-contact-rail" aria-label="Contact the studio"><details open>' +
     '<summary><span class="wy-contact-toggle-icon">' + icons.inquiry + icons.close + '</span>' +

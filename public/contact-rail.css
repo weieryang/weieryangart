@@ -12,7 +12,7 @@
   text-align: start;
 }
 #wy-contact-rail, #wy-contact-rail * { box-sizing: border-box; }
-#wy-contact-rail details {
+#wy-contact-rail > details {
   width: max-content;
   margin: 0;
   padding: 7px;
@@ -21,7 +21,7 @@
   background: var(--rail-paper);
   box-shadow: 0 4px 20px #151a1529;
 }
-#wy-contact-rail summary { display: none; }
+#wy-contact-rail > details > summary { display: none; }
 #wy-contact-rail summary::-webkit-details-marker { display: none; }
 #wy-contact-rail .wy-contact-list { display: grid; gap: 6px; }
 #wy-contact-rail .wy-contact-action {
@@ -62,9 +62,40 @@
   overflow-wrap: anywhere;
 }
 #wy-contact-rail small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; direction: ltr; }
-#wy-contact-rail a:hover .wy-contact-label, #wy-contact-rail a:focus-visible .wy-contact-label { opacity: 1; }
-#wy-contact-rail a:hover .wy-contact-icon, #wy-contact-rail a:focus-visible .wy-contact-icon { background: #303a32; }
-#wy-contact-rail :is(a, summary):focus-visible { outline: 3px solid #a55b2f; outline-offset: 3px; }
+#wy-contact-rail .wy-contact-action:is(:hover, :focus-visible) .wy-contact-label { opacity: 1; }
+#wy-contact-rail .wy-contact-action:is(:hover, :focus-visible) .wy-contact-icon { background: #303a32; }
+#wy-contact-rail :is(a, summary, input, button):focus-visible { outline: 3px solid #a55b2f; outline-offset: 3px; }
+#wy-contact-rail .wy-wechat { position: relative; margin: 0; padding: 0; border: 0; }
+#wy-contact-rail .wy-wechat > summary { list-style: none; cursor: pointer; }
+#wy-contact-rail .wy-wechat[open] > summary .wy-contact-icon { background: #303a32; }
+#wy-contact-rail .wy-wechat-panel {
+  position: absolute;
+  right: calc(100% + 13px);
+  bottom: 0;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  width: 224px;
+  max-width: calc(100vw - 88px);
+  padding: 14px;
+  border: 1px solid #b8bcb2;
+  border-radius: 14px;
+  color: #303a32;
+  background: #f2f2e9;
+  box-shadow: 0 4px 20px #151a1529;
+}
+#wy-contact-rail .wy-wechat-panel label { font: inherit; line-height: 1.4; }
+#wy-contact-rail #wy-wechat-number {
+  width: 100%; min-width: 0; padding: 2px 0; border: 0; border-radius: 2px;
+  color: #263128; background: transparent; font: 650 20px/1.35 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums; text-align: left; user-select: all;
+}
+#wy-contact-rail [data-wy-copy] {
+  min-height: 44px; padding: 6px 14px; border: 0; border-radius: 22px;
+  color: #fff; background: var(--rail-ink); font: inherit; cursor: pointer;
+}
+#wy-contact-rail [data-wy-copy][hidden], #wy-contact-rail .wy-wechat-status:empty { display: none; }
+#wy-contact-rail .wy-wechat-status { font-size: 13px; }
 body:has(.wy-ads-consent:not([hidden]), .mobile-menu.is-open, dialog[open]) #wy-contact-rail { display: none; }
 
 @media (max-width: 860px), (max-height: 540px) {
@@ -75,7 +106,7 @@ body:has(.wy-ads-consent:not([hidden]), .mobile-menu.is-open, dialog[open]) #wy-
     transform: none;
     max-width: calc(100vw - 24px);
   }
-  #wy-contact-rail details {
+  #wy-contact-rail > details {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -85,8 +116,8 @@ body:has(.wy-ads-consent:not([hidden]), .mobile-menu.is-open, dialog[open]) #wy-
     overflow: auto;
     overscroll-behavior: contain;
   }
-  #wy-contact-rail details[open] { border-radius: 24px; padding: 6px; }
-  #wy-contact-rail summary {
+  #wy-contact-rail > details[open] { border-radius: 24px; padding: 6px; }
+  #wy-contact-rail > details > summary {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,10 +132,10 @@ body:has(.wy-ads-consent:not([hidden]), .mobile-menu.is-open, dialog[open]) #wy-
   }
   #wy-contact-rail .wy-contact-toggle-icon { width: 38px; height: 38px; margin-left: 3px; }
   #wy-contact-rail .wy-contact-toggle-icon svg:last-child,
-  #wy-contact-rail details[open] .wy-contact-toggle-icon svg:first-child { display: none; }
-  #wy-contact-rail details[open] .wy-contact-toggle-icon svg:last-child { display: block; }
-  #wy-contact-rail details[open] summary { justify-content: start; }
-  #wy-contact-rail details[open] .wy-contact-list { padding-top: 5px; border-top: 1px solid #c7cbc1; }
+  #wy-contact-rail > details[open] .wy-contact-toggle-icon svg:first-child { display: none; }
+  #wy-contact-rail > details[open] .wy-contact-toggle-icon svg:last-child { display: block; }
+  #wy-contact-rail > details[open] > summary { justify-content: start; }
+  #wy-contact-rail > details[open] .wy-contact-list { padding-top: 5px; border-top: 1px solid #c7cbc1; }
   #wy-contact-rail .wy-contact-list { gap: 2px; }
   #wy-contact-rail .wy-contact-action { width: 100%; gap: 9px; min-height: 44px; padding: 1px 8px 1px 2px; }
   #wy-contact-rail .wy-contact-icon { width: 38px; height: 38px; }
@@ -113,5 +144,9 @@ body:has(.wy-ads-consent:not([hidden]), .mobile-menu.is-open, dialog[open]) #wy-
     background: transparent; opacity: 1; font-size: 13px;
   }
   #wy-contact-rail .wy-contact-label small { margin: 0; }
+  #wy-contact-rail .wy-wechat-panel {
+    position: static; width: 210px; max-width: 100%; padding: 10px;
+    margin-top: 4px; border-radius: 14px; box-shadow: none;
+  }
   body:has(form :is(input, select, textarea):focus) #wy-contact-rail { display: none; }
 }

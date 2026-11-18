@@ -42,8 +42,13 @@ for (const url of urls) {
   assert.deepEqual([...rail.matchAll(/data-channel="([^"]+)"/g)].map(match => match[1]), ["inquiry", "email", "phone", "whatsapp", "wechat"]);
   assert.match(rail, /data-channel="phone" href="tel:\+8613317178019"/);
   assert.match(rail, /data-channel="email" href="mailto:tangkelian@weieryang\.com"/);
-  assert.equal(html.split('src="/contact-rail.js"').length, 2);
-  assert.equal(html.split('href="/contact-rail.css"').length, 2);
+  const studioPhone = rail.match(/data-channel="phone" href="tel:\+86(\d{11})"/)[1];
+  assert.match(rail, /<summary[^>]+data-channel="wechat"/);
+  assert.equal(rail.match(/id="wy-wechat-number"[^>]+value="(\d+)"/)?.[1], studioPhone);
+  assert.match(rail, /<button type="button" data-wy-copy/);
+  assert.doesNotMatch(rail, /WeChat%20contact%20request/);
+  assert.equal([...html.matchAll(/src="\/contact-rail\.js(?:\?[^"]*)?"/g)].length, 1);
+  assert.equal([...html.matchAll(/href="\/contact-rail\.css(?:\?[^"]*)?"/g)].length, 1);
   const generalContacts = [...html.matchAll(/href="(https:\/\/wa\.me\/8613317178019[^"]*)"/g)];
   assert.ok(generalContacts.length, `Static page has an optional WhatsApp contact: ${route}`);
   for (const match of generalContacts) {
