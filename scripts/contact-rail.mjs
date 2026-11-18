@@ -22,7 +22,7 @@ const studioMobile = "13317178019";
 const phone = "tel:+86" + studioMobile;
 const phoneLabel = "+86 " + studioMobile.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1 $2 $3");
 const cssTag = '<link rel="stylesheet" href="/contact-rail.css?v=2" data-wy-rail-asset>';
-const scriptTag = '<script defer src="/contact-rail.js?v=2" data-wy-rail-asset></script>';
+const scriptTag = '<script defer src="/contact-rail.js?v=3" data-wy-rail-asset></script>';
 
 function inquiryDestination(html, pathname) {
   // Use the buyer-facing brief in the page body, before the generic site footer.
