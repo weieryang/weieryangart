@@ -282,6 +282,84 @@ const routeImageKeys = {
 };
 
 const preservedRoutes = [
+  { url: `${site}/insights/hotel-lobby-sculpture-viewpoints/`, lastmod: "2026-11-18", priority: "0.78", images: [
+  {
+    "file": "lobby-loop-on-circular-base.webp",
+    "width": 759,
+    "height": 1012,
+    "alt": "Gold-coloured intersecting loops centred on a circular base below a ring-shaped light",
+    "caption": "The open centre aligns with the circular base in this view. Mark the position of the desk or doorway you want visible through the opening."
+  },
+  {
+    "file": "stacked-open-form-lobby-study.webp",
+    "width": 832,
+    "height": 1248,
+    "alt": "Two open, rounded forms stacked above a rectangular base",
+    "caption": "The upper and lower openings face different directions. Ask for the reception-side view before choosing which opening faces arriving guests."
+  },
+  {
+    "file": "stacked-solid-form-plinth-study.webp",
+    "width": 900,
+    "height": 1600,
+    "alt": "Stacked solid forms with a dark projecting shelf against a plain wall",
+    "caption": "The thin projecting shelf gives this stack a clear side profile. Include its widest outline when reviewing the space beside the piece."
+  }
+] },
+  { url: `${site}/insights/restaurant-wall-relief-lighting/`, lastmod: "2026-11-18", priority: "0.78", images: [
+  {
+    "file": "blue-circular-wall-relief-dining-view.webp",
+    "width": 759,
+    "height": 1012,
+    "alt": "Blue circular wall piece with a textured face above a narrow console",
+    "caption": "The blue face forms one clear circle against the pale wall. In a dining-room mock-up, check how much of the textured centre stays visible beyond the nearest table."
+  },
+  {
+    "file": "gold-radial-wall-relief-seated-view.webp",
+    "width": 857,
+    "height": 1365,
+    "alt": "Gold-coloured circular relief with a raised central face and radial details above seating",
+    "caption": "The raised centre and outer rays catch light differently. Photograph a finish sample from the nearest seat and from the host position."
+  }
+] },
+  { url: `${site}/insights/roundabout-sculpture-day-night-review/`, lastmod: "2026-11-18", priority: "0.78", images: [
+  {
+    "file": "wave-roundabout-sculpture-daylight.webp",
+    "width": 1600,
+    "height": 994,
+    "alt": "White wave-shaped sculpture across the centre of a roundabout, seen from above in daylight",
+    "caption": "Follow the high outer crest and the lower opening against the road and buildings. Use the overview to select the approach views your team needs."
+  },
+  {
+    "file": "wave-roundabout-sculpture-dusk.webp",
+    "width": 1600,
+    "height": 1074,
+    "alt": "Elevated dusk view of a wave-shaped landmark surrounded by traffic lanes and illuminated buildings",
+    "caption": "At dusk the building lights and sky compete with the outline. Mark which crest or opening should still identify the piece from each approach."
+  },
+  {
+    "file": "wave-roundabout-sculpture-night-detail.webp",
+    "width": 900,
+    "height": 1600,
+    "alt": "Illuminated curved ribs of a wave-shaped landmark viewed obliquely at night",
+    "caption": "This closer night view shows individual ribs and bright edges. Ask the lighting and artwork teams to agree which lines are intended to read after dark."
+  }
+] },
+  { url: `${site}/insights/cat-mascot-sculpture-photo-spot/`, lastmod: "2026-11-18", priority: "0.78", images: [
+  {
+    "file": "orange-cat-mascot-wall-ledge.webp",
+    "width": 736,
+    "height": 981,
+    "alt": "Orange striped cat sculpture stretched along a wall ledge, with its legs hanging over the edge",
+    "caption": "The paws break the straight line of the ledge. On your artwork, mark which paw and which part of the tail must stay in frame beside a visitor."
+  },
+  {
+    "file": "orange-cat-mascot-striped-canopy.webp",
+    "width": 1200,
+    "height": 1600,
+    "alt": "Orange cat form on a red-and-white striped canopy, with a raised tail against the trees",
+    "caption": "The canopy edge hides part of the body while the raised tail stays distinct. Ask for the camera-height view as well as the sculptor’s eye-level model view."
+  }
+] },
   { url: `${site}/insights/figurative-vs-abstract-sculpture-commission/`, lastmod: "2026-11-18", priority: "0.78", images: [{"file": "application-illuminated-portrait-workshop.webp", "width": 1200, "height": 1600, "alt": "Workshop portrait with a face beneath a gold-coloured headdress and lights around the shoulders", "caption": "In this WEIERYANG workshop portrait, the face, headdress and raised hand make the subject readable. In a new design brief, circle the features that carry that recognition."}, {"file": "application-gold-abstract-workshop.webp", "width": 1600, "height": 1200, "alt": "Gold-coloured abstract form with looping curves and openings on supports in the workshop", "caption": "In this WEIERYANG workshop photograph, the eye follows a loop and the space inside it. Mark the approach view that should keep an opening visible as a visitor walks past."},
     {"file": "deer-pair-outdoor-figurative-silhouette.webp", "width": 1067, "height": 1600, "alt": "Two white deer stand against dark trees, one with an antlered head raised above the other", "caption": "The antlers and the two head heights make the deer readable from across the lawn. On your reference, mark the gap you want to preserve between two figures."},
     {"file": "spiral-shell-sculpture-relief-detail.webp", "width": 1199, "height": 1600, "alt": "Spiral shell form with open chambers, raised ribs and a stepped outer edge", "caption": "The spiral suggests a shell. Follow one rib toward the centre and mark where its depth matters. This gives the model maker a more precise instruction than a colour reference alone."},
@@ -597,7 +675,7 @@ for (const page of pages) {
   if (["public-art", "stainless-steel-sculpture"].includes(page.slug)) page.lastmod = "2026-10-27";
 }
 for (const page of pages) if (page.slug === "stainless-steel-sculpture") page.lastmod = "2026-11-08";
-for (const page of pages) if (applicationBriefHref(`/${page.slug}/`) !== "/commission/") page.lastmod = "2026-11-14";
+for (const page of pages) if (applicationBriefHref(`/${page.slug}/`) !== "/commission/") page.lastmod = "2026-11-18";
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
 for (const page of pages) if (["", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-11-02";

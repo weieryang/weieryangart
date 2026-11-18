@@ -298,10 +298,58 @@ export const applicationOemUi = {
   de: { eyebrow: 'OEM / freigegebene Zeichnungen', process: 'Individuellen Prozess ansehen', rfq: 'Vorlage für den Angebotsumfang nutzen', brief: 'Fertigungsbriefing besprechen' },
 };
 
+const buyerGuides = {
+  hospitality: {
+    path: "/insights/hotel-lobby-sculpture-viewpoints/",
+    labels: {
+      en: "Review a lobby sculpture from three views",
+      zh: "从三个视角评审大堂雕塑（英文）",
+      ar: "مراجعة منحوتة البهو من ثلاث زوايا (بالإنجليزية)",
+      fr: "Examiner une sculpture de hall sous trois angles (en anglais)",
+      es: "Revisar una escultura de vestíbulo desde tres ángulos (en inglés)",
+      de: "Eine Lobbyskulptur aus drei Blickwinkeln prüfen (Englisch)"
+    },
+  },
+  retail: {
+    path: "/insights/restaurant-wall-relief-lighting/",
+    labels: {
+      en: "Review a wall relief from the booth and host stand",
+      zh: "从卡座和迎宾台看墙面浮雕（英文）",
+      ar: "مراجعة النحت البارز من المقعد ومنصة الاستقبال (بالإنجليزية)",
+      fr: "Évaluer le relief mural depuis la banquette et l’accueil (en anglais)",
+      es: "Evaluar el relieve desde la mesa y la recepción (en inglés)",
+      de: "Das Wandrelief von der Sitzbank und vom Empfang aus prüfen (Englisch)"
+    },
+  },
+  public: {
+    path: "/insights/roundabout-sculpture-day-night-review/",
+    labels: {
+      en: "Compare roundabout sculpture views by day and night",
+      zh: "对照环岛雕塑的日景与夜景（英文）",
+      ar: "مقارنة مشاهد منحوتة الدوار نهاراً وليلاً (بالإنجليزية)",
+      fr: "Comparer les vues du rond-point de jour et de nuit (en anglais)",
+      es: "Comparar la escultura de la rotonda de día y de noche (en inglés)",
+      de: "Eine Kreiselskulptur bei Tag und Nacht vergleichen (Englisch)"
+    },
+  },
+  themed: {
+    path: "/insights/cat-mascot-sculpture-photo-spot/",
+    labels: {
+      en: "Plan a cat mascot pose for visitor photos",
+      zh: "为猫形角色规划游客合影姿态（英文）",
+      ar: "تخطيط وضعية تمثال القط لصور الزوار (بالإنجليزية)",
+      fr: "Préparer la pose de la mascotte pour les photos des visiteurs (en anglais)",
+      es: "Preparar la pose de la mascota para las fotos de visitantes (en inglés)",
+      de: "Eine Katzenmaskottchen-Pose für Besucherfotos planen (Englisch)"
+    },
+  },
+};
+
 export function getApplicationOem(id, language = 'en') {
   const lang = content[language] ? language : 'en';
   const item = content[lang][id];
   const buyer = getApplicationKeywordContent(id, lang);
-  return item ? { id, ...item, ...(buyer ? { intro: buyer.intro, evidenceLinks: buyer.evidenceLinks.map(pair => [...pair]) } : {}), steps: item.steps.map(step => ({ ...step })), quotationScope: [...item.quotationScope], faq: [...item.faq, ...(buyer?.faq || [])].map(pair => [...pair]) } : null;
+  const guide = buyerGuides[id];
+  return item ? { id, ...item, guide: { path: guide.path, label: guide.labels[lang] }, ...(buyer ? { intro: buyer.intro, evidenceLinks: buyer.evidenceLinks.map(pair => [...pair]) } : {}), steps: item.steps.map(step => ({ ...step })), quotationScope: [...item.quotationScope], faq: [...item.faq, ...(buyer?.faq || [])].map(pair => [...pair]) } : null;
 }
 

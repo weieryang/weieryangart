@@ -23,8 +23,8 @@ import { projectContactPaths } from "../src/projectContact.js";
 const root = path.resolve("dist");
 const base = "https://weieryangart.com";
 const urls = [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
-assert.equal(urls.length, 66, "Canonical inventory includes the figurative and abstract commissioning guide");
-assert.equal(new Set(urls).size, 66, "No duplicate canonical sitemap URLs");
+assert.equal(urls.length, 70, "Canonical inventory includes the four application buyer guides");
+assert.equal(new Set(urls).size, 70, "No duplicate canonical sitemap URLs");
 assert.deepEqual([...projectContactPaths].sort(), urls.map(url => new URL(url).pathname).sort(), "General contact context only uses the current public inventory");
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replace(/&#(?:39|x27);/gi, "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 let imageCount = 0, schemaCount = 0, staticCount = 0;
@@ -602,6 +602,7 @@ function verifyKeywordBuyerAnswers(html, category, language, context) {
   const oemSection = html.match(new RegExp(`<section\\b[^>]*id="oem-${category.id}"[\\s\\S]*?<\\/section>`))?.[0];
   assert.ok(oemSection, `OEM section exists: ${context}: ${category.id}`);
   for (const [,href] of buyer.evidenceLinks) assert.ok(oemSection.includes(`href="${href}"`), `Evidence is linked inside its OEM brief: ${context}: ${href}`);
+  assert.ok(oemSection.includes(`href="${category.oem.guide.path}"`) && readable.includes(category.oem.guide.label), `Application buyer guide link: ${context}: ${language}: ${category.id}`);
   if (language !== "en") {
     const english = getApplicationKeywordContent(category.id, "en");
     assert.notEqual(buyer.intro, english.intro, `No English buyer intro fallback: ${language}: ${category.id}`);

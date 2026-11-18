@@ -12,6 +12,7 @@ export function ApplicationOemSection({ oem, briefHref, language = 'en' }) {
     <div className="application-oem-scope"><h3>{oem.scopeHeading}</h3><ul>{oem.quotationScope.map(item => <li key={item}>{item}</li>)}</ul></div>
     <nav className="application-oem-links" aria-label={oem.heading}>
       {oem.evidenceLinks?.map(([label, href]) => <a href={href} key={href}>{label}<ArrowUpRight size={18} aria-hidden="true" /></a>)}
+      <a href={oem.guide.path}>{oem.guide.label}<ArrowUpRight size={18} aria-hidden="true" /></a>
       <a href="/custom-sculpture/">{ui.process}<ArrowUpRight size={18} aria-hidden="true" /></a>
       <a href="/insights/outdoor-sculpture-quotation-scope-checklist/#rfq-template">{ui.rfq}<ArrowUpRight size={18} aria-hidden="true" /></a>
       <a href={briefHref}>{ui.brief}<ArrowUpRight size={18} aria-hidden="true" /></a>
