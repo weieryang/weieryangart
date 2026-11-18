@@ -43,14 +43,14 @@
   });
   new MutationObserver(labels).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
-  document.addEventListener("pointerdown", (event) => {
-    if (wechat?.open && !wechat.contains(event.target)) closeWechat();
-    if (compact.matches && details.open && !rail.contains(event.target)) details.open = false;
-  });
-  rail.addEventListener("focusout", (event) => {
-    if (wechat?.open && event.relatedTarget && !wechat.contains(event.relatedTarget)) closeWechat();
-    if (compact.matches && details.open && event.relatedTarget && !rail.contains(event.relatedTarget)) details.open = false;
-  });
+  function dismissOutside(target) {
+    if (!target || rail.contains(target)) return;
+    closeWechat();
+    if (compact.matches) details.open = false;
+  }
+  // Closing the bottom-anchored panel before an inside click moves its target.
+  document.addEventListener("pointerdown", event => dismissOutside(event.target));
+  rail.addEventListener("focusout", event => dismissOutside(event.relatedTarget));
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (wechat?.open) {
@@ -99,6 +99,7 @@
   rail.addEventListener("click", (event) => {
     const link = event.target.closest("a");
     if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+    closeWechat();
     if (compact.matches) details.open = false;
     const name = link === inquiry && targetId && document.getElementById(targetId)?.querySelector('input[name="name"]');
     if (name) {
