@@ -10,8 +10,15 @@ export const staticFooter = `<footer class="wy-footer"><div class="wy-footer-inn
 </div></footer>`;
 
 
+const customCommissionGuides = new Set([
+  "/insights/figurative-vs-abstract-sculpture-commission/",
+  "/insights/custom-outdoor-abstract-sculpture-approval-checklist/",
+]);
+
 export function staticProjectFrame(pathname) {
-  const briefHref = applicationBriefHref(pathname);
+  const briefHref = customCommissionGuides.has(pathname)
+    ? "/commission/?route=custom-sculpture"
+    : applicationBriefHref(pathname);
   if (briefHref === "/commission/") return { header: staticHeader, footer: staticFooter };
   return {
     header: staticHeader.replace('href="/commission/?route=resort-sculpture"', `href="${briefHref}"`),

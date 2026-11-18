@@ -351,3 +351,16 @@ body .wy-note{margin-top:42px;border:1px solid #51372e;background:#17100d;paddin
   .wy-hero-image:hover,.wy-figure:hover,.wy-hero-image:active,.wy-figure:active{transform:none}
   .wy-hero-image:hover img,.wy-figure:hover img{transform:none;filter:none}
 }
+
+.study-photo-section { margin-block: 2.5rem; }
+.study-photo-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); align-items: start; }
+.study-photo-grid figure { margin: 0; min-width: 0; }
+.study-photo-grid .study-photo-link { display: block; background: #151513; }
+.study-photo-grid .study-photo-link:focus-visible { outline: 2px solid #efb796; outline-offset: 3px; }
+.study-photo-grid img { display: block; width: 100%; height: clamp(220px, 26vw, 330px); object-fit: contain; }
+.study-photo-grid figcaption { margin-top: .7rem; font-size: .875rem; line-height: 1.55; }
+.study-photo-grid figcaption strong { display: block; margin-bottom: .25rem; }
+@media (max-width: 620px) {
+  .study-photo-grid { grid-template-columns: 1fr; }
+  .study-photo-grid img { height: auto; max-height: 65vh; }
+}
