@@ -1,0 +1,13 @@
+﻿Scope item,Buyer review,Supplier A reference / inclusions,A amount / currency,A responsibility / exclusions,Supplier B reference / inclusions,B amount / currency,B responsibility / exclusions,Decision / owner / due date
+Quotation reference and revision,Identify each offer and its revision.,,,,,,,
+Currency and validity date,"State currency, quote expiry and quantity for each offer.",,,,,,,
+Drawings and design review,"Name the file revision, included review rounds and approval owner.",,,,,,,
+Fabrication and finish,"List material specification for review, finish sample and agreed quantity.",,,,,,,
+Base and fixing interface,"Record which party supplies the base details, fixings and local review.",,,,,,,
+Packing and crates,"List protective packing, number of packages if agreed and packing charge.",,,,,,,
+Freight and delivery point,Identify the delivery point and where cost and responsibility pass.,,,,,,,
+Import charges and local taxes,Say who will confirm and pay locally applicable charges.,,,,,,,
+Site unloading and access,"Identify unloading, lifting, storage, access windows and responsible party.",,,,,,,
+Site assembly and touch-up,"State which party provides local labour, supervision and completion records.",,,,,,,
+"Lighting and service access, if relevant","Identify power interface, supply scope and maintenance access.",,,,,,,
+Quote total and open items,Use a common currency and scope before comparing totals. Record open decisions.,,,,,,,
