@@ -1242,7 +1242,13 @@ function head(page) {
     <meta name="twitter:description" content="${esc(page.description)}" />
     <meta name="twitter:image" content="${socialImage}" />
     <meta name="twitter:image:alt" content="${esc(primaryImage.alt)}" />
-    ${fallbackCss()}
+    ${fallbackCss()}${page.slug === "commission" ? `
+    <style data-project-inquiry-anchor>
+      html:has(fieldset#project-details) { scroll-behavior: auto; }
+      @media (max-width: 820px) {
+        fieldset#project-details { scroll-margin-block-start: clamp(120px, 24vh, 200px); }
+      }
+    </style>` : ""}
     <script type="application/ld+json">
 ${pageSchema(page).split("\n").map((line) => `      ${line}`).join("\n")}
     </script>
