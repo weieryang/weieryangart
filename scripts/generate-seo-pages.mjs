@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { businessContact } from "../src/content.js";
 import { hospitalitySections, hospitalityEntry, hospitalityPlanning } from "../src/hospitalityContent.js";
 import { routeSeoContent } from "../src/seoContent.js";
 import { hotelCases, hotelCaseImages } from "../src/hotelCases.js";
@@ -384,11 +385,11 @@ const preservedRoutes = [
   { url: `${site}/insights/`, lastmod: "2026-11-18", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
-  { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-10-27", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
+  { url: `${site}/insights/large-outdoor-sculpture-cost-guide/`, lastmod: "2026-11-19", priority: "0.9", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "fabricationWorkshop"] },
   { url: `${site}/insights/304-vs-316l-stainless-steel-outdoor-sculpture/`, lastmod: "2026-09-15", priority: "0.89", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/coastal-stainless-steel-sculpture-maintenance-checklist/`, lastmod: today, priority: "0.88", imageKeys: ["materialSamples", "stainlessWingSlatInstallation", "middleEastLandmarkInstallation", "largeStructuralAssembly", "studioDesk", "structuralStudy"] },
   { url: `${site}/insights/large-outdoor-sculpture-foundation-anchor-checklist/`, lastmod: "2026-09-14", priority: "0.88", imageKeys: ["structuralStudy", "largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "studioDesk", "materialSamples"] },
-  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-11-04", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
+  { url: `${site}/insights/outdoor-sculpture-quotation-scope-checklist/`, lastmod: "2026-11-19", priority: "0.88", imageKeys: ["studioDesk", "materialSamples", "structuralStudy", "fabricationWorkshop", "largeStructuralAssembly", "middleEastLandmarkInstallation"] },
   { url: `${site}/insights/resort-entrance-sculpture-scale-guide/`, lastmod: "2026-09-27", priority: "0.87", imageKeys: ["resortEntranceCanopyReference", "resortCanopyHumanScale", "materialSamples", "structuralStudy", "middleEastLandmarkInstallation", "installedProject"] },
   { url: `${site}/insights/large-sculpture-export-packing-checklist/`, lastmod: today, priority: "0.87", imageKeys: ["largeStructuralAssembly", "fabricationWorkshop", "structuralStudy", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation"] },
   { url: `${site}/insights/large-stainless-steel-sculpture-fabrication-checklist/`, lastmod: "2026-10-30", priority: "0.88", imageKeys: ["largeStructuralAssembly", "middleEastLandmarkInstallation", "stainlessWingSlatInstallation", "materialSamples", "structuralStudy"] },
@@ -678,6 +679,7 @@ for (const page of pages) if (page.slug === "stainless-steel-sculpture") page.la
 for (const page of pages) if (applicationBriefHref(`/${page.slug}/`) !== "/commission/") page.lastmod = "2026-11-18";
 for (const page of pages) if (page.slug === "") page.lastmod = "2026-10-29";
 for (const page of pages) if (page.slug === "process") page.lastmod = "2026-10-30";
+for (const page of pages) if (page.slug === "commission") page.lastmod = "2026-11-19";
 for (const page of pages) if (["", "process", "custom-sculpture"].includes(page.slug)) page.lastmod = "2026-11-02";
 for (const article of preservedRoutes) {
   if (schemaIdentityGuideSlugs.has(article.url.split("/").filter(Boolean).at(-1))) article.lastmod = "2026-10-27";
@@ -1037,10 +1039,12 @@ function fallback(page) {
       ${page.related?.length ? `<nav aria-label="Related sculpture routes"><h2>Continue the project review</h2>${page.related.map(([label, href]) => `<p><a href="${esc(href)}">${esc(label)}</a></p>`).join("")}</nav>` : ""}
       ${faq}
       ${commissionEvidence}
-      <section>
+      <section${page.slug === "commission" ? ' id="project-details"' : ""}>
         <h2>Start a private sculpture brief</h2>
         <p>Send drawings, site photos, scale, material direction, destination country, and schedule to begin a serious review.</p>
-        <p><a href="${applicationBriefHref(`/${page.slug}/`)}">Open the commission brief</a></p>
+        ${page.slug === "commission"
+          ? `<p><a href="mailto:${esc(businessContact.email)}">Email your project brief to the studio</a><noscript> · ${esc(businessContact.email)}</noscript></p>`
+          : `<p><a href="${applicationBriefHref(`/${page.slug}/`)}">Open the commission brief</a></p>`}
       </section>
     </main>`;
 }
