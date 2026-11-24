@@ -23,6 +23,20 @@ const ogImage = `${site}/og-image.jpg`;
 const imageBase = `${site}/seo-media`;
 
 const evidenceImages = {
+  roundaboutDaylight: {
+    file: "wave-roundabout-sculpture-daylight.webp",
+    width: 1600,
+    height: 994,
+    alt: "White wave-shaped sculpture across the centre of a roundabout, seen from above in daylight",
+    caption: "Follow the high outer crest and the lower opening against the road and buildings. Use the overview to select the approach views your team needs.",
+  },
+  sculptureProjectMeeting: {
+    file: "sculpture-project-meeting.webp",
+    width: 1200,
+    height: 900,
+    alt: "Four people around a table with a laptop during a sculpture project meeting",
+    caption: "The WEIERYANG team during a sculpture project meeting.",
+  },
   homeLobbyReference: { ...hotelCaseImages[0], caption: hotelCases.en.note },
   homeArrivalReference: { ...hotelCaseImages[2], caption: hotelCases.en.note },
   middleEastLandmarkInstallation: {
@@ -323,13 +337,7 @@ const preservedRoutes = [
   }
 ] },
   { url: `${site}/insights/roundabout-sculpture-day-night-review/`, lastmod: "2026-11-18", priority: "0.78", images: [
-  {
-    "file": "wave-roundabout-sculpture-daylight.webp",
-    "width": 1600,
-    "height": 994,
-    "alt": "White wave-shaped sculpture across the centre of a roundabout, seen from above in daylight",
-    "caption": "Follow the high outer crest and the lower opening against the road and buildings. Use the overview to select the approach views your team needs."
-  },
+  evidenceImages.roundaboutDaylight,
   {
     "file": "wave-roundabout-sculpture-dusk.webp",
     "width": 1600,
@@ -381,7 +389,7 @@ const preservedRoutes = [
   { url: `${site}/insights/custom-metal-wall-sculpture-site-fixing-brief/`, lastmod: "2026-11-04", priority: "0.78", images: [{"file": "factory-sheet-metal-workstation.webp", "width": 1600, "height": 1200, "alt": "Workers and sheet material at metalworking stations inside the WEIERYANG workshop", "caption": "WEIERYANG workshop record: sheet material and workstations. This view does not show a wall sculpture attachment or a completed installation."}, {"file": "factory-curved-metal-components.webp", "width": 1600, "height": 1200, "alt": "Curved metal components resting on tables inside the WEIERYANG workshop", "caption": "WEIERYANG workshop record: curved components before their project identity or final application is established here. A wall-mounted commission requires its own design and site review."}] },
   { url: `${site}/insights/large-hotel-atrium-sculpture-planning-guide/`, lastmod: "2026-11-20", priority: "0.91", imageKeys: ["hotelAtriumPlanningOverview", "hotelAtriumMultilevelReference", "hotelAtriumUpperLevelView", "hotelAtriumBaseClearance", "hotelAtriumCrossLevelSightline"] },
   { url: `${site}/projects/hotel-lobby-sculpture-engineering-case/`, lastmod: "2026-09-30", priority: "0.92", imageKeys: ["hotelEngineeringOverview", "hotelEngineeringAtriumScale", "hotelEngineeringReflection", "hotelEngineeringCloseView"] },
-  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-10-08", priority: "0.91", imageKeys: ["hotelEngineeringOverview", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
+  { url: `${site}/custom-outdoor-sculpture-supplier/`, lastmod: "2026-11-24", priority: "0.91", imageKeys: ["roundaboutDaylight", "sculptureProjectMeeting", "middleEastLandmarkInstallation", "largeStructuralAssembly", "stainlessWingSlatInstallation", "materialSamples", "studioDesk"] },
   { url: `${site}/insights/`, lastmod: "2026-11-18", priority: "0.87", imageKeys: ["hotelAtriumPlanningOverview", "hotelEngineeringOverview", "hotelLobbyMirrorFinish", "hotelArrivalSiteContext", "resortEntranceCanopyReference"] },
   { url: `${site}/insights/hotel-lobby-mirror-stainless-steel-sculpture/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyMirrorFinish", "mirrorReflectionLighting", "mirrorPanelInlayWorkshop", "mirrorRearFinishInspection"] },
   { url: `${site}/insights/hotel-lobby-sculpture-renovation-guide/`, lastmod: "2026-09-30", priority: "0.89", imageKeys: ["hotelLobbyWhaleInstallation", "commercialAtriumMirrorSculpture", "mirrorFinishDetail", "largeWorkshopFabrication"] },
