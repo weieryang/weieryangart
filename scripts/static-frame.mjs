@@ -11,6 +11,7 @@ export const staticFooter = `<footer class="wy-footer"><div class="wy-footer-inn
 
 
 const customCommissionGuides = new Set([
+  "/insights/sculpture-pre-shipment-inspection/",
   "/insights/figurative-vs-abstract-sculpture-commission/",
   "/insights/custom-outdoor-abstract-sculpture-approval-checklist/",
 ]);

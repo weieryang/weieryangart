@@ -34,6 +34,7 @@ export const projectContactPaths = Object.freeze([
   "/insights/restaurant-wall-relief-lighting/",
   "/insights/roundabout-sculpture-day-night-review/",
   "/insights/cat-mascot-sculpture-photo-spot/",
+  "/insights/sculpture-pre-shipment-inspection/",
   "/insights/water-feature-sculpture-oem-scope/", "/insights/overseas-sculpture-installation-checklist/",
   "/insights/hotel-arrival-sculpture-site-brief/", "/insights/middle-east-stainless-steel-landmark-sculpture/",
   "/insights/material-led-sculpture-review-2026/", "/insights/how-to-commission-custom-outdoor-sculpture/",
