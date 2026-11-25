@@ -1,0 +1,8 @@
+﻿Plinth brief item,Measurement or decision,Units,Buyer input,Responsible party
+Feature selected,Point on sculpture used for sightline,,,
+Feature offset,From bottom of supplied artwork to selected point,,,
+Target elevation,From finished lobby floor to selected point,,,
+Separate mounting block,Rise included outside visible plinth,,,
+Visible plinth height,Target minus feature offset minus separate block rise,,,
+Plan dimensions,Plinth footprint and artwork overhang,,,
+Scope,"Artwork, plinth, mating surface and site review",,,
