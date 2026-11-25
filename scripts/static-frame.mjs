@@ -16,10 +16,17 @@ const customCommissionGuides = new Set([
   "/insights/custom-outdoor-abstract-sculpture-approval-checklist/",
 ]);
 
+const buyerGuideApplications = new Map([
+  ["/insights/outdoor-sculpture-fabrication-from-drawings/", "/landscape-public-art/"],
+  ["/insights/hotel-lobby-sculpture-plinth-height/", "/resort-sculpture/"],
+  ["/insights/large-wall-relief-panel-layout/", "/retail-restaurant-sculpture/"],
+  ["/insights/life-size-horse-deer-sculpture-dimensions/", "/themed-art-installations/"],
+]);
+
 export function staticProjectFrame(pathname) {
   const briefHref = customCommissionGuides.has(pathname)
     ? "/commission/?route=custom-sculpture"
-    : applicationBriefHref(applicationCategories.find(category => category.oem.guide.path === pathname)?.path || pathname);
+    : applicationBriefHref(buyerGuideApplications.get(pathname) || applicationCategories.find(category => category.oem.guide.path === pathname)?.path || pathname);
   if (briefHref === "/commission/") return { header: staticHeader, footer: staticFooter };
   return {
     header: staticHeader.replace('href="/commission/?route=resort-sculpture"', `href="${briefHref}"`),
