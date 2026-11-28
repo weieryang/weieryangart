@@ -17,6 +17,10 @@ const customCommissionGuides = new Set([
 ]);
 
 const buyerGuideApplications = new Map([
+  ["/insights/custom-bronze-owl-sculpture-quote/", "/themed-art-installations/"],
+  ["/insights/limited-edition-sculpture-fabrication/", "/retail-restaurant-sculpture/"],
+  ["/insights/bronze-sculpture-hotel-lobby-patina/", "/resort-sculpture/"],
+  ["/insights/cast-bronze-vs-bronze-resin-sculpture/", "/landscape-public-art/"],
   ["/insights/outdoor-sculpture-fabrication-from-drawings/", "/landscape-public-art/"],
   ["/insights/hotel-lobby-sculpture-plinth-height/", "/resort-sculpture/"],
   ["/insights/large-wall-relief-panel-layout/", "/retail-restaurant-sculpture/"],
